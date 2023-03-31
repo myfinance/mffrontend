@@ -1,0 +1,69 @@
+// General
+html, body {
+  height: 100%;
+}
+
+// Bootstrap
+.btn {
+  border-radius: 0;
+}
+.myformcontrol {
+  color: #495057;
+}
+
+
+
+.app-table-wrapper {
+  height: 100%;
+
+  .table {
+    height: 100%;
+
+    .data-table {
+      height: 100%;
+
+      .status-cell {
+        text-align: center;
+      }
+
+      .error:not(.ag-row-selected) {
+        color: $white;
+        background-color: $danger;
+      }
+
+      .active {
+        .status-cell:after {
+          font-family: FontAwesome, sans-serif;
+          content: '\f110';
+        }
+      }
+
+      .error {
+        .status-cell:after {
+          font-family: FontAwesome, sans-serif;
+          content: '\f071';
+        }
+      }
+
+      .success {
+        .status-cell {
+          color: $success;
+        }
+
+        .status-cell:after {
+          font-family: FontAwesome, sans-serif;
+          content: '\f00c';
+        }
+      }
+
+      .ag-row-selected {
+        &.success {
+          .status-cell {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}
+
