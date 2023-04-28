@@ -1,54 +1,17 @@
-<div class="top-navigation-wrapper">
-  <div class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" (click)="_isCollapsed = !_isCollapsed">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarToggler" >
-      <a class="navbar-brand" routerLink="/home"><img src="assets/images/logo.png" height="20"><span class="title">MyFinance</span></a>
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
-        <li class="nav-item dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" href dropdownToggle (click)="false">Dashboards</a>
-          <ul *dropdownMenu class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" routerLink="/assetview">Vermögen</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" href dropdownToggle (click)="false">Kontopflege</a>
-          <ul *dropdownMenu class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" routerLink="/transactions">Transaktionen</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/expensesmassload">Ausgabenmassenupload</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/instruments">Instrumente</a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/recurrenttransactions">Dauertransaktionen</a>
-            </li>
-            <li class="divider dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item" routerLink="/tenants">Mandanten</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item dropdown" dropdown>
-          <a class="nav-link dropdown-toggle" href dropdownToggle (click)="false">Beispiele</a>
-          <ul *dropdownMenu class="dropdown-menu">
-            <h6 class="dropdown-header">Formulare</h6>
-            <li>
-              <a class="dropdown-item" routerLink="/instrument-search">Instrument Search</a>
-            </li>
-          </ul>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</div>
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="MyFinance menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>assets/images/logo.png</mat-icon>
+    <span>Dashboards</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>voicemail</mat-icon>
+    <span>Kontopflege</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    <span>Settings</span>
+  </button>
+</mat-menu>

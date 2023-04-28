@@ -9,6 +9,9 @@ import {ErrorViewComponent} from './views/error-view/error-view.component';
 import {HomeComponent} from './views/home-view/home.component';
 import {TopNavigationComponent} from './shared/components/top-navigation/top-navigation.component';
 import {BasicLayoutComponent} from './shared/components/basic-layout/basic-layout.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import {BasicLayoutComponent} from './shared/components/basic-layout/basic-layou
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatMenuModule,
+    MatIconModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
