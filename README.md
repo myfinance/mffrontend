@@ -45,4 +45,4 @@ to remove again  nx g @nx/workspace:remove testlib
 
 ### Add Component
 
-npx nx g @nx/angular:component thecomponentname --project=theliborapp --export
+npx nx g @nx/angular:component navigation --project=mffrontend --standalone

@@ -1,0 +1,17 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="MyFinance menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>assets/images/logo.png</mat-icon>
+    <span>Dashboards</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>voicemail</mat-icon>
+    <span>Kontopflege</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    <span>Settings</span>
+  </button>
+</mat-menu>
