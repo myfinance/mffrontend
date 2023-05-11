@@ -8,18 +8,25 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/mffrontend",
         "index": "apps/mffrontend/src/index.html",
         "main": "apps/mffrontend/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/mffrontend/tsconfig.app.json",
         "assets": [
           "apps/mffrontend/src/favicon.ico",
           "apps/mffrontend/src/assets"
         ],
-        "styles": ["apps/mffrontend/src/styles.scss"],
+        "styles": [
+          "@angular/material/prebuilt-themes/indigo-pink.css",
+          "apps/mffrontend/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -69,7 +76,9 @@
     },
     "lint": {
       "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
         "lintFilePatterns": [
           "apps/mffrontend/**/*.ts",
@@ -79,7 +88,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/mffrontend/jest.config.ts",
         "passWithNoTests": true

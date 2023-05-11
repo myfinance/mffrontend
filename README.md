@@ -37,12 +37,15 @@ facades for use cases and state management.
 
 ### Add Lib
 
-npx nx g @nx/angular:lib thenameofthelib --directory domainname
+npx nx g @nx/angular:lib thenameofthelib --directory domainname --standalone
 
 or simple js lib for a model etc. npx nx g @nx/js:lib 
 
-to remove again  nx g @nx/workspace:remove testlib
+to remove again  nx g @nx/workspace:remove directoryname-testlib
 
 ### Add Component
 
 npx nx g @nx/angular:component navigation --project=mffrontend --standalone
+
+### nx reports
+npx nx graph   

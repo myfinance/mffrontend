@@ -1,17 +1,56 @@
-<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="MyFinance menu">
-  <mat-icon>more_vert</mat-icon>
+<mat-toolbar color="primary">
+  <button (click)="home();">
+    <mat-icon>home</mat-icon>
+  </button>
+<button mat-icon-button [matMenuTriggerFor]="dashboardmenu" aria-label="MyFinance menu">
+  <span>Dashboards</span>
 </button>
-<mat-menu #menu="matMenu">
+<mat-menu #dashboardmenu="matMenu">
   <button mat-menu-item>
     <mat-icon>assets/images/logo.png</mat-icon>
-    <span>Dashboards</span>
+    <span>Vermögen</span>
+  </button>
+</mat-menu>
+
+<button mat-icon-button [matMenuTriggerFor]="accountingmenu" aria-label="MyFinance menu">
+  <span>Kontopflege</span>
+</button>
+<mat-menu #accountingmenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>assets/images/logo.png</mat-icon>
+    <span>Transaktionen</span>
   </button>
   <button mat-menu-item>
     <mat-icon>voicemail</mat-icon>
-    <span>Kontopflege</span>
+    <span>Ausgabenmassenupload</span>
   </button>
   <button mat-menu-item>
     <mat-icon>settings</mat-icon>
-    <span>Settings</span>
+    <span>Instrumente</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon>
+    <span>Dauertransaktionen</span>
   </button>
 </mat-menu>
+
+<button mat-icon-button [matMenuTriggerFor]="settingsmenu" aria-label="MyFinance menu">
+  <span>Einstellungen</span>
+</button>
+<mat-menu #settingsmenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>assets/images/logo.png</mat-icon>
+    <button mat-menu-item [matMenuTriggerFor]="tenantsmenu">Aktiver Mandant</button>
+  </button>
+  <button mat-menu-item (click)="tenanteditor();">
+    <mat-icon>settings</mat-icon>
+    <span>Mandantenpflege</span>
+  </button>
+</mat-menu>
+
+<mat-menu #tenantsmenu="matMenu">
+  <button mat-menu-item>Mandant1</button>
+  <button mat-menu-item>Mandant2</button>
+</mat-menu>
+</mat-toolbar>
+
