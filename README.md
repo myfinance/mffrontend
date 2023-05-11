@@ -46,6 +46,8 @@ to remove again  nx g @nx/workspace:remove directoryname-testlib
 ### Add Component
 
 npx nx g @nx/angular:component navigation --project=mffrontend --standalone
+npx can not detect affected code to speedup code. the complete lib has to be builded-try to create libs instead of components
 
 ### nx reports
-npx nx graph   
+npx nx graph  
+npx nx affected:graph --base=dev
