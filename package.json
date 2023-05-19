@@ -2,7 +2,14 @@
   "name": "mffrontend",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "nx": "npx nx mffrontend",
+    "start": "nx serve mffrontend",
+    "build": "nx build mffrontend",
+    "test": "nx test mffrontend",
+    "lint": "nx lint mffrontend",
+    "e2e": "nx e2e mffrontend"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~16.0.0",
