@@ -14,15 +14,19 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:mffrontend",
-                "onlyDependOnLibsWithTags": ["*shell"]
+                "onlyDependOnLibsWithTags": ["type:shell"]
               },
               {
-                "sourceTag": "scope:tenanteditorshell",
-                "onlyDependOnLibsWithTags": ["scope:tenanteditor*"]
+                "sourceTag": "scope:tenanteditor",
+                "onlyDependOnLibsWithTags": ["scope:tenanteditor"]
               },
               {
-                "sourceTag": "scope:instrumenteditorshell",
-                "onlyDependOnLibsWithTags": ["scope:instrumenteditor*"]
+                "sourceTag": "scope:instrumenteditor",
+                "onlyDependOnLibsWithTags": ["scope:instrumenteditor"]
+              },
+              {
+                "sourceTag": "type:shell",
+                "onlyDependOnLibsWithTags": ["type:feature"]
               }
             ]
           }

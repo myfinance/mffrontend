@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/tenanteditor/feature-tenantcontroller/src",
   "prefix": "mffrontend",
-  "tags": ["scope:feature-tenanteditorcontroller"],
+  "tags": ["scope:tenanteditor", "type:feature"],
   "projectType": "library",
   "targets": {
     "test": {

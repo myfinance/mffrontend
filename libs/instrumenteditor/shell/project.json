@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/instrumenteditor/shell/src",
   "prefix": "mffrontend",
-  "tags": ["scope:instrumenteditorshell"],
+  "tags": ["scope:instrumenteditor", "type:shell"],
   "projectType": "library",
   "targets": {
     "test": {
