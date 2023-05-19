@@ -1,3 +1,3 @@
 FROM nginx:alpine
 
-COPY ./dist/mffrontend/ /usr/share/nginx/html
+COPY ./dist/apps/mffrontend/ /usr/share/nginx/html
