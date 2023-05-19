@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@mffrontend/instrumenteditor/shell": [
+        "libs/instrumenteditor/shell/src/index.ts"
+      ],
+      "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"],
+      "@mffrontend/tenanteditor/feature-tenantcontroller": [
+        "libs/tenanteditor/feature-tenantcontroller/src/index.ts"
+      ],
+      "@mffrontend/tenanteditor/feature-tenantview": [
+        "libs/tenanteditor/feature-tenantview/src/index.ts"
+      ],
+      "@mffrontend/tenanteditor/shell": ["libs/tenanteditor/shell/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
