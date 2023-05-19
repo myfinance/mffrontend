@@ -1,16 +1,16 @@
 {
-  "name": "tenanteditor-feature-tenantview",
+  "name": "instrumenteditor-shell",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/tenanteditor/feature-tenantview/src",
+  "sourceRoot": "libs/instrumenteditor/shell/src",
   "prefix": "mffrontend",
-  "tags": ["scope:feature-tenanteditorview"],
+  "tags": ["scope:instrumenteditorshell"],
   "projectType": "library",
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/tenanteditor/feature-tenantview/jest.config.ts",
+        "jestConfig": "libs/instrumenteditor/shell/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/tenanteditor/feature-tenantview/**/*.ts",
-          "libs/tenanteditor/feature-tenantview/**/*.html"
+          "libs/instrumenteditor/shell/**/*.ts",
+          "libs/instrumenteditor/shell/**/*.html"
         ]
       }
     }

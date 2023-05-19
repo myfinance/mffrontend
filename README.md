@@ -46,8 +46,16 @@ to remove again  nx g @nx/workspace:remove directoryname-testlib
 ### Add Component
 
 npx nx g @nx/angular:component navigation --project=mffrontend --standalone
-npx can not detect affected code to speedup code. the complete lib has to be builded-try to create libs instead of components
+npx can not detect affected code to speedup build or run tests for affected code only and you can not see components in the graph
+try to create libs instead of components
 
-### nx reports
-npx nx graph  
+### enforce boundaries
+
+tag each lib in project.json 
+add the rules in the global eslintrc.json below tag @nx/enforce-module-boundaries
+
+### nx commands
+
 npx nx affected:graph --base=dev
+npx nx affected -t test
+npx nx build mffrontend

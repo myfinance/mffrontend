@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@mffrontend/instrumenteditor/shell": [
+        "libs/instrumenteditor/shell/src/index.ts"
+      ],
       "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"],
       "@mffrontend/tenanteditor/feature-tenantcontroller": [
         "libs/tenanteditor/feature-tenantcontroller/src/index.ts"
