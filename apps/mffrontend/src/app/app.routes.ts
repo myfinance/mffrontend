@@ -2,11 +2,12 @@ import { Route } from '@angular/router';
 import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
 import { BasicLayoutViewComponent } from './basic-layout-view/basic-layout-view.component';
 import { HomeViewComponent } from './home-view/home-view.component';
-import { TenanteditorShellComponent } from '@mffrontend/tenanteditor/shell';
+import { TenanteditorComponent } from '@mffrontend/tenanteditor';
+import { AssetviewComponent } from '@mffrontend/assetview';
 
 export const appRoutes: Route[] = [  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: '',
     pathMatch: 'full',
   },
   {
@@ -18,12 +19,16 @@ export const appRoutes: Route[] = [  {
         component: NotFoundViewComponent,
       },
       {
-        path: 'home',
+        path: '',
         component: HomeViewComponent,
       },
       {
         path: 'tenanteditor',
-        component: TenanteditorShellComponent,
+        component: TenanteditorComponent,
+      },
+      {
+        path: 'assetview',
+        component: AssetviewComponent,
       },
     ],
   },

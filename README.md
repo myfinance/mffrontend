@@ -35,13 +35,15 @@ domain
 • domain: Domain logic like calculating additional expenses (not used here), validations or
 facades for use cases and state management. 
 
+each domain is a separate Lib. Everything els eis a standalone component
+
 ### Add Lib
 
-npx nx g @nx/angular:lib thenameofthelib --directory domainname --standalone
+npx nx g @nx/angular:lib thenameofthelib --standalone [--directory domainname]
 
 or simple js lib for a model etc. npx nx g @nx/js:lib 
 
-to remove again  nx g @nx/workspace:remove directoryname-testlib
+to remove again npx nx g @nx/workspace:remove directoryname-testlib
 
 ### Add Component
 
@@ -53,6 +55,8 @@ try to create libs instead of components
 
 tag each lib in project.json 
 add the rules in the global eslintrc.json below tag @nx/enforce-module-boundaries
+
+run hte following command to check the bounderies: npx nx run-many --all --target=lint
 
 ### nx commands
 

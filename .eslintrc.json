@@ -13,20 +13,12 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "scope:mffrontend",
-                "onlyDependOnLibsWithTags": ["type:shell"]
-              },
-              {
-                "sourceTag": "scope:tenanteditor",
-                "onlyDependOnLibsWithTags": ["scope:tenanteditor"]
-              },
-              {
-                "sourceTag": "scope:instrumenteditor",
-                "onlyDependOnLibsWithTags": ["scope:instrumenteditor"]
-              },
-              {
                 "sourceTag": "type:shell",
                 "onlyDependOnLibsWithTags": ["type:feature"]
+              },
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
               }
             ]
           }

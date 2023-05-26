@@ -15,17 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mffrontend/instrumenteditor/shell": [
-        "libs/instrumenteditor/shell/src/index.ts"
-      ],
-      "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"],
-      "@mffrontend/tenanteditor/feature-tenantcontroller": [
-        "libs/tenanteditor/feature-tenantcontroller/src/index.ts"
-      ],
-      "@mffrontend/tenanteditor/feature-tenantview": [
-        "libs/tenanteditor/feature-tenantview/src/index.ts"
-      ],
-      "@mffrontend/tenanteditor/shell": ["libs/tenanteditor/shell/src/index.ts"]
+      "@mffrontend/assetview": ["libs/assetview/src/index.ts"],
+      "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

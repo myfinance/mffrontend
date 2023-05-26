@@ -22,4 +22,8 @@ export class NavigationComponent {
   tenanteditor() {
     this.router.navigate(['/tenanteditor']);
   }
+
+  assetview() {
+    this.router.navigate(['/assetview']);
+  }
 }
