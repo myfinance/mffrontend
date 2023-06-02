@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MfrestserviceService } from './mfrestservice.service';
+import { MfClientService } from './mfclient.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     CommonModule],
   providers: [
-    MfrestserviceService
+    MfClientService
   ]
 })
-export class SharedDataAccessMfclientModule {}
+export class SharedDataAccessMfClientModule {}

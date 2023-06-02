@@ -8,6 +8,6 @@ import { TenantcontrollerComponent } from '../tenantcontroller/tenantcontroller.
   standalone: true,
   imports: [CommonModule, TenantviewComponent, TenantcontrollerComponent],
   templateUrl: './tenanteditor.component.html',
-  styleUrls: ['./tenanteditor.component.css'],
+  styleUrls: ['./tenanteditor.component.scss'],
 })
 export class TenanteditorComponent {}

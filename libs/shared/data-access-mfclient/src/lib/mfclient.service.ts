@@ -6,7 +6,7 @@ import { Instrument } from './model/instrument';
 @Injectable({
   providedIn: 'root'
 })
-export class MfrestserviceService {
+export class MfClientService {
 
   private url = 'http://localhost:7009';
 
