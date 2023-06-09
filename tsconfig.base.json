@@ -19,6 +19,9 @@
       "@mffrontend/shared/data-access-mfclient": [
         "libs/shared/data-access-mfclient/src/index.ts"
       ],
+      "@mffrontend/shared/data-access-mfconfig": [
+        "libs/shared/data-access-mfconfig/src/index.ts"
+      ],
       "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"]
     }
   },

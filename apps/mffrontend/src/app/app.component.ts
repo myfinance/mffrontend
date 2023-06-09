@@ -3,10 +3,19 @@ import { RouterModule } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
 import { BasicLayoutViewComponent } from './basic-layout-view/basic-layout-view.component';
+import { SharedDataAccessMfconfigModule } from '@mffrontend/shared/data-access-mfconfig';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, NavigationComponent, NotFoundViewComponent, BasicLayoutViewComponent],
+  imports: [
+    RouterModule, 
+    NavigationComponent, 
+    NotFoundViewComponent, 
+    BasicLayoutViewComponent, 
+    SharedDataAccessMfconfigModule,
+    HttpClientModule,
+  ],
   selector: 'mffrontend-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

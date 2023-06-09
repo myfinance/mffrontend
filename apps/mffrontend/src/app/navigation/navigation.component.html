@@ -39,6 +39,9 @@
   </button>
   <mat-menu #settingsmenu="matMenu">
     <button mat-menu-item>
+      <button mat-menu-item [matMenuTriggerFor]="backendmenu">Backend</button>
+    </button>
+    <button mat-menu-item>
       <mat-icon>assets/images/logo.png</mat-icon>
       <button mat-menu-item [matMenuTriggerFor]="tenantsmenu">Aktiver Mandant</button>
     </button>
@@ -51,6 +54,15 @@
   <mat-menu #tenantsmenu="matMenu">
     <button mat-menu-item>Mandant1</button>
     <button mat-menu-item>Mandant2</button>
+  </mat-menu>
+
+  <mat-menu #backendmenu="matMenu">
+
+   <button mat-menu-item *ngFor="let zone of configService.config.zones" (click)="handleZoneSelect(zone.identifier);">
+    {{ zone.name }}
+    <mat-icon fontIcon="check_box" *ngIf="zone.identifier === configService.config.currentZone.identifier"/>
+    <mat-icon fontIcon="check_box_outline_blank" *ngIf="zone.identifier !== configService.config.currentZone.identifier"/>
+   </button>
   </mat-menu>
 </mat-toolbar>
 

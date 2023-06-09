@@ -15,4 +15,12 @@ export class MfClientService {
   getTenants(): Observable<Instrument[]> {
     return this.http.get<Instrument[]>(`${this.url}/tenants`)
   }
+
+  addTenant(instrument:Instrument): Observable<Instrument> {
+    return this.http.post<Instrument>(`${this.url}/addinstrument`, instrument);
+  }
+
+  setMfClientUrl(url: string): void {
+    this.url = url;
+  }
 }
