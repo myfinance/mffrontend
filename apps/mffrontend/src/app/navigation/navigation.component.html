@@ -58,10 +58,10 @@
 
   <mat-menu #backendmenu="matMenu">
 
-   <button mat-menu-item *ngFor="let zone of configService.config.zones" (click)="handleZoneSelect(zone.identifier);">
+   <button mat-menu-item *ngFor="let zone of mfdataService.getConfig().zones" (click)="handleZoneSelect(zone.identifier);">
     {{ zone.name }}
-    <mat-icon fontIcon="check_box" *ngIf="zone.identifier === configService.config.currentZone.identifier"/>
-    <mat-icon fontIcon="check_box_outline_blank" *ngIf="zone.identifier !== configService.config.currentZone.identifier"/>
+    <mat-icon fontIcon="check_box" *ngIf="zone.identifier === mfdataService.getConfig().currentZone.identifier"/>
+    <mat-icon fontIcon="check_box_outline_blank" *ngIf="zone.identifier !== mfdataService.getConfig().currentZone.identifier"/>
    </button>
   </mat-menu>
 </mat-toolbar>

@@ -1,26 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConfigModel } from './model/config.model';
-import { Instrument, MfClientService } from '@mffrontend/shared/data-access-mfclient';
+import { MfClientService } from './mfclient.service';
+import { MfconfigService } from './mfconfig.service';
 import { Observable, Subject } from 'rxjs';
+import { Instrument } from './model/instrument';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MfconfigService {
-
-  config: ConfigModel = {
-    defaultZone: '',
-    currentZone: {
-      name: '',
-      identifier: '',
-      url: '',
-    },
-    zones: [],
-  };
+export class MfdataService {
 
   configLoaded: Subject<unknown> = new Subject<unknown>()
-  private isInit = false
+
   tenants: Instrument[] = []
   currentTenant: Instrument = {
     instrumentType: 'TENANT',
@@ -36,45 +26,20 @@ export class MfconfigService {
     additionalLists: ['']
   }
 
-  constructor(private http: HttpClient, private mfClientservice: MfClientService) { 
-    this.load()
+  constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService) {
+    this.mfConfigService.configLoaded.subscribe({
+      next:
+        () => {
+          this.loadConfig();
+        },
+      error: (e) => console.error(e)
+    });
   }
 
+  private loadConfig() {
+    this.mfClientservice.setMfClientUrl(this.mfConfigService.getCurrentBackendUrl());
+    this.loadTenants();
 
-
-  /**
- * Loads the configuration.
- */
-  load(): void {
-
-    this.http
-      .get('assets/config/config.json')
-      .subscribe((data) => {
-        this.config = data as ConfigModel;
-
-        // Check if zone is saved in local storage.
-        // Set the current zone to the saved zone or else
-        // set it to the default zone in the configuration.
-        const zone = localStorage.getItem('mfzone');
-        if (zone) {
-          this.setCurrentZone(zone);
-        } else {
-          this.setCurrentZone(this.config.defaultZone);
-        }
-        this.isInit = true;
-      });
-  }
-
-  setCurrentZone(identifier: string): void {
-    for (const zone of this.config.zones) {
-      if (zone.identifier === identifier) {
-        this.config.currentZone = zone;
-        // Additionally save the zone in the local storage.
-        localStorage.setItem('mfzone', identifier);
-        this.mfClientservice.setMfClientUrl(this.config.currentZone.url)
-        this.loadTenants();
-      }
-    }
   }
 
   /**
@@ -117,15 +82,25 @@ export class MfconfigService {
     this.configLoaded.next(true);
   }
 
-  getCurrentTenant() {
-    return this.currentTenant
+  setCurrentZone(identifier: string): void {
+    this.mfConfigService.setCurrentZone(identifier);
   }
 
   getCurrentZone() {
-    return this.config.currentZone.identifier
+    return this.mfConfigService.getCurrentZone();
+  }
+  getConfig() {
+    return this.mfConfigService.config;
   }
 
-  getIsInit(): boolean {
-    return this.isInit;
+  getCurrentTenant():Instrument {
+    return this.currentTenant;
+  }
+
+  getTenants(): Observable<Instrument[]> {
+    return this.mfClientservice.getTenants();
+  }
+  addTenant(instrument:Instrument): Observable<string> {
+    return this.mfClientservice.addTenant(instrument);
   }
 }

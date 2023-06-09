@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-data-access-mfconfig',
+  displayName: 'shared-data-access-mfdata',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/shared/data-access-mfconfig',
+  coverageDirectory: '../../../coverage/libs/shared/data-access-mfdata',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

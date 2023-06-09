@@ -1,7 +1,7 @@
 {
-  "name": "shared-data-access-mfconfig",
+  "name": "shared-data-access-mfdata",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/data-access-mfconfig/src",
+  "sourceRoot": "libs/shared/data-access-mfdata/src",
   "prefix": "mffrontend",
   "tags": [],
   "projectType": "library",
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/data-access-mfconfig/jest.config.ts",
+        "jestConfig": "libs/shared/data-access-mfdata/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -25,8 +25,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "libs/shared/data-access-mfconfig/**/*.ts",
-          "libs/shared/data-access-mfconfig/**/*.html"
+          "libs/shared/data-access-mfdata/**/*.ts",
+          "libs/shared/data-access-mfdata/**/*.html"
         ]
       }
     }

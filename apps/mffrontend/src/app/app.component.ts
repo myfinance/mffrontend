@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
 import { BasicLayoutViewComponent } from './basic-layout-view/basic-layout-view.component';
-import { SharedDataAccessMfconfigModule } from '@mffrontend/shared/data-access-mfconfig';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -13,7 +12,6 @@ import { HttpClientModule } from '@angular/common/http';
     NavigationComponent, 
     NotFoundViewComponent, 
     BasicLayoutViewComponent, 
-    SharedDataAccessMfconfigModule,
     HttpClientModule,
   ],
   selector: 'mffrontend-root',

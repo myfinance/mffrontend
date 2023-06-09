@@ -16,8 +16,9 @@ export class MfClientService {
     return this.http.get<Instrument[]>(`${this.url}/tenants`)
   }
 
-  addTenant(instrument:Instrument): Observable<Instrument> {
-    return this.http.post<Instrument>(`${this.url}/addinstrument`, instrument);
+  addTenant(instrument:Instrument): Observable<string> {
+    const body=JSON.stringify(instrument);
+    return this.http.post<string>(`${this.url}/addinstrument`, body);
   }
 
   setMfClientUrl(url: string): void {

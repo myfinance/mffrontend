@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
-import { Instrument } from '@mffrontend/shared/data-access-mfclient';
 import { TenantService } from '../tenant.service';
+import { Instrument } from '@mffrontend/shared/data-access-mfdata';
 
 @Component({
   selector: 'mffrontend-tenantview',
@@ -16,6 +16,15 @@ export class TenantviewComponent {
   displayedColumns: string[] = ['businesskey', 'description', 'isactive'];
   
   constructor(private tenantService: TenantService) {
+    this.tenantService.getConfigLoadedSubject().subscribe(
+      () => {
+        this.loadTenants();
+      }
+    )
+
+  }
+
+  loadTenants() {
     this.tenantService.getTenants().subscribe(
       (instruments) => {
         this.instruments = instruments;

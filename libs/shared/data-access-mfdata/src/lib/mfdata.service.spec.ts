@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MfconfigService } from './mfconfig.service';
+import { MfdataService } from './mfdata.service';
 
-describe('MfconfigService', () => {
-  let service: MfconfigService;
+describe('MfdataService', () => {
+  let service: MfdataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MfconfigService);
+    service = TestBed.inject(MfdataService);
   });
 
   it('should be created', () => {

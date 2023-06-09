@@ -5,22 +5,22 @@ import { MatMenuModule } from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { Router } from '@angular/router';
-import { MfconfigService, SharedDataAccessMfconfigModule } from '@mffrontend/shared/data-access-mfconfig';
+import { MfdataService, SharedDataAccessMfdataModule } from '@mffrontend/shared/data-access-mfdata';
 
 @Component({
   selector: 'mffrontend-navigation',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatMenuModule, MatToolbarModule, MatButtonModule, SharedDataAccessMfconfigModule],
+  imports: [CommonModule, MatIconModule, MatMenuModule, MatToolbarModule, MatButtonModule, SharedDataAccessMfdataModule],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent {
-  configService: MfconfigService;
+  mfdataService: MfdataService;
   currentZone = "";
 
-  constructor(private router: Router, configService: MfconfigService) {
-     this.configService = configService;
-     this.currentZone = configService.getCurrentZone();
+  constructor(private router: Router, mfdataService: MfdataService) {
+     this.mfdataService = mfdataService;
+     this.currentZone = mfdataService.getCurrentZone();
    }
 
   home() {
@@ -36,7 +36,7 @@ export class NavigationComponent {
   }
 
   handleZoneSelect(identifier: string): void {
-    this.configService.setCurrentZone(identifier);
+    this.mfdataService.setCurrentZone(identifier);
     this.currentZone = identifier;
   }
 }
