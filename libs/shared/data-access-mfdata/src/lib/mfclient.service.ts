@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Instrument } from './model/instrument';
 
@@ -17,8 +17,15 @@ export class MfClientService {
   }
 
   addTenant(instrument:Instrument): Observable<string> {
-    const body=JSON.stringify(instrument);
-    return this.http.post<string>(`${this.url}/addinstrument`, body);
+    const body="{\"instrumentType\": \"TENANT\",\"description\": \"aaa\", \"active\": true,\"treelastchanged\": \"2023-06-18T08:19:07.723Z\",\"businesskey\": \"\", \"parentBusinesskey\": \"\", \"serviceAddress\": \"\", \"tenantBusinesskey\":\"\",\"additionalMaps\": {},\"additionalProperties\": {},\"additionalLists\": {}}"
+    //const body=JSON.stringify(instrument);
+    console.log("body:"+body);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'});
+    const options = { headers: headers };
+    //return this.http.post<string>(`${this.url}/savetest`, "{\"test\"}", options);
+    return this.http.post<string>(`${this.url}/addinstrument`, body, options);
   }
 
   setMfClientUrl(url: string): void {
