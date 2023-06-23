@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {MatTabsModule} from '@angular/material/tabs';
 import { TenantinputformComponent } from '../tenantinputform/tenantinputform.component';
 import { TenantupdateformComponent } from '../tenantupdateform/tenantupdateform.component';
+import { TenantService } from '../tenant.service';
 
 @Component({
   selector: 'mffrontend-tenantcontroller',
@@ -13,4 +14,13 @@ import { TenantupdateformComponent } from '../tenantupdateform/tenantupdateform.
 })
 export class TenantcontrollerComponent {
   noTenantSelected = true;
+
+  constructor(private tenantService: TenantService) {
+
+    this.tenantService.newTenantSelectedSubject.subscribe(
+      () => {
+        this.noTenantSelected = false;
+      }
+    )
+  }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import { TenantService } from '../tenant.service';
 import { Instrument } from '@mffrontend/shared/data-access-mfdata';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'mffrontend-tenantview',
@@ -14,6 +15,7 @@ import { Instrument } from '@mffrontend/shared/data-access-mfdata';
 export class TenantviewComponent {
   instruments: Instrument[] = [];
   displayedColumns: string[] = ['businesskey', 'description', 'isactive'];
+  selectedInstrument: Instrument | undefined;
   
   constructor(private tenantService: TenantService) {
     this.tenantService.getConfigLoadedSubject().subscribe(
@@ -37,5 +39,10 @@ export class TenantviewComponent {
         this.instruments = instruments;
       }
     )
+  }
+
+  selectInstrument(instrument: Instrument){
+    this.selectedInstrument = instrument;
+    this.tenantService.setSelectedTenant(instrument);
   }
 }

@@ -7,6 +7,9 @@ import { Observable, Subject } from 'rxjs';
 })
 export class TenantService {
 
+  selectedTenant:Instrument | undefined
+  public newTenantSelectedSubject: Subject<unknown> = new Subject<unknown>()
+
   constructor(private mfDataService: MfdataService) { 
   }
 
@@ -37,8 +40,13 @@ export class TenantService {
   getTenants(): Observable<Instrument[]> {
     return this.mfDataService.getTenants();
   }
-  
+
   isInit() {
     return this.mfDataService.isInit();
+  }
+
+  setSelectedTenant(instrument:Instrument) {
+    this.selectedTenant = instrument;
+    this.newTenantSelectedSubject.next(true);
   }
 }
