@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MfClientService } from './mfclient.service';
 import { MfconfigService } from './mfconfig.service';
 import { Observable, Subject } from 'rxjs';
-import { Instrument } from './model/instrument';
+import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument } from './model/instrument';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +21,9 @@ export class MfdataService {
     parentBusinesskey: '',
     serviceAddress: '',
     tenantBusinesskey: '',
-    additionalMaps: [''],
-    additionalProperties: [''],
-    additionalLists: ['']
+    additionalMaps: new Map<AdditionalMapsEnum, string>(),
+    additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
+    additionalLists: new Map<AdditionalListsEnum, ['']>()
   }
 
   constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService) {
