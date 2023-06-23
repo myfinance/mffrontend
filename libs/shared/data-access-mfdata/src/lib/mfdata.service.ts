@@ -10,6 +10,7 @@ import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Inst
 export class MfdataService {
 
   configLoaded: Subject<unknown> = new Subject<unknown>()
+  public tenantEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
   currentTenant: Instrument = {
@@ -92,6 +93,9 @@ export class MfdataService {
   getConfig() {
     return this.mfConfigService.config;
   }
+  isInit() {
+    return this.mfConfigService.getIsInit();
+  }
 
   getCurrentTenant():Instrument {
     return this.currentTenant;
@@ -100,7 +104,14 @@ export class MfdataService {
   getTenants(): Observable<Instrument[]> {
     return this.mfClientservice.getTenants();
   }
-  addTenant(instrument:Instrument): Observable<string> {
-    return this.mfClientservice.addTenant(instrument);
+  addTenant(instrument:Instrument) {
+    return this.mfClientservice.addTenant(instrument).subscribe({
+      next:
+      () => {
+        console.info('saved');
+        this.tenantEventSubject.next(true);
+      },
+      error: (e) => console.error(e)
+    });
   }
 }

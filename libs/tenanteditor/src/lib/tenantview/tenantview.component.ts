@@ -21,7 +21,14 @@ export class TenantviewComponent {
         this.loadTenants();
       }
     )
-
+    this.tenantService.getTenantEventSubject().subscribe(
+      () => {
+        this.loadTenants();
+      }
+    )
+    if(this.tenantService.isInit()) {
+      this.loadTenants();
+    }
   }
 
   loadTenants() {

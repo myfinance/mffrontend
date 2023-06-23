@@ -7,7 +7,8 @@ import { Observable, Subject } from 'rxjs';
 })
 export class TenantService {
 
-  constructor(private mfDataService: MfdataService) { }
+  constructor(private mfDataService: MfdataService) { 
+  }
 
   saveTenant(desc: string) {
     const instrument: Instrument = {
@@ -23,21 +24,21 @@ export class TenantService {
       additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
       additionalLists: new Map<AdditionalListsEnum, ['']>()
     }
-    this.mfDataService.addTenant(instrument)      
-    .subscribe({
-      next:
-      () => {
-        console.error('saved');
-      },
-      error: (e) => console.error(e)
-    });
+    this.mfDataService.addTenant(instrument);
   }
 
   getConfigLoadedSubject() : Subject<unknown>{
     return this.mfDataService.configLoaded;
   }
+  getTenantEventSubject() : Subject<unknown>{
+    return this.mfDataService.tenantEventSubject;
+  }
 
   getTenants(): Observable<Instrument[]> {
     return this.mfDataService.getTenants();
+  }
+  
+  isInit() {
+    return this.mfDataService.isInit();
   }
 }

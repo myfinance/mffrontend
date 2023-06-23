@@ -17,14 +17,12 @@ export class MfClientService {
   }
 
   addTenant(instrument:Instrument): Observable<string> {
-    const body="{\"instrumentType\": \"TENANT\",\"description\": \"aaa\", \"active\": true,\"treelastchanged\": \"2023-06-18T08:19:07.723Z\",\"businesskey\": \"\", \"parentBusinesskey\": \"\", \"serviceAddress\": \"\", \"tenantBusinesskey\":\"\",\"additionalMaps\": {},\"additionalProperties\": {},\"additionalLists\": {}}"
-    //const body=JSON.stringify(instrument);
+    const body=JSON.stringify(instrument);
     console.log("body:"+body);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'});
     const options = { headers: headers };
-    //return this.http.post<string>(`${this.url}/savetest`, "{\"test\"}", options);
     return this.http.post<string>(`${this.url}/addinstrument`, body, options);
   }
 
