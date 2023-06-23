@@ -104,8 +104,8 @@ export class MfdataService {
   getTenants(): Observable<Instrument[]> {
     return this.mfClientservice.getTenants();
   }
-  addTenant(instrument:Instrument) {
-    return this.mfClientservice.addTenant(instrument).subscribe({
+  saveTenant(instrument:Instrument) {
+    return this.mfClientservice.saveTenant(instrument).subscribe({
       next:
       () => {
         console.info('saved');

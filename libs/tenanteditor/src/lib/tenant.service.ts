@@ -27,7 +27,7 @@ export class TenantService {
       additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
       additionalLists: new Map<AdditionalListsEnum, ['']>()
     }
-    this.mfDataService.addTenant(instrument);
+    this.mfDataService.saveTenant(instrument);
   }
 
   getConfigLoadedSubject() : Subject<unknown>{

@@ -16,14 +16,14 @@ export class MfClientService {
     return this.http.get<Instrument[]>(`${this.url}/tenants`)
   }
 
-  addTenant(instrument:Instrument): Observable<string> {
+  saveTenant(instrument:Instrument): Observable<string> {
     const body=JSON.stringify(instrument);
     console.log("body:"+body);
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'});
     const options = { headers: headers };
-    return this.http.post<string>(`${this.url}/addinstrument`, body, options);
+    return this.http.post<string>(`${this.url}/saveinstrument`, body, options);
   }
 
   setMfClientUrl(url: string): void {
