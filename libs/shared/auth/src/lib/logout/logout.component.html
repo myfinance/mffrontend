@@ -1,0 +1,4 @@
+<button
+  [hidden]="!authService.isLoggedIn"
+  (click)="authService.logout()"
+>Logout</button>
