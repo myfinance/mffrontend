@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-
+  authenticated = false;
   private token = '';
-  private username = '';
-  private password = '';
+  credentials = {username: '', password: ''};
   constructor(private http: HttpClient, private router: Router) { }
 
   /*login(): Observable<string> {
@@ -21,16 +20,21 @@ export class AuthService {
   }*/
 
   login(username:string, password:string){
-    this.username=username;
-    this.password=password;
-    this.token = username+password;
+    this.credentials.username = username;
+    this.credentials.password = password;
+    this.authenticated=true;
     this.router.navigate(['/']);
   }
 
   logout() {
-    this.token = '';
+    this.authenticated=true;
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn() { return this.token !== ''; }
+  isLoggedIn() { return this.authenticated; }
+
+  getCredentials() {
+    return this.credentials;
+  }
+
 }
