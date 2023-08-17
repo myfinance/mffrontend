@@ -15,7 +15,8 @@ export class MfClientService {
 
   getTenants(): Observable<Instrument[]> {
 
-    return this.http.get<Instrument[]>(`${this.url}/tenants`, {headers: this.buildHeader()})
+    //return this.http.get<Instrument[]>(`${this.url}/tenants`, {headers: this.buildHeader()})
+    return this.http.get<Instrument[]>(`${this.url}/tenants`)
   }
 
   saveTenant(instrument:Instrument): Observable<string> {
@@ -39,4 +40,21 @@ export class MfClientService {
       } : { });
     return headers 
   }
+
+  /*retrieveToken(code) {
+    let params = new URLSearchParams();   
+    params.append('grant_type','authorization_code');
+    params.append('client_id', this.clientId);
+    params.append('redirect_uri', this.redirectUri);
+    params.append('code',code);
+
+    let headers = 
+      new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
+       
+      this._http.post('http://localhost:8083/auth/realms/baeldung/protocol/openid-connect/token', 
+        params.toString(), { headers: headers })
+        .subscribe(
+          data => this.saveToken(data),
+          err => alert('Invalid Credentials')); 
+  }*/
 }

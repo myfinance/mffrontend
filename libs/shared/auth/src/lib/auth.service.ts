@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   authenticated = false;
-  private token = '';
+  private token= '';
+  private expireDate = new Date().getTime();
+  clientId = "mfclient";
   credentials = {username: '', password: ''};
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -23,6 +25,7 @@ export class AuthService {
     this.credentials.username = username;
     this.credentials.password = password;
     this.authenticated=true;
+    this.retrieveToken();
     this.router.navigate(['/']);
   }
 
@@ -35,6 +38,29 @@ export class AuthService {
 
   getCredentials() {
     return this.credentials;
+  }
+
+  retrieveToken() {
+    let params = new URLSearchParams();   
+    params.append('grant_type','password');
+    params.append('client_id', this.clientId);
+    params.append('username', this.credentials.username);
+    params.append('password', this.credentials.password);
+
+    let headers = 
+      new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
+       
+      this.http.post('http://localhost:30024/realms/myfinance/protocol/openid-connect/token', 
+        params.toString(), { headers: headers })
+        .subscribe(
+          data => this.saveToken(data),
+          err => alert('Invalid Credentials')); 
+  }
+
+  saveToken(token: any) {
+    this.expireDate = new Date().getTime() + (1000 * token.expires_in);
+    this.token = token.access_token;
+    console.log('Obtained Access token:'+this.token);
   }
 
 }
