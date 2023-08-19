@@ -14,13 +14,6 @@ export class AuthService {
   credentials = {username: '', password: ''};
   constructor(private http: HttpClient, private router: Router) { }
 
-  /*login(): Observable<string> {
-    return this.http.post<string>('https://fakestoreapi.com/auth/login', {
-      username: 'david_r',
-      password: '3478*#54'
-    }).pipe(tap(token => this.token = token));
-  }*/
-
   login(username:string, password:string){
     this.credentials.username = username;
     this.credentials.password = password;
@@ -30,7 +23,8 @@ export class AuthService {
   }
 
   logout() {
-    this.authenticated=true;
+    this.authenticated=false;
+    this.token = '';
     this.router.navigate(['/login']);
   }
 
@@ -40,7 +34,7 @@ export class AuthService {
     return this.credentials;
   }
 
-  retrieveToken() {
+  private retrieveToken() {
     let params = new URLSearchParams();   
     params.append('grant_type','password');
     params.append('client_id', this.clientId);
@@ -52,15 +46,28 @@ export class AuthService {
        
       this.http.post('http://localhost:30024/realms/myfinance/protocol/openid-connect/token', 
         params.toString(), { headers: headers })
-        .subscribe(
-          data => this.saveToken(data),
-          err => alert('Invalid Credentials')); 
+        .subscribe({
+          next:
+            data => this.saveToken(data),
+          error: 
+            (e) => {
+              console.error(e);
+              alert('Invalid Credentials');
+            }
+        });
   }
 
-  saveToken(token: any) {
+  private saveToken(token: any) {
     this.expireDate = new Date().getTime() + (1000 * token.expires_in);
     this.token = token.access_token;
     console.log('Obtained Access token:'+this.token);
+  }
+
+  getToken() : string {
+    if(this.expireDate < new Date().getTime()){
+      this.logout()
+    } 
+    return this.token;
   }
 
 }

@@ -114,4 +114,8 @@ export class MfdataService {
       error: (e) => console.error(e)
     });
   }
+
+  getVersion(): Observable<string> {
+    return this.mfClientservice.getVersion();
+  }
 }

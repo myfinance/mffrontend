@@ -30,4 +30,5 @@ export class LoginComponent {
     window.location.href = 
       'http://localhost:30024/realms/myfinance/protocol/openid-connect/auth?response_type=code&scope=openid%20write%20read&client_id=mfclient&redirect_uri=http://localhost:4200';
     }
+
 }

@@ -16,11 +16,17 @@ export class TenantviewComponent {
   instruments: Instrument[] = [];
   displayedColumns: string[] = ['businesskey', 'description', 'isactive'];
   selectedInstrument: Instrument | undefined;
+  version='na';
   
   constructor(private tenantService: TenantService) {
-    this.tenantService.getConfigLoadedSubject().subscribe(
-      () => {
-        this.loadTenants();
+    this.tenantService.getConfigLoadedSubject().subscribe({
+      next:
+        data => this.loadTenants(),
+      error: 
+        (e) => {
+          console.error(e);
+          alert('Invalid Credentials');
+        }
       }
     )
     this.tenantService.getTenantEventSubject().subscribe(
@@ -39,6 +45,11 @@ export class TenantviewComponent {
         this.instruments = instruments;
       }
     )
+    /*this.tenantService.getVersion().subscribe(
+      (version) => {
+        this.version = version;
+      }
+    )*/
   }
 
   selectInstrument(instrument: Instrument){
