@@ -3,22 +3,25 @@
     {
       "name": "Test",
       "identifier": "test",
-      "url": "http://192.168.100.73:30039"
+      "backendurl": "http://192.168.100.73:30030",
+      "openidurl": "http://192.168.100.73:30024"
     },    
     {
       "name": "Localhost",
       "identifier": "local",
-      "url": "http://localhost:7009"
+      "backendurl": "http://localhost:30030",
+      "openidurl": "http://localhost:30024"
     },
     {
       "name": "Produktion",
       "identifier": "prod",
-      "url": "https://babcom.myds.me:8443/dac/rest"
+      "backendurl": "https://babcom.myds.me:8443/dac/rest"
     },
     {
       "name": "Mock",
       "identifier": "mock",
-      "url": "na"
+      "backendurl": "na",
+      "openidurl": "na"
     }
 
   ],

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Instrument } from './model/instrument';
 import { AuthService } from 'libs/shared/auth/src/lib/auth.service';
+import { MfconfigService } from './mfconfig.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class MfClientService {
 
   private url = 'http://localhost:7009';
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService, private config: MfconfigService) { }
 
   getVersion(): Observable<string> {
 
@@ -42,11 +43,6 @@ export class MfClientService {
 
   buildHeader() {
     const headers = new HttpHeaders({
-      //'Content-type': 'application/x-www-form-urlencoded; charset=utf-8', 
-      //'Content-Type': 'application/json',
-      //'Origin': 'http://localhost:4200',
-      //'Accept': 'application/json',
-      //'Access-Control-Allow-Origin': '/',
       'Authorization': 'Bearer '+ this.auth.getToken()});
       console.log(headers);
     return headers;

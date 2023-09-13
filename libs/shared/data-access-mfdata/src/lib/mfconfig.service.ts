@@ -14,7 +14,8 @@ export class MfconfigService {
     currentZone: {
       name: '',
       identifier: '',
-      url: '',
+      backendurl: '',
+      openidurl: '',
     },
     zones: [],
   };
@@ -68,7 +69,11 @@ export class MfconfigService {
   }
 
   getCurrentBackendUrl() {
-    return this.config.currentZone.url
+    return this.config.currentZone.backendurl
+  }
+
+  getCurrentOpenIdUrl() {
+    return this.config.currentZone.openidurl
   }
 
   getIsInit(): boolean {
