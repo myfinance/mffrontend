@@ -3,9 +3,15 @@
     {
       "name": "Test",
       "identifier": "test",
-      "backendurl": "http://192.168.100.73:30030",
-      "openidurl": "http://192.168.100.73:30024"
+      "backendurl": "http://192.168.100.73:30130",
+      "openidurl": "http://192.168.100.73:30124"
     },    
+    {
+      "name": "Dev",
+      "identifier": "dev",
+      "backendurl": "http://localhost:30030",
+      "openidurl": "http://192.168.100.73:30024"
+    },  
     {
       "name": "Localhost",
       "identifier": "local",

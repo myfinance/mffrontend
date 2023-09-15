@@ -64,10 +64,10 @@
     <mat-icon fontIcon="check_box_outline_blank" *ngIf="zone.identifier !== mfdataService.getConfig().currentZone.identifier"/>
    </button>
   </mat-menu>
-  <button mat-icon-button (click)="login();" *ngIf="!authService.isLoggedIn()">
+  <button mat-icon-button (click)="login();" *ngIf="!mfdataService.isLoggedIn()">
     <mat-icon>login</mat-icon>
   </button>
-  <button mat-icon-button (click)="logout();" *ngIf="authService.isLoggedIn()">
+  <button mat-icon-button (click)="logout();" *ngIf="mfdataService.isLoggedIn()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>

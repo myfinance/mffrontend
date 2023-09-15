@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MfClientService } from './mfclient.service';
-import { MfconfigService } from './mfconfig.service';
 import { Observable, Subject } from 'rxjs';
 import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument } from './model/instrument';
+import { MfconfigService } from './mfconfig.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class MfdataService {
     additionalLists: new Map<AdditionalListsEnum, ['']>()
   }
 
-  constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService) {
+  constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService, private auth: AuthService) {
     this.mfConfigService.configLoaded.subscribe({
       next:
         () => {
@@ -38,21 +39,12 @@ export class MfdataService {
   }
 
   private loadConfig() {
-    this.mfClientservice.setMfClientUrl(this.mfConfigService.getCurrentBackendUrl());
     this.loadTenants();
 
   }
 
-  /**
-* to avoid circular dependency the environment request can not be made via dataservice
-* @returns {Observable<StringListModel>}
-*/
-  private getTenantProvider(): Observable<Instrument[]> {
-    return this.mfClientservice.getTenants();
-  }
-
   loadTenants() {
-    this.getTenantProvider().subscribe(
+    this.getTenants().subscribe(
       {
         next: (tenants) => {
           this.tenants = tenants.filter(i => i.active);
@@ -102,10 +94,10 @@ export class MfdataService {
   }
 
   getTenants(): Observable<Instrument[]> {
-    return this.mfClientservice.getTenants();
+    return this.mfClientservice.getResource("tenants");
   }
   saveTenant(instrument:Instrument) {
-    return this.mfClientservice.saveTenant(instrument).subscribe({
+    return this.mfClientservice.postRequest(JSON.stringify(instrument),"saveinstrument").subscribe({
       next:
       () => {
         console.info('saved');
@@ -116,6 +108,18 @@ export class MfdataService {
   }
 
   getVersion(): Observable<string> {
-    return this.mfClientservice.getVersion();
+    return this.mfClientservice.getResource("index");
   }
+
+  login(username:string, password:string){
+    this.auth.login(username, password);
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
+  isLoggedIn() { return this.auth.isLoggedIn(); }
+
+  
 }

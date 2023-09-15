@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@mffrontend/assetview": ["libs/assetview/src/index.ts"],
-      "@mffrontend/shared/auth": ["libs/shared/auth/src/index.ts"],
       "@mffrontend/shared/data-access-mfdata": [
         "libs/shared/data-access-mfdata/src/index.ts"
       ],

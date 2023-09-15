@@ -6,7 +6,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { Router } from '@angular/router';
 import { MfdataService, SharedDataAccessMfdataModule } from '@mffrontend/shared/data-access-mfdata';
-import { AuthService } from 'libs/shared/auth/src/lib/auth.service';
 
 @Component({
   selector: 'mffrontend-navigation',
@@ -17,12 +16,10 @@ import { AuthService } from 'libs/shared/auth/src/lib/auth.service';
 })
 export class NavigationComponent {
   mfdataService: MfdataService;
-  authService: AuthService;
   currentZone = "";
 
-  constructor(authService: AuthService, private router: Router, mfdataService: MfdataService) {
+  constructor(private router: Router, mfdataService: MfdataService) {
      this.mfdataService = mfdataService;
-     this.authService = authService;
      this.currentZone = mfdataService.getCurrentZone();
    }
 

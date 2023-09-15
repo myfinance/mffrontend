@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigModel } from './configmodel/config.model';
 import { Subject } from 'rxjs';
-import { MfClientService } from './mfclient.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +19,11 @@ export class MfconfigService {
     zones: [],
   };
 
-  configLoaded: Subject<unknown> = new Subject<unknown>()
-  private isInit = false
+  configLoaded: Subject<unknown> = new Subject<unknown>();
+  private isInit = false;
 
 
-  constructor(private http: HttpClient, private mfClientservice: MfClientService) { 
+  constructor(private http: HttpClient) { 
     this.load()
   }
 
@@ -79,4 +78,13 @@ export class MfconfigService {
   getIsInit(): boolean {
     return this.isInit;
   }
+
+  isMock(): boolean {
+    if (this.getCurrentZone().match('mock')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

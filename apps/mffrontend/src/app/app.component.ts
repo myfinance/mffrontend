@@ -4,7 +4,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
 import { BasicLayoutViewComponent } from './basic-layout-view/basic-layout-view.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedAuthModule } from '@mffrontend/shared/auth';
+import { SharedDataAccessMfdataModule } from '@mffrontend/shared/data-access-mfdata';
 
 @Component({
   standalone: true,
@@ -14,7 +14,7 @@ import { SharedAuthModule } from '@mffrontend/shared/auth';
     NotFoundViewComponent, 
     BasicLayoutViewComponent, 
     HttpClientModule,
-    SharedAuthModule
+    SharedDataAccessMfdataModule
   ],
   selector: 'mffrontend-root',
   templateUrl: './app.component.html',

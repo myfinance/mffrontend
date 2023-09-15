@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Instrument } from './model/instrument';
-import { AuthService } from 'libs/shared/auth/src/lib/auth.service';
+import { AuthService } from './auth.service';
 import { MfconfigService } from './mfconfig.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,40 +12,45 @@ import { MfconfigService } from './mfconfig.service';
 export class MfClientService {
 
   private url = 'http://localhost:7009';
+  private token = '';
+  private isInit = false;
+  private isMock = false;
+  private path2resource = "mf";
+  dataServiceSubject: Subject<unknown> = new Subject<unknown>();
 
-  constructor(private http: HttpClient, private auth: AuthService, private config: MfconfigService) { }
-
-  getVersion(): Observable<string> {
-
-    //return this.http.get<string>(`${this.url}/mf/index`, {headers: this.buildHeader()})
-    return this.http.get<string>(`${this.url}/mf/index`)
+  constructor(private http: HttpClient, private mfConfigService: MfconfigService, private auth: AuthService) {
+    this.mfConfigService.configLoaded.subscribe({
+      next:
+        () => {
+          this.loadConfig();
+        },
+      error: (e) => console.error(e)
+    });
   }
 
-  getTenants(): Observable<Instrument[]> {
+  private loadConfig() {
+    this.url= this.mfConfigService.getCurrentBackendUrl();
+    this.auth.setOpenIdServiceUrl(this.mfConfigService.getCurrentOpenIdUrl());
 
-    return this.http.get<Instrument[]>(`${this.url}/mf/tenants`, {headers: this.buildHeader()})
-    //return this.http.get<Instrument[]>(`${this.url}/mf/tenants`)
   }
 
-  saveTenant(instrument:Instrument): Observable<string> {
-    const body=JSON.stringify(instrument);
-    console.log("body:"+body);
+  getResource(resource:string): Observable<any> {
+    return this.http.get<Instrument[]>(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
+  }
 
-    //const headers = new HttpHeaders({
-    //  'Content-Type': 'application/json'});
-    //const options = { headers: headers };
+  postRequest(body:string, resource:string): Observable<any> {
     const options = { headers: this.buildHeader() };
-    return this.http.post<string>(`${this.url}/saveinstrument`, body, options);
-  }
+    console.log("body:" + body);
+    return this.http.post<string>(`${this.url}/${resource}`, body, options);
+  }  
 
-  setMfClientUrl(url: string): void {
-    this.url = url;
-  }
+
 
   buildHeader() {
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer '+ this.auth.getToken()});
-      console.log(headers);
+      'Authorization': 'Bearer ' + this.auth.getToken()
+    });
+    console.log(headers);
     return headers;
   }
 }

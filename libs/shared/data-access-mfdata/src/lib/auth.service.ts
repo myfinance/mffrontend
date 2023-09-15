@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,13 +12,19 @@ export class AuthService {
   private expireDate = new Date().getTime();
   clientId = "mfclient";
   credentials = {username: '', password: ''};
-  constructor(private http: HttpClient, private router: Router) { }
+  private isMock = false;
+  private url = 'http://localhost:30024';
+
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   login(username:string, password:string){
     this.credentials.username = username;
     this.credentials.password = password;
     this.authenticated=true;
-    this.retrieveToken();
+    if(!this.isMock){
+      this.retrieveToken();
+    }
     this.router.navigate(['/']);
   }
 
@@ -44,7 +50,7 @@ export class AuthService {
     let headers = 
       new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
        
-      this.http.post('http://localhost:30024/realms/myfinance/protocol/openid-connect/token', 
+      this.http.post(this.url+'/realms/myfinance/protocol/openid-connect/token', 
         params.toString(), { headers: headers })
         .subscribe({
           next:
@@ -68,6 +74,10 @@ export class AuthService {
       this.logout()
     } 
     return this.token;
+  }
+
+  setOpenIdServiceUrl(url: string): void {
+    this.url = url;
   }
 
 }
