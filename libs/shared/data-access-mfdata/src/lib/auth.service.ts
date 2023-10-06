@@ -67,6 +67,7 @@ export class AuthService {
     this.expireDate = new Date().getTime() + (1000 * token.expires_in);
     this.token = token.access_token;
     console.log('Obtained Access token:'+this.token);
+    console.log('token expires in:'+ token.expires_in);
   }
 
   getToken() : string {

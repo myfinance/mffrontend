@@ -29,19 +29,8 @@ export class MfdataService {
   }
 
   constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService, private auth: AuthService) {
-    this.mfConfigService.configLoaded.subscribe({
-      next:
-        () => {
-          this.loadConfig();
-        },
-      error: (e) => console.error(e)
-    });
   }
 
-  private loadConfig() {
-    this.loadTenants();
-
-  }
 
   loadTenants() {
     this.getTenants().subscribe(
