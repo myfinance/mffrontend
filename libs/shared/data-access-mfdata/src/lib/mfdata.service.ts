@@ -64,6 +64,10 @@ export class MfdataService {
     this.configLoaded.next(true);
   }
 
+  isInit() {
+    return this.mfConfigService.getIsInit();
+  }
+
   setCurrentZone(identifier: string): void {
     this.mfConfigService.setCurrentZone(identifier);
   }
@@ -71,12 +75,15 @@ export class MfdataService {
   getCurrentZone() {
     return this.mfConfigService.getCurrentZone();
   }
+
   getConfig() {
     return this.mfConfigService.config;
   }
-  isInit() {
-    return this.mfConfigService.getIsInit();
+
+  getLogstreamUrl() {
+    return this.mfConfigService.getCurrentLogstreamUrl();
   }
+
 
   getCurrentTenant():Instrument {
     return this.currentTenant;

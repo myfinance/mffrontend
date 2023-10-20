@@ -3,4 +3,5 @@ export interface ZoneModel {
     identifier: string;
     backendurl: string;
     openidurl: string;
+    logstreamurl: string;
   }

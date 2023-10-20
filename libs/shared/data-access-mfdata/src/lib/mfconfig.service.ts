@@ -15,6 +15,7 @@ export class MfconfigService {
       identifier: '',
       backendurl: '',
       openidurl: '',
+      logstreamurl:''
     },
     zones: [],
   };
@@ -72,6 +73,10 @@ export class MfconfigService {
   }
 
   getCurrentOpenIdUrl() {
+    return this.config.currentZone.openidurl
+  }
+
+  getCurrentLogstreamUrl() {
     return this.config.currentZone.openidurl
   }
 
