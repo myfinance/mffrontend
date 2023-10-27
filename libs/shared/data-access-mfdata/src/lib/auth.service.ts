@@ -14,6 +14,7 @@ export class AuthService {
   credentials = {username: '', password: ''};
   private isMock = false;
   private url = 'http://localhost:30024';
+  loginSubject: Subject<unknown> = new Subject<unknown>();
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -25,6 +26,7 @@ export class AuthService {
     if(!this.isMock){
       this.retrieveToken();
     }
+    this.loginSubject.next(true);
     this.router.navigate(['/']);
   }
 
@@ -35,6 +37,10 @@ export class AuthService {
   }
 
   isLoggedIn() { return this.authenticated; }
+
+  getLoginSubject() {
+    return this.loginSubject;
+  }
 
   getCredentials() {
     return this.credentials;

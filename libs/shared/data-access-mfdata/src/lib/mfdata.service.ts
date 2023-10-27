@@ -117,5 +117,12 @@ export class MfdataService {
 
   isLoggedIn() { return this.auth.isLoggedIn(); }
 
+  getLoginSubject() {
+    return this.auth.getLoginSubject();
+  }
+
+  getUserName() {
+    return this.auth.credentials.username;
+  }
   
 }

@@ -18,21 +18,23 @@ export class LogstreamComponent {
   content = '';
   received = ['','',''];
 
-  constructor(private websocketService: WebsocketService) { }
+  constructor(private websocketService: WebsocketService) { 
+    this.websocketService.connect().subscribe({
+      next:
+        (message) => {
+          this.receive(message);
+        },
+      error:
+        (e) => {
+          console.error('Error occurred. Not able to receive message from logstream:', e);
+        }
+      });
+  }
 
-  sendMsg(): void {
-    this.websocketService.connect().subscribe(
-      (message) => {
-        console.log('Received message from WebSocket: ', message);
-        this.received[2] = this.received[1];
-        this.received[1] = this.received[0];
-        this.received[0] = message;
-      },
-      (error) => {
-        console.error('Error occurred:', error);
-        // Handle errors here
-      }
-    );
-    this.websocketService.sendMessage("test");
+  receive(message: string) {
+    console.log('Received message from WebSocket: ', message);
+    this.received[2] = this.received[1];
+    this.received[1] = this.received[0];
+    this.received[0] = message;
   }
 }

@@ -24,6 +24,12 @@ export class WebsocketService {
             this.socket = new WebSocket(this.WS_URL);
           }
         )
+
+        this.mfDataService.getLoginSubject().subscribe(
+          () => {
+            this.sendMessage(this.mfDataService.getUserName())
+          }
+        )
     }
 
   // Connect to the WebSocket server
