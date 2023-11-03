@@ -8,7 +8,7 @@ export class XhrInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // Get the auth token from the service.
-    const authToken = this.auth.getToken();
+    //const authToken = this.auth.getToken();
 
     // Clone the request and replace the original headers with
     // cloned headers, updated with the authorization.

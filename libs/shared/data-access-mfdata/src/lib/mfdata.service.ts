@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class MfdataService {
 
-  configLoaded: Subject<unknown> = new Subject<unknown>()
+  tenantChangedSubject: Subject<unknown> = new Subject<unknown>()
   public tenantEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
@@ -29,6 +29,21 @@ export class MfdataService {
   }
 
   constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService, private auth: AuthService) {
+    this.auth.getLoginSubject().subscribe(
+      () => {
+        mfConfigService.setCurrentToken(auth.getToken(), auth.getTokenExpDate());
+      }
+    )
+    this.auth.getLogoutSubject().subscribe(
+      () => {
+        mfConfigService.setCurrentToken('', 0);
+      }
+    )
+    this.mfConfigService.configLoaded.subscribe(
+      () => {
+        this.auth.setToken(this.mfConfigService.getCurrentToken(), this.mfConfigService.getTokenExpDate());
+      }
+    )
   }
 
 
@@ -61,11 +76,7 @@ export class MfdataService {
       localStorage.setItem('tenant', tenant.businesskey);
       console.info('set tenant');
     }
-    this.configLoaded.next(true);
-  }
-
-  isInit() {
-    return this.mfConfigService.getIsInit();
+    this.tenantChangedSubject.next(true);
   }
 
   setCurrentZone(identifier: string): void {
@@ -80,25 +91,30 @@ export class MfdataService {
     return this.mfConfigService.config;
   }
 
+  //triggers after the initial load of the config or every time when the config changes (e.g. the backend)
+  getConfigLoadedSubject() {
+    return this.mfConfigService.configLoaded;
+  }
+
   getLogstreamUrl() {
     return this.mfConfigService.getCurrentLogstreamUrl();
   }
 
 
-  getCurrentTenant():Instrument {
+  getCurrentTenant(): Instrument {
     return this.currentTenant;
   }
 
   getTenants(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("tenants");
   }
-  saveTenant(instrument:Instrument) {
-    return this.mfClientservice.postRequest(JSON.stringify(instrument),"saveinstrument").subscribe({
+  saveTenant(instrument: Instrument) {
+    return this.mfClientservice.postRequest(JSON.stringify(instrument), "saveinstrument").subscribe({
       next:
-      () => {
-        console.info('saved');
-        this.tenantEventSubject.next(true);
-      },
+        () => {
+          console.info('saved');
+          this.tenantEventSubject.next(true);
+        },
       error: (e) => console.error(e)
     });
   }
@@ -107,7 +123,7 @@ export class MfdataService {
     return this.mfClientservice.getResource("index");
   }
 
-  login(username:string, password:string){
+  login(username: string, password: string) {
     this.auth.login(username, password);
   }
 
@@ -117,12 +133,20 @@ export class MfdataService {
 
   isLoggedIn() { return this.auth.isLoggedIn(); }
 
+  // triggered when somebody loggs in
   getLoginSubject() {
     return this.auth.getLoginSubject();
   }
 
+  getLogoutSubject() {
+    return this.auth.getLogoutSubject();
+  }
+
   getUserName() {
+    if(!this.auth.credentials.username) {
+      return "NA"
+    }
     return this.auth.credentials.username;
   }
-  
+
 }

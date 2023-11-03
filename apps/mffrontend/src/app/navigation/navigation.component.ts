@@ -17,10 +17,19 @@ import { MfdataService, SharedDataAccessMfdataModule } from '@mffrontend/shared/
 export class NavigationComponent {
   mfdataService: MfdataService;
   currentZone = "";
+  isLoggedIn = false;
 
   constructor(private router: Router, mfdataService: MfdataService) {
      this.mfdataService = mfdataService;
      this.currentZone = mfdataService.getCurrentZone();
+     this.mfdataService.getLoginSubject().subscribe(
+      () => {
+        this.isLoggedIn = mfdataService.isLoggedIn();
+      });
+      this.mfdataService.getLogoutSubject().subscribe(
+        () => {
+          this.isLoggedIn = mfdataService.isLoggedIn();
+        });
    }
 
   home() {

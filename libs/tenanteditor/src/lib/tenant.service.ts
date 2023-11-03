@@ -31,7 +31,10 @@ export class TenantService {
   }
 
   getConfigLoadedSubject() : Subject<unknown>{
-    return this.mfDataService.configLoaded;
+    return this.mfDataService.getConfigLoadedSubject();
+  }
+  getLoginSubject() : Subject<unknown>{
+    return this.mfDataService.getLoginSubject();
   }
   getTenantEventSubject() : Subject<unknown>{
     return this.mfDataService.tenantEventSubject;
@@ -39,10 +42,6 @@ export class TenantService {
 
   getTenants(): Observable<Instrument[]> {
     return this.mfDataService.getTenants();
-  }
-
-  isInit() {
-    return this.mfDataService.isInit();
   }
 
   setSelectedTenant(instrument:Instrument) {

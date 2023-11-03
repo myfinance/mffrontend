@@ -1,8 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AnonymousSubject } from "rxjs/internal/Subject";
-import { Observable, Observer } from 'rxjs';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { MfdataService } from '@mffrontend/shared/data-access-mfdata';
 import { HttpClient } from "@angular/common/http";
 
@@ -14,26 +11,44 @@ import { HttpClient } from "@angular/common/http";
   })
 export class WebsocketService {
     private WS_URL = "ws://localhost:30036/ws/logs";
-    private socket: WebSocket = new WebSocket(this.WS_URL);
+    private socket!: WebSocket;
+    private isConnected = false;
+    private topic = "";
+    private webSocketObserver!:  Observable<any>;
+
+    webSocketConnectedSubject: Subject<unknown> = new Subject<unknown>();
 
     constructor(private http: HttpClient, private mfDataService: MfdataService) {
         
-        this.mfDataService.configLoaded.subscribe(
+        this.mfDataService.getConfigLoadedSubject().subscribe(
           () => {
             this.WS_URL = this.mfDataService.getLogstreamUrl();
-            this.socket = new WebSocket(this.WS_URL);
+            this.webSocketObserver=this.connect();
+            this.isConnected = true;
+            this.webSocketConnectedSubject.next(true);
+            if(this.topic) {
+              this.sendMessage(this.topic);
+            }
           }
         )
 
         this.mfDataService.getLoginSubject().subscribe(
           () => {
-            this.sendMessage(this.mfDataService.getUserName())
+            this.topic = this.mfDataService.getUserName();
+            if(this.isConnected) {
+              this.sendMessage(this.mfDataService.getUserName());
+            }
           }
         )
     }
 
+    public getWebSocketObservable(): Observable<any> {
+      return this.webSocketObserver;
+    }
+
   // Connect to the WebSocket server
   connect(): Observable<any> {
+    this.socket = new WebSocket(this.WS_URL);
     return new Observable(observer => {
       this.socket.onopen = (event) => {
         console.log('WebSocket Connection Established');
@@ -60,6 +75,6 @@ export class WebsocketService {
 
   // Send a message through the WebSocket connection
   sendMessage(message: string): void {
-    this.socket.send(message);
+    if(this.socket) this.socket.send(message);
   }
 }

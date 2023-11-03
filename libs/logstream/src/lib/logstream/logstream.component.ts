@@ -19,16 +19,20 @@ export class LogstreamComponent {
   received = ['','',''];
 
   constructor(private websocketService: WebsocketService) { 
-    this.websocketService.connect().subscribe({
-      next:
-        (message) => {
-          this.receive(message);
-        },
-      error:
-        (e) => {
-          console.error('Error occurred. Not able to receive message from logstream:', e);
-        }
-      });
+    this.websocketService.webSocketConnectedSubject.subscribe(
+      () => {
+        this.websocketService.getWebSocketObservable().subscribe({
+          next:
+            (message) => {
+              this.receive(message);
+            },
+          error:
+            (e) => {
+              console.error('Error occurred. Not able to receive message from logstream:', e);
+            }
+          });
+      })
+
   }
 
   receive(message: string) {

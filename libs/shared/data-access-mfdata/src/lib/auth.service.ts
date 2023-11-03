@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class AuthService {
   private isMock = false;
   private url = 'http://localhost:30024';
   loginSubject: Subject<unknown> = new Subject<unknown>();
+  logoutSubject: Subject<unknown> = new Subject<unknown>();
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -26,13 +27,12 @@ export class AuthService {
     if(!this.isMock){
       this.retrieveToken();
     }
-    this.loginSubject.next(true);
-    this.router.navigate(['/']);
   }
 
   logout() {
     this.authenticated=false;
     this.token = '';
+    this.logoutSubject.next(true);
     this.router.navigate(['/login']);
   }
 
@@ -42,18 +42,22 @@ export class AuthService {
     return this.loginSubject;
   }
 
+  getLogoutSubject() {
+    return this.logoutSubject;
+  }
+
   getCredentials() {
     return this.credentials;
   }
 
   private retrieveToken() {
-    let params = new URLSearchParams();   
+    const params = new URLSearchParams();   
     params.append('grant_type','password');
     params.append('client_id', this.clientId);
     params.append('username', this.credentials.username);
     params.append('password', this.credentials.password);
 
-    let headers = 
+    const headers = 
       new HttpHeaders({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'});
        
       this.http.post(this.url+'/realms/myfinance/protocol/openid-connect/token', 
@@ -70,17 +74,37 @@ export class AuthService {
   }
 
   private saveToken(token: any) {
-    this.expireDate = new Date().getTime() + (1000 * token.expires_in);
+    const now = Date.now();
+    this.expireDate = now + (1000 * token.expires_in);
     this.token = token.access_token;
     console.log('Obtained Access token:'+this.token);
     console.log('token expires in:'+ token.expires_in);
+    this.loginSubject.next(true);
+    this.router.navigate(['/']);
   }
 
   getToken() : string {
-    if(this.expireDate < new Date().getTime()){
-      this.logout()
-    } 
+    if(this.token){
+      const now = Date.now();
+      if(this.expireDate < now){
+        this.logout()
+      } 
+    }
     return this.token;
+  }
+
+  getTokenExpDate() : number {
+    return this.expireDate;
+  }
+  
+  setToken(token: string, expires: number) {
+    if(token) {
+      this.expireDate = expires;
+      this.token = token;
+      this.authenticated=true;
+      this.loginSubject.next(true);
+      this.router.navigate(['/']);
+    }
   }
 
   setOpenIdServiceUrl(url: string): void {
