@@ -30,6 +30,14 @@ export class TenantService {
     this.mfDataService.saveTenant(instrument);
   }
 
+  updateTenant(active: boolean, desc: string) {
+    if(this.selectedTenant) {
+      this.selectedTenant.active = active;
+      this.selectedTenant.description = desc;
+      this.mfDataService.saveTenant(this.selectedTenant);
+    }
+  }
+
   getConfigLoadedSubject() : Subject<unknown>{
     return this.mfDataService.getConfigLoadedSubject();
   }
