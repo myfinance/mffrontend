@@ -15,13 +15,15 @@ export class MfconfigService {
       identifier: '',
       backendurl: '',
       openidurl: '',
+      logstreamurl:'',
     },
     zones: [],
   };
 
-  configLoaded: Subject<unknown> = new Subject<unknown>();
-  private isInit = false;
+  currentToken = '';
+  tokenExpiration = 0;
 
+  configLoaded: Subject<unknown> = new Subject<unknown>();
 
   constructor(private http: HttpClient) { 
     this.load()
@@ -39,6 +41,18 @@ export class MfconfigService {
       .subscribe((data) => {
         this.config = data as ConfigModel;
 
+        // Check if a token is saved in local storage.
+        // Set the current token to the saved one if the expire date is not reached
+        const token = localStorage.getItem('mftoken');
+        const expDateString = localStorage.getItem('mftokenExpDate');
+        if(expDateString && token) {
+          const expDate: number = +expDateString;
+          const currentDate = Date.now();
+          if(expDate>currentDate) {
+            this.setCurrentToken(token, expDate);
+          }
+        }
+
         // Check if zone is saved in local storage.
         // Set the current zone to the saved zone or else
         // set it to the default zone in the configuration.
@@ -48,7 +62,6 @@ export class MfconfigService {
         } else {
           this.setCurrentZone(this.config.defaultZone);
         }
-        this.isInit = true;
       });
   }
 
@@ -75,8 +88,8 @@ export class MfconfigService {
     return this.config.currentZone.openidurl
   }
 
-  getIsInit(): boolean {
-    return this.isInit;
+  getCurrentLogstreamUrl() {
+    return this.config.currentZone.logstreamurl
   }
 
   isMock(): boolean {
@@ -85,6 +98,19 @@ export class MfconfigService {
     } else {
       return false;
     }
+  }
+  setCurrentToken(token: string, expDate: number): void {
+    this.currentToken = token;
+    localStorage.setItem('mftoken', token);
+    this.tokenExpiration= expDate;
+    localStorage.setItem('mftokenExpDate', expDate.toString());
+  }
+
+  getCurrentToken(): string {
+    return this.currentToken;
+  }
+  getTokenExpDate(): number {
+    return this.tokenExpiration;
   }
 
 }

@@ -30,19 +30,26 @@ export class TenantService {
     this.mfDataService.saveTenant(instrument);
   }
 
+  updateTenant(active: boolean, desc: string) {
+    if(this.selectedTenant) {
+      this.selectedTenant.active = active;
+      this.selectedTenant.description = desc;
+      this.mfDataService.saveTenant(this.selectedTenant);
+    }
+  }
+
   getConfigLoadedSubject() : Subject<unknown>{
-    return this.mfDataService.configLoaded;
+    return this.mfDataService.getConfigLoadedSubject();
+  }
+  getLoginSubject() : Subject<unknown>{
+    return this.mfDataService.getLoginSubject();
   }
   getTenantEventSubject() : Subject<unknown>{
-    return this.mfDataService.tenantEventSubject;
+    return this.mfDataService.getInstrumentEventSubject();
   }
 
   getTenants(): Observable<Instrument[]> {
     return this.mfDataService.getTenants();
-  }
-
-  isInit() {
-    return this.mfDataService.isInit();
   }
 
   setSelectedTenant(instrument:Instrument) {

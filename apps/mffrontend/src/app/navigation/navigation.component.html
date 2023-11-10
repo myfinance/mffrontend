@@ -39,10 +39,11 @@
   </button>
   <mat-menu #settingsmenu="matMenu">
     <button mat-menu-item>
+      <mat-icon>lan</mat-icon>
       <button mat-menu-item [matMenuTriggerFor]="backendmenu">Backend</button>
     </button>
     <button mat-menu-item>
-      <mat-icon>assets/images/logo.png</mat-icon>
+      <mat-icon>person</mat-icon>
       <button mat-menu-item [matMenuTriggerFor]="tenantsmenu">Aktiver Mandant</button>
     </button>
     <button mat-menu-item (click)="tenanteditor();">
@@ -52,22 +53,25 @@
   </mat-menu>
 
   <mat-menu #tenantsmenu="matMenu">
-    <button mat-menu-item>Mandant1</button>
-    <button mat-menu-item>Mandant2</button>
+    <button mat-menu-item *ngFor="let tenant of tenants" (click)="handleTenantSelect(tenant);">
+      {{ tenant.description }}
+      <mat-icon fontIcon="check_box" *ngIf="tenant.businesskey === currentTenant?.businesskey"/>
+      <mat-icon fontIcon="check_box_outline_blank" *ngIf="tenant.businesskey !== currentTenant?.businesskey"/>
+     </button>    
   </mat-menu>
 
   <mat-menu #backendmenu="matMenu">
-
    <button mat-menu-item *ngFor="let zone of mfdataService.getConfig().zones" (click)="handleZoneSelect(zone.identifier);">
     {{ zone.name }}
     <mat-icon fontIcon="check_box" *ngIf="zone.identifier === mfdataService.getConfig().currentZone.identifier"/>
     <mat-icon fontIcon="check_box_outline_blank" *ngIf="zone.identifier !== mfdataService.getConfig().currentZone.identifier"/>
    </button>
   </mat-menu>
-  <button mat-icon-button (click)="login();" *ngIf="!mfdataService.isLoggedIn()">
+
+  <button mat-icon-button (click)="login();" *ngIf="!isLoggedIn">
     <mat-icon>login</mat-icon>
   </button>
-  <button mat-icon-button (click)="logout();" *ngIf="mfdataService.isLoggedIn()">
+  <button mat-icon-button (click)="logout();" *ngIf="isLoggedIn">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
