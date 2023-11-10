@@ -8,3 +8,9 @@
     text-align: left;
     padding: 10px;
   }
+
+  .scrollable-container {
+    height: 100px; /* Set a fixed height for the container */
+    overflow-y: auto; /* Enable vertical scrollbar when content exceeds container height */
+    border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+  }

@@ -45,7 +45,7 @@ export class TenantService {
     return this.mfDataService.getLoginSubject();
   }
   getTenantEventSubject() : Subject<unknown>{
-    return this.mfDataService.tenantEventSubject;
+    return this.mfDataService.getInstrumentEventSubject();
   }
 
   getTenants(): Observable<Instrument[]> {

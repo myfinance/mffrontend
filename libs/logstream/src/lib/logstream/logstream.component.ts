@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebsocketService } from '../websocket.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 export class LogstreamComponent {
   title = 'socketrv';
   content = '';
-  received = ['','',''];
+  received:string[] = [];
+  maxLogSize = 50;
 
   constructor(private websocketService: WebsocketService) { 
     this.websocketService.webSocketConnectedSubject.subscribe(
@@ -37,8 +38,18 @@ export class LogstreamComponent {
 
   receive(message: string) {
     console.log('Received message from WebSocket: ', message);
-    this.received[2] = this.received[1];
-    this.received[1] = this.received[0];
-    this.received[0] = message;
+    message = this.parseMessage(message);
+    this.received.unshift(message);
+    if(this.received.length>this.maxLogSize) {
+      this.received.pop();
+    }
+  }
+
+  parseMessage(message: string) : string {
+    const messageParts = message.split(':');
+    if(messageParts[0] === 'INSTRUMENTEVENT') {
+      this.websocketService.triggerInstrumentEvent();
+    }
+    return message.substring(message.indexOf(':')+1, message.length);
   }
 }

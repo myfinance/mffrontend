@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 export class MfdataService {
 
   tenantChangedSubject: Subject<unknown> = new Subject<unknown>()
-  public tenantEventSubject: Subject<unknown> = new Subject<unknown>()
+  public instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
   currentTenant: Instrument = {
@@ -113,10 +113,16 @@ export class MfdataService {
       next:
         () => {
           console.info('saved');
-          this.tenantEventSubject.next(true);
         },
       error: (e) => console.error(e)
     });
+  }
+
+  getInstrumentEventSubject(){
+    return this.instrumentEventSubject;
+  }
+  triggerInstrumentEvent() {
+    this.instrumentEventSubject.next(true);
   }
 
   getVersion(): Observable<string> {

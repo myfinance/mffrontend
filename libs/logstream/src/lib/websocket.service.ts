@@ -77,4 +77,8 @@ export class WebsocketService {
   sendMessage(message: string): void {
     if(this.socket) this.socket.send(message);
   }
+
+  triggerInstrumentEvent() {
+    this.mfDataService.triggerInstrumentEvent();
+  }
 }
