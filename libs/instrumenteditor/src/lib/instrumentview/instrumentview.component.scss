@@ -1,0 +1,17 @@
+tr.instrument-row:hover {
+    background: whitesmoke;
+  }
+
+tr.selected-row {
+    background: lightgrey;
+}
+tr.selected-row-hover:hover {
+    background: darkgrey;
+}
+
+.scrollable-container {
+    height: 100%; /* Set a fixed height for the container */
+    overflow-y: auto; /* Enable vertical scrollbar when content exceeds container height */
+    border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+  }
+  

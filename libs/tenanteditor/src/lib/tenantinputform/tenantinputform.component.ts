@@ -28,6 +28,6 @@ export class TenantinputformComponent {
     console.log(this.instrumentForm)
     if(this.instrumentForm.value.description!=null) {
       this.tenantservice.saveTenant(this.instrumentForm.value.description);
-    };
+    }
   }
 }

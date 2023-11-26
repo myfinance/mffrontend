@@ -16,11 +16,13 @@
     "baseUrl": ".",
     "paths": {
       "@mffrontend/assetview": ["libs/assetview/src/index.ts"],
+      "@mffrontend/instrumenteditor": ["libs/instrumenteditor/src/index.ts"],
       "@mffrontend/logstream": ["libs/logstream/src/index.ts"],
       "@mffrontend/shared/data-access-mfdata": [
         "libs/shared/data-access-mfdata/src/index.ts"
       ],
-      "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"]
+      "@mffrontend/tenanteditor": ["libs/tenanteditor/src/index.ts"],
+      "@mffrontend/transactioneditor": ["libs/transactioneditor/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

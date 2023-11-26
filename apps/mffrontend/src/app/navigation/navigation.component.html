@@ -7,7 +7,7 @@
   </button>
   <mat-menu #dashboardmenu="matMenu">
     <button mat-menu-item (click)="assetview();">
-      <mat-icon>assets/images/logo.png</mat-icon>
+      <mat-icon>euro_symbol</mat-icon>
       <span>Vermögen</span>
     </button>
   </mat-menu>
@@ -16,20 +16,20 @@
     <span>Kontoführung</span>
   </button>
   <mat-menu #accountingmenu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>assets/images/logo.png</mat-icon>
+    <button mat-menu-item (click)="transactioneditor();">
+      <mat-icon>paid</mat-icon>
       <span>Transaktionen</span>
     </button>
     <button mat-menu-item>
-      <mat-icon>voicemail</mat-icon>
+      <mat-icon>upload_file</mat-icon>
       <span>Ausgabenmassenupload</span>
     </button>
-    <button mat-menu-item>
-      <mat-icon>settings</mat-icon>
+    <button mat-menu-item (click)="instrumenteditor();">
+      <mat-icon>account_balance</mat-icon>
       <span>Instrumente</span>
     </button>
     <button mat-menu-item>
-      <mat-icon>settings</mat-icon>
+      <mat-icon>replay</mat-icon>
       <span>Dauertransaktionen</span>
     </button>
   </mat-menu>

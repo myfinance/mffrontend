@@ -1,0 +1,16 @@
+.mygrid { 
+    position: absolute;
+    width: 100%; 
+    height: 100%;
+    top: 0;
+    right: 0;
+}
+
+.controlpanel {
+    height: 20%;
+    width: 100%; 
+}
+.viewpanel {
+    height: 80%;
+    width: 100%; 
+}

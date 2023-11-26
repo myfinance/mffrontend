@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument } from './model/instrument';
 import { MfconfigService } from './mfconfig.service';
 import { AuthService } from './auth.service';
+import { Transaction } from './model/transaction';
 
 @Injectable({
   providedIn: 'root'
@@ -110,6 +111,32 @@ export class MfdataService {
   }
   saveTenant(instrument: Instrument) {
     return this.mfClientservice.postRequest(JSON.stringify(instrument), "saveinstrument").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  getInstruments(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey);
+  }
+  saveInstrument(instrument: Instrument) {
+    return this.mfClientservice.postRequest(JSON.stringify(instrument), "saveinstrument").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  getTransactions(): Observable<Transaction[]> {
+    return this.mfClientservice.getResource("transactions");
+  }
+  saveTransaction(transaction: Transaction) {
+    return this.mfClientservice.postRequest(JSON.stringify(transaction), "savetransaction").subscribe({
       next:
         () => {
           console.info('saved');
