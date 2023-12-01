@@ -20,7 +20,7 @@ export class InstrumentviewComponent {
   constructor(private instrumentService: InstrumentService) {
     this.instrumentService.getConfigLoadedSubject().subscribe({
       next:
-        () => this.loadTenants(),
+        () => this.loadInstruments(),
       error:
         (e) => {
           console.error(e);
@@ -29,13 +29,13 @@ export class InstrumentviewComponent {
     })
     this.instrumentService.getInstrumentEventSubject().subscribe(
       () => {
-        this.loadTenants();
+        this.loadInstruments();
       }
     )
-    this.loadTenants();
+    this.loadInstruments();
   }
 
-  loadTenants() {
+  loadInstruments() {
     this.instrumentService.getInstruments().subscribe(
       (instruments) => {
         this.instruments = instruments;
