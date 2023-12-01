@@ -1,7 +1,4 @@
 .mygrid { 
-    position: absolute;
-    width: 100%; 
-    height: 100%;
     display: grid;
     grid-template:
     "controlpanel" 1fr
@@ -19,3 +16,4 @@
     width: 100%; 
     grid-area: viewpanel;
 }
+
