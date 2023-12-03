@@ -1,8 +1,4 @@
-.mygrid { 
-    display: flex;
-    flex-direction: column;
-    height: 70vh; /* Set height to 100% of the viewport */
-}
+
 
 .controlpanel {
     width: 100%;
