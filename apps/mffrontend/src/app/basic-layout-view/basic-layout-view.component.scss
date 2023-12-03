@@ -3,26 +3,32 @@
     display: flex;
     flex-direction: column;
     height: 100vh; /* Set height to 100% of the viewport */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport */
+    //overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport */
+    border: 10;
   }  
 
 .navbar {
-
+    position: fixed;
+    top: 0;
     width: 100%;
 }
 .content {
-    padding: 0; /* Reset padding to ensure content starts at the top */
-    margin: 0; /* Reset margin to ensure content starts at the top */
+    //position: absolute;
+    //top: -100px;
     width: 100%; 
-    flex: 1; /* The content takes up the remaining space */
+    //max-height: 70vh;
+    //height: 100px;
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport */
+    //flex: 1; /* The content takes up the remaining space */
+    margin-top: 60px; // Adjust based on your navbar height
 
 }
 
 .footer {
-
+    position: fixed;
+    bottom: 0;
     width: 100%; 
-    height: 140px;
+    height: 100px;
     margin-top: auto; /* Push the footer to the bottom */
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport */
 }
