@@ -30,7 +30,7 @@ export class InstrumentService {
     this.mfDataService.saveInstrument(instrument);
   }
 
-  updateTenant(active: boolean, desc: string) {
+  updateInstrument(active: boolean, desc: string) {
     if(this.selectedInstrument) {
       this.selectedInstrument.active = active;
       this.selectedInstrument.description = desc;
