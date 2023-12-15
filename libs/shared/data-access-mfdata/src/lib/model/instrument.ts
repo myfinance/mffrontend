@@ -1,4 +1,4 @@
-export interface Instrument { 
+export class Instrument { 
     instrumentType: InstrumentTypeEnum;
     description: string;
     active: boolean;
@@ -10,7 +10,35 @@ export interface Instrument {
     additionalMaps: Map<AdditionalMapsEnum, string>;
     additionalProperties: Map<AdditionalPropertiesEnum, string>;
     additionalLists: Map<AdditionalListsEnum, string[]>;
-    
+
+    constructor(instrumentType: InstrumentTypeEnum, description: string, parentBusinesskey: string, tenantBusinesskey: string) {
+        this.instrumentType = instrumentType;
+        this.description = description;
+        this.active = true;
+        this.treelastchanged = new Date();
+        this.businesskey = '';
+        this.parentBusinesskey = parentBusinesskey;
+        this.serviceAddress ='';
+        this.tenantBusinesskey = tenantBusinesskey;
+        this.additionalMaps = new Map<AdditionalMapsEnum, string>();
+        this.additionalProperties = new Map<AdditionalPropertiesEnum, string>();
+        this.additionalLists = new Map<AdditionalListsEnum, string[]>();
+    }
+    toJSON() {
+        return {
+            instrumentType: this.instrumentType,
+            description: this.description,
+            active: this.active,
+            treelastchanged: this.treelastchanged,
+            businesskey: this.businesskey,
+            parentBusinesskey: this.parentBusinesskey,
+            serviceAddress: this.serviceAddress,
+            tenantBusinesskey: this.tenantBusinesskey,
+            additionalMaps: Object.fromEntries(this.additionalMaps),
+            additionalProperties: Object.fromEntries(this.additionalProperties),
+            additionalLists: Object.fromEntries(this.additionalLists)
+        }
+    }    
 }
 export type InstrumentTypeEnum = 'GIRO' | 'MONEYATCALL' | 'TIMEDEPOSIT' | 'BUILDINGSAVINGACCOUNT' | 'BUDGET' | 'TENANT' | 'ACCOUNTPORTFOLIO' | 'ARTIFICALPORTFOLIO' | 'BUDGETGROUP' | 'DEPOT' | 'BUILDINGSAVING' | 'CURRENCY' | 'EQUITY' | 'FONDS' | 'ETF' | 'INDEX' | 'BOND' | 'LIFEINSURANCE' | 'DEPRECATIONOBJECT' | 'REALESTATE' | 'LOAN' | 'BUDGETPORTFOLIO' | 'UNKNOWN';
 export const InstrumentTypeEnum = {
@@ -39,5 +67,14 @@ export const InstrumentTypeEnum = {
     UNKNOWN: 'UNKNOWN' as InstrumentTypeEnum
 };
 export type AdditionalMapsEnum = 'KEYVALUE' | 'YIELDGOAL' | 'REALESTATEPROFITS' | 'EQUITYSYMBOLS' ;
-export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'TENANT' | 'PARENT' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN' ;
+export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN'| 'IBAN' ;
+export const AdditionalPropertiesEnum = {
+    DEFAULTGIROID: 'DEFAULTGIROID' as AdditionalPropertiesEnum,
+    INCOMEBUDGETID: 'INCOMEBUDGETID' as AdditionalPropertiesEnum,
+    REALESTATEBUDGETGROUPID: 'REALESTATEBUDGETGROUPID' as AdditionalPropertiesEnum,
+    MATURITYDATE: 'MATURITYDATE' as AdditionalPropertiesEnum,
+    CURRENCYCODE: 'CURRENCYCODE' as AdditionalPropertiesEnum,
+    ISIN: 'ISIN' as AdditionalPropertiesEnum,
+    IBAN: 'IBAN' as AdditionalPropertiesEnum
+};
 export type AdditionalListsEnum = 'CHILDS';

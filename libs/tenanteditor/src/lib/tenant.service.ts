@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument, MfdataService } from '@mffrontend/shared/data-access-mfdata';
+import { Instrument, MfdataService } from '@mffrontend/shared/data-access-mfdata';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -14,19 +14,7 @@ export class TenantService {
   }
 
   saveTenant(desc: string) {
-    const instrument: Instrument = {
-      instrumentType: 'TENANT',
-      description: desc,
-      active: true,
-      treelastchanged: new Date,
-      businesskey: '',
-      parentBusinesskey: '',
-      serviceAddress: '',
-      tenantBusinesskey: '',
-      additionalMaps: new Map<AdditionalMapsEnum, string>(),
-      additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
-      additionalLists: new Map<AdditionalListsEnum, ['']>()
-    }
+    const instrument: Instrument = new Instrument('TENANT', desc, '', '');
     this.mfDataService.saveTenant(instrument);
   }
 

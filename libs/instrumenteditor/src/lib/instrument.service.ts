@@ -13,20 +13,11 @@ export class InstrumentService {
   constructor(private mfDataService: MfdataService) { 
   }
 
-  saveInstrument(desc: string, type: InstrumentTypeEnum, parentKey: string) {
-    const instrument: Instrument = {
-      instrumentType: type,
-      description: desc,
-      active: true,
-      treelastchanged: new Date,
-      businesskey: '',
-      parentBusinesskey: parentKey,
-      serviceAddress: '',
-      tenantBusinesskey: this.mfDataService.currentTenant.businesskey,
-      additionalMaps: new Map<AdditionalMapsEnum, string>(),
-      additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
-      additionalLists: new Map<AdditionalListsEnum, ['']>()
-    }
+  saveInstrument(desc: string, type: InstrumentTypeEnum, parentKey: string, maps: Map<AdditionalMapsEnum, string>, properties: Map<AdditionalPropertiesEnum, string>, lists: Map<AdditionalListsEnum, ['']>) {
+    const instrument: Instrument = new Instrument(type, desc, parentKey, this.mfDataService.currentTenant.businesskey);
+    instrument.additionalMaps = maps;
+    instrument.additionalProperties = properties;
+    instrument.additionalLists = lists;
     this.mfDataService.saveInstrument(instrument);
   }
 

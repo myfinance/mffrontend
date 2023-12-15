@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { InstrumentService } from '../instrument.service';
-import { InstrumentTypeEnum, Instrument } from '@mffrontend/shared/data-access-mfdata';
+import { InstrumentTypeEnum, Instrument, AdditionalMapsEnum, AdditionalListsEnum, AdditionalPropertiesEnum } from '@mffrontend/shared/data-access-mfdata';
 
 @Component({
   selector: 'mffrontend-instrumentinputform',
@@ -28,6 +28,9 @@ export class InstrumentinputformComponent {
     }),
     budgetGroup: new FormControl<Instrument|null>(null, {
       validators: [Validators.required, this.isBudgetGroupNecessary.bind(this)]
+    }),
+    iban: new FormControl<string>('', {
+      nonNullable: false
     })
 
   });
@@ -70,16 +73,26 @@ export class InstrumentinputformComponent {
 
   onSubmit() {
     let parent = "";
-    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.GIRO && this.accPf!==null) {
-      parent = this.accPf?.businesskey || "";
-    } else if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.BUDGET) {
+    const maps = new Map<AdditionalMapsEnum, string>();
+    const properties = new Map<AdditionalPropertiesEnum, string>();
+    const lists = new Map<AdditionalListsEnum, ['']>();
+
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.GIRO) {
+      if (this.accPf!==null) {
+        parent = this.accPf?.businesskey || "";
+      } 
+      if(this.instrumentForm.value.iban && this.instrumentForm.value.iban.trim() !==''){
+        properties.set(AdditionalPropertiesEnum.IBAN, this.instrumentForm.value.iban as string);
+      }
+    }
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.BUDGET) {
       parent = this.instrumentForm.value.budgetGroup?.businesskey || ""
     } 
     console.log(this.instrumentForm)
     if(this.instrumentForm.value.description!=null && this.instrumentForm.value.instrumentType!=null) {
       this.instrumentService.saveInstrument(this.instrumentForm.value.description, 
         this.instrumentForm.value.instrumentType  as InstrumentTypeEnum,
-        parent);
+        parent, maps, properties, lists);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MfClientService } from './mfclient.service';
 import { Observable, Subject } from 'rxjs';
-import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument } from './model/instrument';
+import { AdditionalPropertiesEnum, Instrument, InstrumentTypeEnum } from './model/instrument';
 import { MfconfigService } from './mfconfig.service';
 import { AuthService } from './auth.service';
 import { Transaction } from './model/transaction';
@@ -15,19 +15,7 @@ export class MfdataService {
   public instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
-  currentTenant: Instrument = {
-    instrumentType: 'TENANT',
-    description: 'NA',
-    active: true,
-    treelastchanged: new Date,
-    businesskey: '',
-    parentBusinesskey: '',
-    serviceAddress: '',
-    tenantBusinesskey: '',
-    additionalMaps: new Map<AdditionalMapsEnum, string>(),
-    additionalProperties: new Map<AdditionalPropertiesEnum, string>(),
-    additionalLists: new Map<AdditionalListsEnum, ['']>()
-  }
+  currentTenant: Instrument = new Instrument(InstrumentTypeEnum.TENANT, 'NA', '', '')
 
   constructor(private mfClientservice: MfClientService, private mfConfigService: MfconfigService, private auth: AuthService) {
     this.auth.getLoginSubject().subscribe(
@@ -123,6 +111,8 @@ export class MfdataService {
     return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey);
   }
   saveInstrument(instrument: Instrument) {
+    console.info('instrument: '+instrument.additionalProperties.get(AdditionalPropertiesEnum.IBAN));
+    console.info('instrumentjson: '+JSON.stringify(instrument));
     return this.mfClientservice.postRequest(JSON.stringify(instrument), "saveinstrument").subscribe({
       next:
         () => {
