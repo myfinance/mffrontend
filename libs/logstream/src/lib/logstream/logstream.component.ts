@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, HttpClientModule],
   templateUrl: './logstream.component.html',
-  styleUrls: ['./logstream.component.css'],
+  styleUrls: ['./logstream.component.scss'],
   providers: [
     WebsocketService
   ],

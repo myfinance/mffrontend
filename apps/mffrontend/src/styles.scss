@@ -6,5 +6,10 @@
 @import 'styles/icons';
 
 
-html { height: 100%; }
+html { height: 100%; margin: 0;  }
 body {height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+.contentwindow {     
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* Set height to 700% of the viewport */
+}

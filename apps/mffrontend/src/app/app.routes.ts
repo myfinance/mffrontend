@@ -4,6 +4,8 @@ import { BasicLayoutViewComponent } from './basic-layout-view/basic-layout-view.
 import { HomeViewComponent } from './home-view/home-view.component';
 import { TenanteditorComponent } from '@mffrontend/tenanteditor';
 import { AssetviewComponent } from '@mffrontend/assetview';
+import { InstrumenteditorComponent } from '@mffrontend/instrumenteditor';
+import { TransactioneditorComponent } from '@mffrontend/transactioneditor';
 import { LoginComponent, LogoutComponent } from '@mffrontend/shared/data-access-mfdata';
 
 export const appRoutes: Route[] = [  {
@@ -26,6 +28,14 @@ export const appRoutes: Route[] = [  {
       {
         path: 'tenanteditor',
         component: TenanteditorComponent,
+      },
+      {
+        path: 'instrumenteditor',
+        component: InstrumenteditorComponent,
+      },
+      {
+        path: 'transactioneditor',
+        component: TransactioneditorComponent,
       },
       {
         path: 'assetview',

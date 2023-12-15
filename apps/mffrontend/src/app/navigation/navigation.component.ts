@@ -59,6 +59,14 @@ export class NavigationComponent {
     this.router.navigate(['/tenanteditor']);
   }
 
+  instrumenteditor() {
+    this.router.navigate(['/instrumenteditor']);
+  }
+
+  transactioneditor() {
+    this.router.navigate(['/transactioneditor']);
+  }
+
   assetview() {
     this.router.navigate(['/assetview']);
   }
