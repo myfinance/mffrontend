@@ -1,1 +1,28 @@
-<p>transactionview works!</p>
+<div class="scrollable-container">
+    <table mat-table [dataSource]="transactions" class="mat-elevation-z8">
+    
+        <!-- businesskey Column -->
+        <ng-container matColumnDef="transactionDate">
+          <th mat-header-cell *matHeaderCellDef> transactionDate </th>
+          <td mat-cell *matCellDef="let element"> {{element.transactionDate}} </td>
+        </ng-container>
+      
+        <!-- description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> description </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>    
+
+        <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef> value </th>
+            <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+          </ng-container>    
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row class="transaction-row" 
+            (click)="selectTransaction(row)" 
+            [class.selected-row-hover]="selectedTransaction === row"
+            [class.selected-row]="selectedTransaction === row"
+            *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      </div>

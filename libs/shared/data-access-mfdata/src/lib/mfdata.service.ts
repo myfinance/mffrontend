@@ -12,7 +12,8 @@ import { Transaction } from './model/transaction';
 export class MfdataService {
 
   tenantChangedSubject: Subject<unknown> = new Subject<unknown>()
-  public instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
+  instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
+  transactionEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
   currentTenant: Instrument = new Instrument(InstrumentTypeEnum.TENANT, 'NA', '', '')
@@ -123,10 +124,12 @@ export class MfdataService {
   }
 
   getTransactions(): Observable<Transaction[]> {
-    return this.mfClientservice.getResource("transactions");
+    return this.mfClientservice.getResource("transactions?startDate=");
+
+   // (@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate);
   }
   saveTransaction(transaction: Transaction) {
-    return this.mfClientservice.postRequest(JSON.stringify(transaction), "savetransaction").subscribe({
+    return this.mfClientservice.postRequest(JSON.stringify(transaction), "saveTransaction").subscribe({
       next:
         () => {
           console.info('saved');
@@ -140,6 +143,13 @@ export class MfdataService {
   }
   triggerInstrumentEvent() {
     this.instrumentEventSubject.next(true);
+  }
+
+  getTransactionEventSubject(){
+    return this.transactionEventSubject;
+  }
+  triggerTransactionEvent() {
+    this.transactionEventSubject.next(true);
   }
 
   getVersion(): Observable<string> {

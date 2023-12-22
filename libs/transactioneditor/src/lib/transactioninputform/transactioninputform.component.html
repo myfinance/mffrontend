@@ -1,1 +1,101 @@
-<p>transactioninputform works!</p>
+<form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>TransactionType</mat-label>
+    <mat-select formControlName="transactionType">
+      <mat-option
+        *ngFor="let transactionType of transactionTypes"
+        [value]="transactionType"
+      >
+        {{ transactionType }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Beschreibung:</mat-label>
+    <input
+      matInput
+      placeholder="Ex. Ausgabe..."
+      formControlName="description"
+    />
+    <span
+    *ngIf="
+      !transactionForm.controls.description.valid &&
+      transactionForm.controls.description.touched
+    "
+  >
+    Bitte geben Sie eine Beschriebung für die Transaction ein!
+  </span>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>Transactionsdatum</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      formControlName="transactionDate"
+    />
+    <mat-hint>DD.MM.YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <span
+      *ngIf="
+        !transactionForm.controls.transactionDate.valid &&
+        transactionForm.controls.transactionDate.touched
+      "
+    >
+      Bitte geben Sie eine Trasnactionsdatum ein welches nicht in der Zukunft
+      liegt!
+    </span>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>Konto</mat-label>
+    <mat-select formControlName="srcAcc">
+      <mat-option
+        *ngFor="let giro of giros"
+        [value]="giro"
+      >
+        {{ giro.description }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <mat-label>Budget</mat-label>
+    <mat-select formControlName="srcBudget">
+      <mat-option
+        *ngFor="let budget of budgets"
+        [value]="budget"
+      >
+        {{ budget.description }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Value:</mat-label>
+    <input
+      matInput
+      placeholder="1,0"
+      formControlName="value"
+    />
+    <span
+    *ngIf="
+      !transactionForm.controls.description.valid &&
+      transactionForm.controls.description.touched
+    "
+  >
+    Bitte geben Sie eine Beschriebung für die Transaction ein!
+  </span>
+  </mat-form-field>
+
+
+  <br>
+  <button mat-raised-button color="primary" type="submit">Speichern</button>
+</form>
