@@ -36,7 +36,9 @@ export class TransactionviewComponent {
   }
 
   loadTransactions() {
-    this.transactionService.getTransactions().subscribe(
+    const startDate = new Date(2023,11,2);
+    const endDate = new Date(Date.now());
+    this.transactionService.getTransactions(startDate, endDate).subscribe(
       (transactions) => {
         this.transactions = transactions;
       }

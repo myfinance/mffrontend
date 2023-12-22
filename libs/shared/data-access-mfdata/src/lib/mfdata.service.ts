@@ -123,10 +123,8 @@ export class MfdataService {
     });
   }
 
-  getTransactions(): Observable<Transaction[]> {
-    return this.mfClientservice.getResource("transactions?startDate=");
-
-   // (@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate);
+  getTransactions(startDate: Date, endDate: Date): Observable<Transaction[]> {
+    return this.mfClientservice.getResource("transactions?startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
   }
   saveTransaction(transaction: Transaction) {
     return this.mfClientservice.postRequest(JSON.stringify(transaction), "saveTransaction").subscribe({

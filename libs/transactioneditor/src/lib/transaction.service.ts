@@ -60,8 +60,8 @@ export class TransactionService {
     return this.mfDataService.getLoginSubject();
   }
 
-  getTransactions(): Observable<Transaction[]> {
-    return this.mfDataService.getTransactions();
+  getTransactions(startDate: Date, endDate: Date): Observable<Transaction[]> {
+    return this.mfDataService.getTransactions(startDate, endDate);
   }
 
   getInstruments(): Observable<Instrument[]> {
