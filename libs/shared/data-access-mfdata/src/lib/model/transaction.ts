@@ -7,6 +7,7 @@ export class Transaction {
     cashflows: Map<string, number>;
     // map of instrumentBusinesskey and value
     trades: Trade[];
+    transactionId: string | undefined;
 
     constructor(transactionType: TransactionTypeEnum, description: string, transactiondate: Date, cashflows: Map<string, number>, trades: Trade[]) {
         this.transactionType = transactionType;
