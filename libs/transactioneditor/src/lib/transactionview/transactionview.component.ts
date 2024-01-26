@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { Instrument, Transaction, TransactionTypeEnum } from '@mffrontend/shared/data-access-mfdata';
 import { TransactionService } from '../transaction.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatDividerModule} from '@angular/material/divider';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 interface TransactionObjectView { 
   id: string;
@@ -19,7 +23,7 @@ interface TransactionObjectView {
 @Component({
   selector: 'mffrontend-transactionview',
   standalone: true,
-  imports: [CommonModule, MatTableModule],
+  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule],
   templateUrl: './transactionview.component.html',
   styleUrls: ['./transactionview.component.scss'],
 })
@@ -30,6 +34,10 @@ export class TransactionviewComponent {
   version = 'na';
   instruments: Instrument[] = [];
   transactionViewObjects: TransactionObjectView[] = [];
+  range = new FormGroup({
+    start: new FormControl<Date>(new Date(2023,11,2)),
+    end: new FormControl<Date>(new Date(Date.now()))
+  });
 
   constructor(private transactionService: TransactionService) {
     this.transactionService.getConfigLoadedSubject().subscribe({
@@ -59,8 +67,15 @@ export class TransactionviewComponent {
   }
 
   loadTransactions() {
-    const startDate = new Date(2023,11,2);
-    const endDate = new Date(Date.now());
+    let startDate = new Date(Date.now());
+    startDate.setMonth(startDate.getMonth() -1);
+    let endDate = new Date(Date.now());
+    if(this.range.value.start!== undefined && this.range.value.end!== undefined && this.range.value.start!== null && this.range.value.end!== null) {
+      startDate = this.range.value.start;
+      endDate = this.range.value.end;
+    }
+    console.info('startdate:'+ startDate.toString());
+    console.info('enddate:'+ endDate.toString());
     this.transactionService.getTransactions(startDate, endDate).subscribe(
       (transactions) => {
         this.transactions = transactions;

@@ -1,6 +1,22 @@
-<div class="scrollable-container">
+<div>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <input matStartDate placeholder="Start date" formControlName="start" (dateChange)="loadTransactions()">
+      <input matEndDate placeholder="End date" formControlName="end" (dateChange)="loadTransactions()">
+    </mat-date-range-input>
+    <mat-hint>DD.MM.YYYY – DD.MM.YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div class="scrollable-container">
     <table mat-table [dataSource]="transactionViewObjects" class="mat-elevation-z8">
-    
         <!-- businesskey Column -->
         <ng-container matColumnDef="transactionDate">
           <th mat-header-cell *matHeaderCellDef> transactionDate </th>
@@ -41,4 +57,5 @@
             [class.selected-row]="selectedTransaction === row"
             *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      </div>
+    </div>
+<div>
