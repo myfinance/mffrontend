@@ -1,43 +1,38 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { Instrument, Transaction, TransactionTypeEnum } from '@mffrontend/shared/data-access-mfdata';
+import { Instrument, Transaction} from '@mffrontend/shared/data-access-mfdata';
 import { TransactionService } from '../transaction.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatDividerModule} from '@angular/material/divider';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-interface TransactionObjectView { 
-  id: string;
-  transactionType: TransactionTypeEnum;
-  description: string;
-  transactiondate: Date;
-  instrument1: Instrument | undefined;
-  instrument2: Instrument | undefined;
-  instrument3: Instrument | undefined;
-  value: number;
-}
+import { MatSelectModule } from '@angular/material/select';
+import { TransactionObjectView } from '../TransactionObjectView';
 
 
 @Component({
   selector: 'mffrontend-transactionview',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule],
+  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, MatSelectModule],
   templateUrl: './transactionview.component.html',
   styleUrls: ['./transactionview.component.scss'],
 })
 export class TransactionviewComponent {
-  transactions: Transaction[] = [];
   displayedColumns: string[] = ['transactionDate', 'description', 'TransactionType', 'value', 'instrument1', 'instrument2'];
   selectedTransaction: TransactionObjectView | undefined;
   version = 'na';
   instruments: Instrument[] = [];
   transactionViewObjects: TransactionObjectView[] = [];
+  filteredTransactionViewObjects: TransactionObjectView[] = [];
   range = new FormGroup({
     start: new FormControl<Date>(new Date(2023,11,2)),
-    end: new FormControl<Date>(new Date(Date.now()))
+    end: new FormControl<Date>(new Date(Date.now())),
+    instrument: new FormControl<Instrument | null>(null, {
+      nonNullable: false
+    })
   });
+  instrumentFilter: Instrument|undefined;
 
   constructor(private transactionService: TransactionService) {
     this.transactionService.getConfigLoadedSubject().subscribe({
@@ -74,12 +69,10 @@ export class TransactionviewComponent {
       startDate = this.range.value.start;
       endDate = this.range.value.end;
     }
-    console.info('startdate:'+ startDate.toString());
-    console.info('enddate:'+ endDate.toString());
     this.transactionService.getTransactions(startDate, endDate).subscribe(
       (transactions) => {
-        this.transactions = transactions;
-        this.transactionViewObjects = this.convertTransactions(this.transactions);
+        this.transactionViewObjects = this.convertTransactions(transactions);
+        this.filter();
       }
     )
   }
@@ -126,6 +119,17 @@ export class TransactionviewComponent {
 
   selectTransaction(transaction: TransactionObjectView) {
     this.selectedTransaction = transaction;
-    this.transactionService.setSelectedTransaction(this.transactions.filter(t => t.transactionId === transaction.id)[0]);
+    this.transactionService.setSelectedTransaction(transaction);
+  }
+
+  filter() {
+    this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.instrument1?.businesskey === this.instrumentFilter?.businesskey 
+                                                    || transaction.instrument2?.businesskey === this.instrumentFilter?.businesskey
+                                                    || transaction.instrument3?.businesskey === this.instrumentFilter?.businesskey)
+  } 
+
+  clearFilter(){
+    this.instrumentFilter = undefined;
+    this.filter();
   }
 }

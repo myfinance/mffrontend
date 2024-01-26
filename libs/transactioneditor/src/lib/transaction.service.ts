@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Transaction, MfdataService, Trade, Instrument, TransactionTypeEnum } from '@mffrontend/shared/data-access-mfdata';
 import { Observable, Subject } from 'rxjs';
+import { TransactionObjectView } from './TransactionObjectView';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
 
-  selectedTransaction:Transaction | undefined
+  selectedTransaction: TransactionObjectView | undefined
   public newTransactionSelectedSubject: Subject<unknown> = new Subject<unknown>()
 
   constructor(private mfDataService: MfdataService) { 
@@ -49,7 +50,7 @@ export class TransactionService {
   updateTransaction(desc: string) {
     if(this.selectedTransaction) {
       this.selectedTransaction.description = desc;
-      this.mfDataService.saveTransaction(this.selectedTransaction);
+      //this.mfDataService.saveTransaction(this.selectedTransaction);
     }
   }
 
@@ -68,7 +69,7 @@ export class TransactionService {
     return this.mfDataService.getInstruments();
   }
 
-  setSelectedTransaction(transaction:Transaction) {
+  setSelectedTransaction(transaction:TransactionObjectView) {
     this.selectedTransaction = transaction;
     this.newTransactionSelectedSubject.next(true);
   }
