@@ -20,6 +20,7 @@ export class TransactioninputformComponent {
   transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
+  transactionSelected = false;
   transactionForm = new FormGroup({
 
     description: new FormControl<string>('', {
@@ -38,10 +39,10 @@ export class TransactioninputformComponent {
       nonNullable: true,
       validators: Validators.required
     }),
-    srcAcc: new FormControl<Instrument | null>(null, {
+    srcAcc: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     }),
-    srcBudget: new FormControl<Instrument | null>(null, {
+    srcBudget: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     })
 
@@ -63,6 +64,12 @@ export class TransactioninputformComponent {
       }
     )
     this.loadInstruments();
+
+    this.transactionService.newTransactionSelectedSubject.subscribe(
+      () => {
+        this.setNewSelectedTransaction();
+      }
+    )
   }
 
   loadInstruments() {
@@ -72,6 +79,20 @@ export class TransactioninputformComponent {
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
       }
     )
+  }
+
+  setNewSelectedTransaction(){
+    const transaction = this.transactionService.getSelectedTransaction();
+    if(transaction!==undefined) {
+      this.transactionSelected = true;
+      this.transactionForm.controls['description'].setValue(transaction.description);
+      this.transactionForm.controls['transactionType'].setValue(transaction.transactionType);
+      this.transactionForm.controls['transactionDate'].setValue(transaction.transactiondate);
+      this.transactionForm.controls['value'].setValue(transaction.value);
+      this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.instrument1?.businesskey)[0]);
+      this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.instrument2?.businesskey)[0]);
+    }
+
   }
 
   onSubmit() {

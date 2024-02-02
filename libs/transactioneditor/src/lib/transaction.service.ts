@@ -73,6 +73,9 @@ export class TransactionService {
     this.selectedTransaction = transaction;
     this.newTransactionSelectedSubject.next(true);
   }
+  getSelectedTransaction() : TransactionObjectView|undefined {
+    return this.selectedTransaction;
+  }
 
   getInstrumentEventSubject() : Subject<unknown>{
     return this.mfDataService.getInstrumentEventSubject();
