@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Instrument, Transaction} from '@mffrontend/shared/data-access-mfdata';
 import { TransactionService } from '../transaction.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -9,17 +9,20 @@ import {MatDividerModule} from '@angular/material/divider';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { TransactionObjectView } from '../TransactionObjectView';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+
+
 
 
 @Component({
   selector: 'mffrontend-transactionview',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, MatSelectModule],
+  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, MatSelectModule, MatSortModule],
   templateUrl: './transactionview.component.html',
   styleUrls: ['./transactionview.component.scss'],
 })
-export class TransactionviewComponent {
-  displayedColumns: string[] = ['transactionDate', 'description', 'TransactionType', 'value', 'instrument1', 'instrument2'];
+export class TransactionviewComponent implements AfterViewInit {
+  displayedColumns: string[] = ['transactiondate', 'description', 'transactionType', 'value', 'instrument1', 'instrument2'];
   selectedTransaction: TransactionObjectView | undefined;
   version = 'na';
   instruments: Instrument[] = [];
@@ -33,6 +36,8 @@ export class TransactionviewComponent {
     })
   });
   instrumentFilter: Instrument|undefined;
+  dataSource = new MatTableDataSource(this.filteredTransactionViewObjects);
+  @ViewChild(MatSort) sort = new MatSort();
 
   constructor(private transactionService: TransactionService) {
     this.transactionService.getConfigLoadedSubject().subscribe({
@@ -125,11 +130,21 @@ export class TransactionviewComponent {
   filter() {
     this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.instrument1?.businesskey === this.instrumentFilter?.businesskey 
                                                     || transaction.instrument2?.businesskey === this.instrumentFilter?.businesskey
-                                                    || transaction.instrument3?.businesskey === this.instrumentFilter?.businesskey)
+                                                    || transaction.instrument3?.businesskey === this.instrumentFilter?.businesskey);
+    this.dataSource = new MatTableDataSource(this.filteredTransactionViewObjects);   
+    this.dataSource.sort = this.sort;                                             
+
   } 
 
   clearFilter(){
     this.instrumentFilter = undefined;
     this.filter();
+  }
+
+  
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+        
   }
 }

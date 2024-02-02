@@ -14,3 +14,7 @@ tr.selected-row-hover:hover {
     overflow-y: auto; /* Enable vertical scrollbar when content exceeds container height */
     border: 1px solid #ccc; /* Optional: Add a border for better visualization */
   }
+
+  th.mat-sort-header-sorted {
+    color: black;
+  }
