@@ -1,4 +1,4 @@
-<form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="transactionForm">
   <mat-form-field>
     <mat-label>TransactionType</mat-label>
     <mat-select formControlName="transactionType">
@@ -97,5 +97,10 @@
 
 
   <br>
-  <button mat-raised-button color="primary" type="submit">Speichern</button>
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="insertTransaction()" type="button">Insert</button>
+    <button mat-raised-button color="primary" (click)="updateTransaction()" type="button" [disabled]="!transactionSelected">Update</button>
+    <button mat-raised-button color="primary" (click)="deleteTransaction()" type="button" [disabled]="!transactionSelected">Delete</button>
+  </div>
+
 </form>

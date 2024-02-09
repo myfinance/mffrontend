@@ -8,11 +8,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { TransactionService } from '../transaction.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'mffrontend-transactioninputform',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatButtonModule],
   templateUrl: './transactioninputform.component.html',
   styleUrls: ['./transactioninputform.component.scss'],
 })
@@ -95,7 +96,7 @@ export class TransactioninputformComponent {
 
   }
 
-  onSubmit() {
+  saveTransaction(){
     console.log(this.transactionForm);
     if (this.transactionForm.value.description != null && this.transactionForm.value.transactionType != null && this.transactionForm.value.transactionDate != null && this.transactionForm.value.value != null) {
       switch (this.transactionForm.value.transactionType) {
@@ -117,5 +118,18 @@ export class TransactioninputformComponent {
         }
       }
     }
+  }
+
+  insertTransaction() {
+    this.saveTransaction();
+  }
+
+  updateTransaction(){
+    this.saveTransaction();
+    this.deleteTransaction();
+  }
+
+  deleteTransaction(){
+    this.transactionService.deleteTransaction();
   }
 }

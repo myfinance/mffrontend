@@ -136,6 +136,16 @@ export class MfdataService {
     });
   }
 
+  deleteTransaction(transactionId: string) {
+    return this.mfClientservice.deleteResource("delTransaction/"+transactionId).subscribe({
+      next:
+        () => {
+          console.info('delted');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
   getInstrumentEventSubject(){
     return this.instrumentEventSubject;
   }

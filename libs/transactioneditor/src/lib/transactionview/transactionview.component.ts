@@ -44,7 +44,6 @@ export class TransactionviewComponent implements AfterViewInit {
       next:
         () => {
           this.loadInstruments();
-          this.loadTransactions();
         },
       error:
         (e) => {
@@ -63,7 +62,7 @@ export class TransactionviewComponent implements AfterViewInit {
         this.loadTransactions();
       }
     )
-    this.loadTransactions();
+    
   }
 
   loadTransactions() {
@@ -86,6 +85,7 @@ export class TransactionviewComponent implements AfterViewInit {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
         this.instruments = instruments;
+        this.loadTransactions();
       }
     )
   }

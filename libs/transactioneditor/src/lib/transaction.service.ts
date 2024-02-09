@@ -47,11 +47,11 @@ export class TransactionService {
     this.mfDataService.saveTransaction(transaction);
   }
 
-  updateTransaction(desc: string) {
-    if(this.selectedTransaction) {
-      this.selectedTransaction.description = desc;
-      //this.mfDataService.saveTransaction(this.selectedTransaction);
+  deleteTransaction() {
+    if (this.selectedTransaction!==undefined) {
+      this.mfDataService.deleteTransaction(this.selectedTransaction.id);
     }
+    
   }
 
   getConfigLoadedSubject() : Subject<unknown>{

@@ -81,4 +81,8 @@ export class WebsocketService {
   triggerInstrumentEvent() {
     this.mfDataService.triggerInstrumentEvent();
   }
+
+  triggerTransactionEvent() {
+    this.mfDataService.triggerInstrumentEvent();
+  }
 }

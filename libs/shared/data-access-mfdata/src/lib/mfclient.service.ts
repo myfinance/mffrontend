@@ -39,7 +39,11 @@ export class MfClientService {
     const options = { headers: this.buildHeader() };
     console.log("body:" + body);
     return this.http.post<string>(`${this.url}/${this.path2resource}/${resource}`, body, options);
-  }  
+  } 
+  
+  deleteResource(resource:string): Observable<any> {
+    return this.http.delete<string>(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
+  }
 
   buildHeader() {
     const headers = new HttpHeaders({

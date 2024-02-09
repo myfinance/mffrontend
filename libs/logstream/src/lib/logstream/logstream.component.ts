@@ -50,6 +50,9 @@ export class LogstreamComponent {
     if(messageParts[0] === 'INSTRUMENTEVENT') {
       this.websocketService.triggerInstrumentEvent();
     }
+    if(messageParts[0] === 'TRANSACTIONEVENT') {
+      this.websocketService.triggerTransactionEvent();
+    }
     return message.substring(message.indexOf(':')+1, message.length);
   }
 }
