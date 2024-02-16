@@ -96,19 +96,20 @@ export class TransactioninputformComponent {
 
   }
 
-  saveTransaction(){
+  saveTransaction(transactionId: string|undefined){
     console.log(this.transactionForm);
+
     if (this.transactionForm.value.description != null && this.transactionForm.value.transactionType != null && this.transactionForm.value.transactionDate != null && this.transactionForm.value.value != null) {
       switch (this.transactionForm.value.transactionType) {
         case TransactionTypeEnum.EXPENSE: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.transactionService.saveIncomeExpense(true, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget);
+            this.transactionService.saveIncomeExpense(true, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.INCOME: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.transactionService.saveIncomeExpense(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget);
+            this.transactionService.saveIncomeExpense(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }
@@ -121,12 +122,15 @@ export class TransactioninputformComponent {
   }
 
   insertTransaction() {
-    this.saveTransaction();
+    this.saveTransaction(undefined);
   }
 
   updateTransaction(){
-    this.saveTransaction();
-    this.deleteTransaction();
+    let transactionId = undefined;
+    if(this.transactionSelected){
+      transactionId = this.transactionService.getSelectedTransaction()?.id;
+    }
+    this.saveTransaction(transactionId);
   }
 
   deleteTransaction(){

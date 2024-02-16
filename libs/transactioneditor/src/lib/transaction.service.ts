@@ -14,7 +14,7 @@ export class TransactionService {
   constructor(private mfDataService: MfdataService) { 
   }
 
-  saveIncomeExpense(isExpense: boolean, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument) {
+  saveIncomeExpense(isExpense: boolean, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ) {
     let transactionType = TransactionTypeEnum.INCOME;
     let finalValue = value;
     if(isExpense) {
@@ -24,26 +24,29 @@ export class TransactionService {
     const cashflows:Map<string, number> = new Map();
     cashflows.set(acc.businesskey, finalValue);
     cashflows.set(budget.businesskey, finalValue);
-    this.saveTransaction(desc,transactionDate, transactionType, cashflows, []);
+    this.saveTransaction(desc,transactionDate, transactionType, cashflows, [], transactionId);
   }
 
-  saveTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument) {
-    this.saveInstrumentTransfer(desc, transactionDate, value, srcInstrument, trgInstrument, TransactionTypeEnum.TRANSFER);
+  saveTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string|undefined ) {
+    this.saveInstrumentTransfer(desc, transactionDate, value, srcInstrument, trgInstrument, TransactionTypeEnum.TRANSFER, transactionId);
   }
 
-  saveBudgetTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument) {
-    this.saveInstrumentTransfer(desc, transactionDate, value, srcInstrument, trgInstrument, TransactionTypeEnum.BUDGETTRANSFER);
+  saveBudgetTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string|undefined ) {
+    this.saveInstrumentTransfer(desc, transactionDate, value, srcInstrument, trgInstrument, TransactionTypeEnum.BUDGETTRANSFER, transactionId);
   }
 
-  private saveInstrumentTransfer(desc: string, transactionDate: Date, value: number, src: Instrument, trg: Instrument, transactionType: TransactionTypeEnum) {
+  private saveInstrumentTransfer(desc: string, transactionDate: Date, value: number, src: Instrument, trg: Instrument, transactionType: TransactionTypeEnum, transactionId: string|undefined ) {
     const cashflows:Map<string, number> = new Map();
     cashflows.set(src.businesskey, value);
     cashflows.set(trg.businesskey, -value);
-    this.saveTransaction(desc, transactionDate, transactionType, cashflows, []);
+    this.saveTransaction(desc, transactionDate, transactionType, cashflows, [], transactionId);
   }
 
-  private saveTransaction(desc: string, transactionDate: Date, transactionType: TransactionTypeEnum, cashflows:Map<string, number>, trades: Trade[] ) {
+  private saveTransaction(desc: string, transactionDate: Date, transactionType: TransactionTypeEnum, cashflows:Map<string, number>, trades: Trade[], transactionId: string|undefined ) {
     const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, trades); 
+    if(transactionId!==undefined){
+      transaction.transactionId=transactionId;
+    }
     this.mfDataService.saveTransaction(transaction);
   }
 

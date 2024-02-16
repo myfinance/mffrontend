@@ -18,6 +18,7 @@ export class Transaction {
     }
     toJSON() {
         return {
+            transactionId: this.transactionId,
             transactionType: this.transactionType,
             description: this.description,
             transactiondate: this.transactiondate,

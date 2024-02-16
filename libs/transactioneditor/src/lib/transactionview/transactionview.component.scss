@@ -18,3 +18,9 @@ tr.selected-row-hover:hover {
   th.mat-sort-header-sorted {
     color: black;
   }
+
+  .view-container {
+    height: 100%; /* Set a fixed height for the container */
+    
+    border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+  }
