@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./transactioninputform.component.scss'],
 })
 export class TransactioninputformComponent {
-  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME];
+  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
   transactionSelected = false;
@@ -44,6 +44,12 @@ export class TransactioninputformComponent {
       nonNullable: false
     }),
     srcBudget: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
+    trgAcc: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
+    trgBudget: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     })
 
@@ -110,6 +116,18 @@ export class TransactioninputformComponent {
         case TransactionTypeEnum.INCOME: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
             this.transactionService.saveIncomeExpense(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.TRANSFER: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.trgAcc!=null) {
+            this.transactionService.saveTransfer(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.trgAcc, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.BUDGETTRANSFER: {
+          if(this.transactionForm.value.srcBudget!=null && this.transactionForm.value.trgBudget!=null) {
+            this.transactionService.saveBudgetTransfer(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcBudget, this.transactionForm.value.trgBudget, transactionId);
           }
           break;
         }

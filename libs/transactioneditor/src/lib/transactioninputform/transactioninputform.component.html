@@ -52,8 +52,8 @@
   </mat-form-field>
 
 
-  <mat-form-field>
-    <mat-label>Konto</mat-label>
+  <mat-form-field *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='TRANSFER'">
+    <mat-label>Quell-Konto</mat-label>
     <mat-select formControlName="srcAcc">
       <mat-option
         *ngFor="let giro of giros"
@@ -65,9 +65,34 @@
   </mat-form-field>
 
 
-  <mat-form-field>
-    <mat-label>Budget</mat-label>
+  <mat-form-field *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUDGETTRANSFER'">
+    <mat-label>Quell-Budget</mat-label>
     <mat-select formControlName="srcBudget">
+      <mat-option
+        *ngFor="let budget of budgets"
+        [value]="budget"
+      >
+        {{ budget.description }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="transactionForm.value.transactionType==='TRANSFER'">
+    <mat-label>Ziel-Konto</mat-label>
+    <mat-select formControlName="trgAcc">
+      <mat-option
+        *ngFor="let giro of giros"
+        [value]="giro"
+      >
+        {{ giro.description }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field *ngIf="transactionForm.value.transactionType==='BUDGETTRANSFER'">
+    <mat-label>Ziel-Budget</mat-label>
+    <mat-select formControlName="trgBudget">
       <mat-option
         *ngFor="let budget of budgets"
         [value]="budget"
