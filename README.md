@@ -63,3 +63,7 @@ run hte following command to check the bounderies: npx nx run-many --all --targe
 npx nx affected:graph --base=dev
 npx nx affected -t test
 npx nx build mffrontend
+
+### run
+
+npx nx serve mffrontend
