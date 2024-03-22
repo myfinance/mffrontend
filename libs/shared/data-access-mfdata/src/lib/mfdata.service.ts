@@ -108,6 +108,12 @@ export class MfdataService {
     });
   }
 
+  getAccounts(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("accounts?tenantbusinesskey="+this.currentTenant.businesskey);
+  }
+  getBudgets(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("budgets?tenantbusinesskey="+this.currentTenant.businesskey);
+  }
   getInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey);
   }
@@ -188,6 +194,10 @@ export class MfdataService {
       return "NA"
     }
     return this.auth.credentials.username;
+  }
+
+  getInstrumentValue(businesskey:string, valueDate: Date): Observable<number> {
+    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+valueDate.toISOString().split('T')[0]);
   }
 
 }

@@ -1,34 +1,31 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatCardModule} from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
+import { CalendarModule } from 'primeng/calendar';
+import { AssetviewService } from '../assetview.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'mffrontend-assetviewcontroller',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatInputModule, MatDatepickerModule, ReactiveFormsModule, MatFormFieldModule, MatNativeDateModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, CalendarModule, FormsModule],
   templateUrl: './assetviewcontroller.component.html',
   styleUrls: ['./assetviewcontroller.component.scss'],
 })
 export class AssetviewcontrollerComponent {
+  dateForAnalysis: Date | undefined;
+  referenceDate: Date;
 
-  controllerForm = new FormGroup({
+  constructor(private service:AssetviewService) {
+    this.dateForAnalysis = this.service.getDateForAnalysis();
+    this.referenceDate = this.service.getReferenceDate();
+  }
 
+  handleDateForAnalysisChanged(date: Date) {
+    this.service.setDateForAnalysis(date); 
+  }
 
-    dueDate: new FormControl<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), {
-      nonNullable: true,
-      validators: Validators.required
-    }),
-    referenceDate: new FormControl<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), {
-      nonNullable: true,
-      validators: Validators.required
-    })
-
-
-  });
+  handleReferenceDateChanged(date: Date) {
+    this.service.setReferenceDate(date); 
+  }
 }

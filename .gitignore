@@ -118,3 +118,5 @@ Thumbs.db
 package-lock.json
 
 .angular
+
+.nx/*

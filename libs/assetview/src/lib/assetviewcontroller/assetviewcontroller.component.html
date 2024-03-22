@@ -1,27 +1,11 @@
-<form [formGroup]="controllerForm">
     <mat-card>
-        <mat-label>Stichtag</mat-label>
-        <mat-form-field>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              formControlName="dueDate"
-            />
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-label>Referenzstichtag</mat-label>
-        <mat-form-field>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              formControlName="referenceDate"
-            />
-            <mat-hint>DD.MM.YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        <label>Stichtag</label>
+        <p-calendar [(ngModel)]="dateForAnalysis" (onSelect)="handleDateForAnalysisChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
+
+        <label>Referenzstichtag</label>
+        <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
     </mat-card>
-</form>
+
 
