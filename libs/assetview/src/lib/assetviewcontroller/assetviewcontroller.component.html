@@ -6,6 +6,9 @@
         <label>Referenzstichtag</label>
         <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
 
+        <label>Betrachtungszeitraum für historische Zeitreihen</label>
+        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
     </mat-card>
 
 

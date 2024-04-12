@@ -6,13 +6,13 @@ import { AccountvaluechangeviewComponent } from '../accountvaluechangeview/accou
 import { BudgetvalueviewComponent } from '../budgetvalueview/budgetvalueview.component';
 import { BudgetvaluechangeviewComponent } from '../budgetvaluechangeview/budgetvaluechangeview.component';
 import { InstrumentvaluedetailviewComponent } from '../instrumentvaluedetailview/instrumentvaluedetailview.component';
-import { InstrumentvaluehistoryComponent } from '../instrumentvaluehistory/instrumentvaluehistory.component';
+import { AssetValueHistoryViewComponent } from '../assetvaluehistoryview/assetvaluehistoryviewcomponent';
 import { AssetviewService } from '../assetview.service';
 
 @Component({
   selector: 'mffrontend-assetview',
   standalone: true,
-  imports: [CommonModule, AssetviewcontrollerComponent, AccountvalueviewComponent,AccountvaluechangeviewComponent,BudgetvalueviewComponent,BudgetvaluechangeviewComponent,InstrumentvaluedetailviewComponent,InstrumentvaluehistoryComponent],
+  imports: [CommonModule, AssetviewcontrollerComponent, AccountvalueviewComponent,AccountvaluechangeviewComponent,BudgetvalueviewComponent,BudgetvaluechangeviewComponent,InstrumentvaluedetailviewComponent,AssetValueHistoryViewComponent],
   providers: [
     AssetviewService
   ],

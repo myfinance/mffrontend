@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { InstrumentService } from '../instrument.service';
-import { InstrumentTypeEnum, Instrument, AdditionalMapsEnum, AdditionalListsEnum, AdditionalPropertiesEnum } from '@mffrontend/shared/data-access-mfdata';
+import { InstrumentTypeEnum, Instrument, AdditionalMapsEnum, AdditionalListsEnum, AdditionalPropertiesEnum, LiquidityTypeEnum } from '@mffrontend/shared/data-access-mfdata';
 
 @Component({
   selector: 'mffrontend-instrumentinputform',
@@ -13,6 +13,7 @@ import { InstrumentTypeEnum, Instrument, AdditionalMapsEnum, AdditionalListsEnum
 })
 export class InstrumentinputformComponent {
   instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET];
+  liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
   instruments: Instrument[] = [];
   budgetGroups: Instrument[] = [];
   accPf?: Instrument;
@@ -28,6 +29,10 @@ export class InstrumentinputformComponent {
     }),
     budgetGroup: new FormControl<Instrument|null>(null, {
       validators: [Validators.required, this.isBudgetGroupNecessary.bind(this)]
+    }),
+    liquidityType: new FormControl<string>(LiquidityTypeEnum.LIQUIDE, {
+      nonNullable: true,
+      validators: Validators.required
     }),
     iban: new FormControl<string>('', {
       nonNullable: false
@@ -92,7 +97,7 @@ export class InstrumentinputformComponent {
     if(this.instrumentForm.value.description!=null && this.instrumentForm.value.instrumentType!=null) {
       this.instrumentService.saveInstrument(this.instrumentForm.value.description, 
         this.instrumentForm.value.instrumentType  as InstrumentTypeEnum,
-        parent, maps, properties, lists);
+        parent, maps, properties, lists, this.instrumentForm.value.liquidityType as LiquidityTypeEnum);
     }
   }
 }

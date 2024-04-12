@@ -200,4 +200,8 @@ export class MfdataService {
     return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+valueDate.toISOString().split('T')[0]);
   }
 
+  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<number> {
+    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
+  }
+
 }

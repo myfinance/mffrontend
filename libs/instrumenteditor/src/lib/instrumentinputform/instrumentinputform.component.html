@@ -38,6 +38,14 @@
       Bitte geben Sie eine Budgetgruppe für das Instrument ein!
     </span>
   </div>  
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'BUDGET'">
+    <p>Liquiditätstyp:</p>
+    <select class="btn btn-primary dropdown-toggle" formControlName="liquidityType">
+      <option class="mydropdown-item" [ngValue]="liquidityType" *ngFor="let liquidityType of liquidityTypes" >
+        {{liquidityType}}
+      </option>
+    </select>
+  </div>  
 
   <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'GIRO'">
     <p>IBAN:</p>

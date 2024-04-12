@@ -14,5 +14,13 @@
       <option [value]="false" [selected]="!this.instrumentForm.get('active')">Inaktiv</option>
     </select>
   </div>
+  <div class="form-group" *ngIf="selectedInstrument?.instrumentType === 'BUDGET'">
+    <p>Liquiditätstyp:</p>
+    <select class="btn btn-primary dropdown-toggle" formControlName="liquidityType">
+      <option class="mydropdown-item" [ngValue]="liquidityType" *ngFor="let liquidityType of liquidityTypes" >
+        {{liquidityType}}
+      </option>
+    </select>
+  </div>  
   <button class="btn btn-primary" type="submit">Speichern</button>
 </form>

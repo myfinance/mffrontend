@@ -15,10 +15,12 @@ import { FormsModule } from '@angular/forms';
 export class AssetviewcontrollerComponent {
   dateForAnalysis: Date | undefined;
   referenceDate: Date;
+  rangeDates: Date[] | undefined;
 
   constructor(private service:AssetviewService) {
     this.dateForAnalysis = this.service.getDateForAnalysis();
     this.referenceDate = this.service.getReferenceDate();
+    this.rangeDates = this.service.getRangeDates();
   }
 
   handleDateForAnalysisChanged(date: Date) {
@@ -27,5 +29,9 @@ export class AssetviewcontrollerComponent {
 
   handleReferenceDateChanged(date: Date) {
     this.service.setReferenceDate(date); 
+  }
+
+  handleRangeDateChanged(date: Date[]|any) {
+    this.service.setRangeDate(date); 
   }
 }

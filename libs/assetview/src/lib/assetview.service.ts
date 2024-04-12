@@ -12,6 +12,10 @@ export class AssetviewService {
   private accountValues = new Map<string, number>([]);
   private dateaforAnalysis = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   private referenceDate = new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate());
+  private rangeDates: Date[] = [
+    new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 
+    new Date(2012, 1, 1)
+  ];
   accValueEventSubject: Subject<unknown> = new Subject<unknown>();
   selectedAccEventSubject: Subject<unknown> = new Subject<unknown>();
 
@@ -80,6 +84,16 @@ export class AssetviewService {
 
   setReferenceDate(referenceDate:Date) {
     this.referenceDate = referenceDate;
+    this.selectedAccEventSubject.next(true);
+  }
+
+  getRangeDates(): Date[] {
+    return this.rangeDates;
+  }
+
+  setRangeDate(rangeDate:Date[]) {
+    this.rangeDates[0] = rangeDate[0];
+    this.rangeDates[1] = rangeDate[1];
     this.selectedAccEventSubject.next(true);
   }
 

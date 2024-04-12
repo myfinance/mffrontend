@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InstrumentvaluehistoryComponent } from './instrumentvaluehistory.component';
+import { AssetValueHistoryViewComponent } from './assetvaluehistoryviewcomponent';
 
 describe('InstrumentvaluehistoryComponent', () => {
-  let component: InstrumentvaluehistoryComponent;
-  let fixture: ComponentFixture<InstrumentvaluehistoryComponent>;
+  let component: AssetValueHistoryViewComponent;
+  let fixture: ComponentFixture<AssetValueHistoryViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InstrumentvaluehistoryComponent],
+      imports: [AssetValueHistoryViewComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InstrumentvaluehistoryComponent);
+    fixture = TestBed.createComponent(AssetValueHistoryViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

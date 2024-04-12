@@ -10,6 +10,7 @@ export class Instrument {
     additionalMaps: Map<AdditionalMapsEnum, string>;
     additionalProperties: Map<AdditionalPropertiesEnum, string>;
     additionalLists: Map<AdditionalListsEnum, string[]>;
+    liquidityType: LiquidityTypeEnum;
 
     constructor(instrumentType: InstrumentTypeEnum, description: string, parentBusinesskey: string, tenantBusinesskey: string) {
         this.instrumentType = instrumentType;
@@ -23,10 +24,12 @@ export class Instrument {
         this.additionalMaps = new Map<AdditionalMapsEnum, string>();
         this.additionalProperties = new Map<AdditionalPropertiesEnum, string>();
         this.additionalLists = new Map<AdditionalListsEnum, string[]>();
+        this.liquidityType = LiquidityTypeEnum.LIQUIDE;
     }
     toJSON() {
         return {
             instrumentType: this.instrumentType,
+            liquidityType: this.liquidityType,
             description: this.description,
             active: this.active,
             treelastchanged: this.treelastchanged,
@@ -65,6 +68,14 @@ export const InstrumentTypeEnum = {
     LOAN: 'LOAN' as InstrumentTypeEnum,
     BUDGETPORTFOLIO: 'BUDGETPORTFOLIO' as InstrumentTypeEnum,
     UNKNOWN: 'UNKNOWN' as InstrumentTypeEnum
+};
+export type LiquidityTypeEnum = 'LIQUIDE' | 'SHORTTERM' | 'MIDTERM' | 'LONGTERM'| 'UNKNOWN';
+export const LiquidityTypeEnum = {
+    LIQUIDE: 'LIQUIDE' as LiquidityTypeEnum,
+    SHORTTERM: 'SHORTTERM' as LiquidityTypeEnum,
+    MIDTERM: 'MIDTERM' as LiquidityTypeEnum,
+    LONGTERM: 'LONGTERM' as LiquidityTypeEnum,
+    UNKNOWN: 'UNKNOWN' as LiquidityTypeEnum
 };
 export type AdditionalMapsEnum = 'KEYVALUE' | 'YIELDGOAL' | 'REALESTATEPROFITS' | 'EQUITYSYMBOLS' ;
 export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN'| 'IBAN' ;
