@@ -5,6 +5,8 @@ import { AdditionalPropertiesEnum, Instrument, InstrumentTypeEnum } from './mode
 import { MfconfigService } from './mfconfig.service';
 import { AuthService } from './auth.service';
 import { Transaction } from './model/transaction';
+import { ValueCurve } from './model/valuecurve';
+import { InstrumentDetails } from './model/instrumentdetails';
 
 @Injectable({
   providedIn: 'root'
@@ -200,8 +202,26 @@ export class MfdataService {
     return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+valueDate.toISOString().split('T')[0]);
   }
 
-  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<number> {
+  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve[]> {
     return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
+  }
+
+  getDetailedAccounts(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+    return this.mfClientservice.getResource("listdetailedaccounts?tenantbusinesskey="+this.currentTenant.businesskey 
+      + "&duedate="+duedate.toISOString().split('T')[0]
+      + "&referencedate="+referenceDate.toISOString().split('T')[0]);
+  }
+
+  getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+    return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
+      + "&duedate="+duedate.toISOString().split('T')[0]
+      + "&referencedate="+referenceDate.toISOString().split('T')[0]);
+  }
+
+  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+    return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
+    + "&duedate="+duedate.toISOString().split('T')[0]
+    + "&referencedate="+referenceDate.toISOString().split('T')[0]);
   }
 
 }
