@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { AssetviewService } from '../assetview.service';
-//import { MfdataService } from '@mffrontend/shared/data-access-mfdata';
+import { LiquidityTypeEnum } from '@mffrontend/shared/data-access-mfdata';
+
+
+interface ChartDataSet {
+    label: string;
+    data: number[];
+}
 
 @Component({
     selector: 'mffrontend-accountvalueview',
@@ -13,8 +19,12 @@ import { AssetviewService } from '../assetview.service';
 })
 export class AccountvalueviewComponent implements OnInit {
     basicData: any;
-
     basicOptions: any;
+
+    liquidSum = 0.0;
+    shortTermSum = 0.0;
+    midTermSum = 0.0;
+    longTermSum = 0.0;
 
     constructor(private service:AssetviewService) {
 
@@ -47,6 +57,7 @@ export class AccountvalueviewComponent implements OnInit {
             scales: {
                 y: {
                     beginAtZero: true,
+                    stacked: true,
                     ticks: {
                         color: textColorSecondary
                     },
@@ -56,6 +67,7 @@ export class AccountvalueviewComponent implements OnInit {
                     }
                 },
                 x: {
+                    stacked: true,
                     ticks: {
                         color: textColorSecondary
                     },
@@ -69,19 +81,70 @@ export class AccountvalueviewComponent implements OnInit {
     }
 
     setData() {
-        const data: Map<string, number> = this.service.getAccountValues();
+        const data = this.loadAndConvertInstrumentdetails()
         this.basicData = {
-            labels: Array.from(data.keys()),
-            datasets: [
-                {
-                    label: 'Account Values',
-                    data: Array.from(data.values()),
-                    //backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                    //borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-                    borderWidth: 1
-                }
-            ]
+            labels: ['Liquide:'+this.liquidSum,'innerhalb eines Jahres:'+this.shortTermSum, 'Mittelfristig:'+this.midTermSum,'Rentenanlage:'+this.longTermSum],
+            datasets: data
         };
+    }
+
+
+
+    private loadAndConvertInstrumentdetails(): ChartDataSet[] {
+        let datasets:ChartDataSet[] = [];
+        this.liquidSum=0.0;
+        this.shortTermSum=0.0;
+        this.midTermSum=0.0;
+        this.longTermSum=0.0;
+        this.service.getInstrumentDetails().forEach(i=>{
+            switch(i.liquiditytype) {
+                case LiquidityTypeEnum.LIQUIDE: { 
+                    this.liquidSum += i.value;
+                    const dataSet: ChartDataSet = {
+                        label:i.businesskey,
+                        data: [i.value,0,0,0]
+                    }
+                    datasets.push(dataSet);
+                    break; 
+                 } 
+                 case LiquidityTypeEnum.SHORTTERM: { 
+                    this.shortTermSum += i.value;
+                    const dataSet: ChartDataSet = {
+                        label:i.businesskey,
+                        data: [0,i.value,0,0]
+                    }
+                    datasets.push(dataSet);
+                    break; 
+                 } 
+                 case LiquidityTypeEnum.MIDTERM: { 
+                    this.midTermSum += i.value;
+                    const dataSet: ChartDataSet = {
+                        label:i.businesskey,
+                        data: [0,0,i.value,0]
+                    }
+                    datasets.push(dataSet);
+                    break; 
+                 } 
+                 case LiquidityTypeEnum.LONGTERM: { 
+                    this.longTermSum += i.value;
+                    const dataSet: ChartDataSet = {
+                        label:i.businesskey,
+                        data: [0,0,0,i.value]
+                    }
+                    datasets.push(dataSet);
+                    break; 
+                 } 
+                 default: { 
+                    //statements; 
+                    break; 
+                 } 
+            }
+        })
+        datasets=this.service.getInstrumentDetails().map(i=>({
+            label:i.businesskey,
+            data: [i.value,0,0,0]
+        }))
+        return datasets;
     }
 
     handleBarClick(event: any) {

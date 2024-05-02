@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { Transaction } from './model/transaction';
 import { ValueCurve } from './model/valuecurve';
 import { InstrumentDetails } from './model/instrumentdetails';
+import { InstrumentFullDetails } from './model/instrumentfulldetails';
 
 @Injectable({
   providedIn: 'root'
@@ -213,12 +214,12 @@ export class MfdataService {
   }
 
   getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
-    return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
-      + "&duedate="+duedate.toISOString().split('T')[0]
+    return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey='"+this.currentTenant.businesskey 
+      + "'&duedate="+duedate.toISOString().split('T')[0]
       + "&referencedate="+referenceDate.toISOString().split('T')[0]);
   }
 
-  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date) : Observable<InstrumentFullDetails[]> {
     return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
     + "&duedate="+duedate.toISOString().split('T')[0]
     + "&referencedate="+referenceDate.toISOString().split('T')[0]);

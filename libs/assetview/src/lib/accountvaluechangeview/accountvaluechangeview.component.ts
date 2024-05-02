@@ -23,7 +23,7 @@ export class AccountvaluechangeviewComponent {
         error: (e) => console.error(e)
       }
     )
-    this.service.selectedAccEventSubject.subscribe(
+    this.service.accValueEventSubject.subscribe(
       {
         next: () => {
           this.loadDetails();
