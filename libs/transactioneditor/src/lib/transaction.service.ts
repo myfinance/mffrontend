@@ -17,8 +17,11 @@ export class TransactionService {
   saveIncomeExpense(isExpense: boolean, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ) {
     let transactionType = TransactionTypeEnum.INCOME;
     let finalValue = value;
-    if(isExpense) {
+    if(value < 0) {
       finalValue = - value;
+    }
+    if(isExpense) {
+      finalValue = - finalValue;
       transactionType = TransactionTypeEnum.EXPENSE;
     }
     const cashflows:Map<string, number> = new Map();

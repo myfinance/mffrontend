@@ -22,7 +22,7 @@ import { ButtonModule } from 'primeng/button';
 export class LogstreamComponent {
   title = 'socketrv';
   content = '';
-  received:string[] = [];
+  received:[string, string] [] = [];
   maxLogSize = 50;
   visible = false;
 
@@ -46,19 +46,17 @@ export class LogstreamComponent {
 
   showDialog() {
     this.visible = true;
-}
+  }
 
   receive(message: string) {
     console.log('Received message from WebSocket: ', message);
-    message = this.parseMessage(message);
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: message });
-    this.received.unshift(message);
+    this.received.unshift(this.parseMessage(message));
     if(this.received.length>this.maxLogSize) {
       this.received.pop();
     }
   }
 
-  parseMessage(message: string) : string {
+  parseMessage(message: string) : [string, string] {
     const messageParts = message.split(':');
     if(messageParts[0] === 'INSTRUMENTEVENT') {
       this.websocketService.triggerInstrumentEvent();
@@ -66,7 +64,12 @@ export class LogstreamComponent {
     if(messageParts[0] === 'TRANSACTIONEVENT') {
       this.websocketService.triggerTransactionEvent();
     }
-    return message.substring(message.indexOf(':')+1, message.length);
+    if(messageParts[0] === 'ERROR' || messageParts[0] === 'FATAL') {
+      this.messageService.add({ severity: 'Error', summary: 'Error', detail: message });
+    } else {
+      this.messageService.add({ severity: 'info', summary: 'Info', detail: message });
+    }
+    return [messageParts[0], message.substring(message.indexOf(':')+1, message.length)];
   }
 
   clear() {
