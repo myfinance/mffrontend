@@ -1,4 +1,6 @@
-    <mat-card>
+
+
+    <p-sidebar [(visible)]="sidebarVisible">
         <label>Stichtag</label>
         <p-calendar [(ngModel)]="dateForAnalysis" (onSelect)="handleDateForAnalysisChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
 
@@ -8,7 +10,7 @@
 
         <label>Betrachtungszeitraum für historische Zeitreihen</label>
         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
-
-    </mat-card>
+    </p-sidebar>
+    <p-button (click)="sidebarVisible = true" icon="pi pi-calendar"></p-button>
 
 
