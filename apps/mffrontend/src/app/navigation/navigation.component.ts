@@ -6,11 +6,12 @@ import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { Router } from '@angular/router';
 import { Instrument, MfdataService, SharedDataAccessMfdataModule } from '@mffrontend/shared/data-access-mfdata';
+import { LogstreamComponent} from '@mffrontend/logstream';
 
 @Component({
   selector: 'mffrontend-navigation',
   standalone: true,
-  imports: [CommonModule, MenubarModule, MenuModule, ButtonModule, SharedDataAccessMfdataModule],
+  imports: [CommonModule, MenubarModule, MenuModule, ButtonModule, SharedDataAccessMfdataModule, LogstreamComponent],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })

@@ -1,5 +1,10 @@
-  <div class="scrollable-container">
+<p-toast></p-toast>
+<p-button size="small" (click)="showDialog()" icon="pi pi-inbox" badge="{{this.received.length}}" badgeClass="p-badge-danger" [outlined]="true"></p-button>
+<p-dialog header="Log" [(visible)]="visible" [style]="{width: '100vw'}">
+  <p-messages></p-messages>
+  <!--<div class="scrollable-container">
     <ul>
       <li *ngFor="let item of received">{{item}} </li>
     </ul>
-  </div>
+  </div>-->
+</p-dialog>
