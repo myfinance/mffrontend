@@ -11,6 +11,6 @@
         <label>Betrachtungszeitraum für historische Zeitreihen</label>
         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
     </p-sidebar>
-    <p-button (click)="sidebarVisible = true" icon="pi pi-calendar"></p-button>
+    <p-button (click)="sidebarVisible = true" icon="pi pi-calendar" [outlined]="true"></p-button>
 
 
