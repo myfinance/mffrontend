@@ -8,14 +8,17 @@ import { Subject } from 'rxjs';
 })
 export class AssetviewService {
 
-  private instrumentDetails: InstrumentDetails[] = [];
+  private accountDetails: InstrumentDetails[] = [];
+  private budgetDetails: InstrumentDetails[] = [];
   private selectedAccountKey="";
+
+  private tenantValueCurve: Map<Date, number> = new Map<Date, number>();
 
   private dateaforAnalysis = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   private referenceDate = new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate());
   private rangeDates: Date[] = [
-    new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), 
-    new Date(2012, 1, 1)
+    new Date(2024, 1, 1),
+    new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   ];
 
   //something changed that influences the accounts and there values
@@ -26,7 +29,7 @@ export class AssetviewService {
     this.mfDataService.tenantChangedSubject.subscribe(
       {
         next: () => {
-          this.loadInstrumentDetails();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
@@ -34,7 +37,7 @@ export class AssetviewService {
     this.mfDataService.getInstrumentEventSubject().subscribe(
       {
         next: () => {
-          this.loadInstrumentDetails();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
@@ -42,17 +45,21 @@ export class AssetviewService {
     this.mfDataService.getTransactionEventSubject().subscribe(
       {
         next: () => {
-          this.loadInstrumentDetails();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
     )
-    this.loadInstrumentDetails();
+    this.loadData();
   }
 
 
-  getInstrumentDetails(): InstrumentDetails[] {
-    return this.instrumentDetails;
+  getAccountDetails(): InstrumentDetails[] {
+    return this.accountDetails;
+  }
+
+  getBudgetDetails(): InstrumentDetails[] {
+    return this.budgetDetails;
   }
 
   setSelectedAccount(busnesskey: string) {
@@ -76,7 +83,7 @@ export class AssetviewService {
 
   setDateForAnalysis(dateaforAnalysis:Date) {
     this.dateaforAnalysis = dateaforAnalysis;
-    this.loadInstrumentDetails();
+    this.loadAccountDetails();
   }
 
   getReferenceDate(): Date {
@@ -85,7 +92,7 @@ export class AssetviewService {
 
   setReferenceDate(referenceDate:Date) {
     this.referenceDate = referenceDate;
-    this.loadInstrumentDetails();
+    this.loadAccountDetails();
   }
 
   getRangeDates(): Date[] {
@@ -95,14 +102,49 @@ export class AssetviewService {
   setRangeDate(rangeDate:Date[]) {
     this.rangeDates[0] = rangeDate[0];
     this.rangeDates[1] = rangeDate[1];
-    this.accValueEventSubject.next(true);
+    this.loadTenantValueCurve();
   }
 
-  private loadInstrumentDetails() {
+  getTenantValueCurve(): Map<Date, number> {
+    return this.tenantValueCurve;
+  }
+
+  loadData(){
+    this.loadTenantValueCurve();
+    this.loadAccountDetails();
+    this.loadBudgetDetails();
+
+  }
+
+  private loadTenantValueCurve(){
+    this.mfDataService.getInstrumentValueCurve(this.mfDataService.currentTenant.businesskey, this.rangeDates[0], this.rangeDates[1]).subscribe(
+      {
+        next: (valueCurve) => {
+          this.tenantValueCurve = valueCurve.valueCurve;
+          this.accValueEventSubject.next(true);
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  private loadAccountDetails() {
     this.mfDataService.getDetailedAccounts(this.dateaforAnalysis, this.referenceDate).subscribe(
       {
         next: (instrumentDetails) => {
-          this.instrumentDetails = instrumentDetails;
+          this.accountDetails = instrumentDetails;
+          this.accValueEventSubject.next(true);
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  private loadBudgetDetails() {
+    this.mfDataService.getDetailedBudgets(this.dateaforAnalysis, this.referenceDate).subscribe(
+      {
+        next: (instrumentDetails) => {
+          this.budgetDetails = instrumentDetails;
           this.accValueEventSubject.next(true);
         },
         error: (e) => console.error(e)

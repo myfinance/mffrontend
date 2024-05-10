@@ -26,7 +26,9 @@ export class AccountvalueviewComponent implements OnInit {
     midTermSum = 0.0;
     longTermSum = 0.0;
 
-    constructor(private service:AssetviewService) {
+    sum=0.0;
+
+    constructor(private service: AssetviewService) {
 
     }
 
@@ -35,16 +37,16 @@ export class AccountvalueviewComponent implements OnInit {
         const textColor = documentStyle.getPropertyValue('--text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        
+
         this.service.accValueEventSubject.subscribe(
             {
                 next: () => {
                     this.setData();
-                  },
-                  error: (e) => console.error(e)
+                },
+                error: (e) => console.error(e)
             }
-          )
-          this.setData();
+        )
+        this.setData();
 
         this.basicOptions = {
             plugins: {
@@ -83,7 +85,7 @@ export class AccountvalueviewComponent implements OnInit {
     setData() {
         const data = this.loadAndConvertInstrumentdetails()
         this.basicData = {
-            labels: ['Liquide:'+this.liquidSum,'innerhalb eines Jahres:'+this.shortTermSum, 'Mittelfristig:'+this.midTermSum,'Rentenanlage:'+this.longTermSum],
+            labels: ['Liquide:' + this.liquidSum, 'innerhalb eines Jahres:' + this.shortTermSum, 'Mittelfristig:' + this.midTermSum, 'Rentenanlage:' + this.longTermSum],
             datasets: data
         };
     }
@@ -91,58 +93,60 @@ export class AccountvalueviewComponent implements OnInit {
 
 
     private loadAndConvertInstrumentdetails(): ChartDataSet[] {
-        let datasets:ChartDataSet[] = [];
-        this.liquidSum=0.0;
-        this.shortTermSum=0.0;
-        this.midTermSum=0.0;
-        this.longTermSum=0.0;
-        this.service.getInstrumentDetails().forEach(i=>{
-            switch(i.liquiditytype) {
-                case LiquidityTypeEnum.LIQUIDE: { 
+        let datasets: ChartDataSet[] = [];
+        this.liquidSum = 0.0;
+        this.shortTermSum = 0.0;
+        this.midTermSum = 0.0;
+        this.longTermSum = 0.0;
+        this.sum = 0.0;
+        this.service.getAccountDetails().forEach(i => {
+            this.sum+=i.value;
+            switch (i.liquiditytype) {
+                case LiquidityTypeEnum.LIQUIDE: {
                     this.liquidSum += i.value;
                     const dataSet: ChartDataSet = {
-                        label:i.businesskey,
-                        data: [i.value,0,0,0]
+                        label: i.businesskey,
+                        data: [i.value, 0, 0, 0]
                     }
                     datasets.push(dataSet);
-                    break; 
-                 } 
-                 case LiquidityTypeEnum.SHORTTERM: { 
+                    break;
+                }
+                case LiquidityTypeEnum.SHORTTERM: {
                     this.shortTermSum += i.value;
                     const dataSet: ChartDataSet = {
-                        label:i.businesskey,
-                        data: [0,i.value,0,0]
+                        label: i.businesskey,
+                        data: [0, i.value, 0, 0]
                     }
                     datasets.push(dataSet);
-                    break; 
-                 } 
-                 case LiquidityTypeEnum.MIDTERM: { 
+                    break;
+                }
+                case LiquidityTypeEnum.MIDTERM: {
                     this.midTermSum += i.value;
                     const dataSet: ChartDataSet = {
-                        label:i.businesskey,
-                        data: [0,0,i.value,0]
+                        label: i.businesskey,
+                        data: [0, 0, i.value, 0]
                     }
                     datasets.push(dataSet);
-                    break; 
-                 } 
-                 case LiquidityTypeEnum.LONGTERM: { 
+                    break;
+                }
+                case LiquidityTypeEnum.LONGTERM: {
                     this.longTermSum += i.value;
                     const dataSet: ChartDataSet = {
-                        label:i.businesskey,
-                        data: [0,0,0,i.value]
+                        label: i.businesskey,
+                        data: [0, 0, 0, i.value]
                     }
                     datasets.push(dataSet);
-                    break; 
-                 } 
-                 default: { 
+                    break;
+                }
+                default: {
                     //statements; 
-                    break; 
-                 } 
+                    break;
+                }
             }
         })
-        datasets=this.service.getInstrumentDetails().map(i=>({
-            label:i.businesskey,
-            data: [i.value,0,0,0]
+        datasets = this.service.getAccountDetails().map(i => ({
+            label: i.businesskey,
+            data: [i.value, 0, 0, 0]
         }))
         return datasets;
     }
@@ -151,10 +155,10 @@ export class AccountvalueviewComponent implements OnInit {
         // Access the clicked dataset and index
         //const datasetIndex = event.element.datasetIndex;
         const dataIndex = event.element.index;
-    
+
         // Access the data point that was clicked
         //const clickedDataPoint = this.basicData.datasets[datasetIndex].data[dataIndex];
         this.service.setSelectedAccount(this.basicData.labels[dataIndex]);
 
-      }
+    }
 }

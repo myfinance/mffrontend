@@ -203,7 +203,7 @@ export class MfdataService {
     return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+valueDate.toISOString().split('T')[0]);
   }
 
-  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve[]> {
+  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve> {
     return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
   }
 
@@ -214,8 +214,8 @@ export class MfdataService {
   }
 
   getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
-    return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey='"+this.currentTenant.businesskey 
-      + "'&duedate="+duedate.toISOString().split('T')[0]
+    return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
+      + "&duedate="+duedate.toISOString().split('T')[0]
       + "&referencedate="+referenceDate.toISOString().split('T')[0]);
   }
 
@@ -224,5 +224,6 @@ export class MfdataService {
     + "&duedate="+duedate.toISOString().split('T')[0]
     + "&referencedate="+referenceDate.toISOString().split('T')[0]);
   }
+
 
 }
