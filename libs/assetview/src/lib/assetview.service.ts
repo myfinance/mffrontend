@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MfdataService } from '@mffrontend/shared/data-access-mfdata';
 import { InstrumentDetails } from 'libs/shared/data-access-mfdata/src/lib/model/instrumentdetails';
+import { InstrumentFullDetails } from 'libs/shared/data-access-mfdata/src/lib/model/instrumentfulldetails';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -10,7 +11,8 @@ export class AssetviewService {
 
   private accountDetails: InstrumentDetails[] = [];
   private budgetDetails: InstrumentDetails[] = [];
-  private selectedAccountKey="";
+  private selectedInstrumentKey="";
+  private selectedInstrumentFullDetails: InstrumentFullDetails | undefined;
 
   private tenantValueCurve: Map<Date, number> = new Map<Date, number>();
 
@@ -21,9 +23,14 @@ export class AssetviewService {
     new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   ];
 
-  //something changed that influences the accounts and there values
+  //something changed that influences the accounts and values
   accValueEventSubject: Subject<unknown> = new Subject<unknown>();
-
+  //something changed that influences the budgets and values
+  budgetValueEventSubject: Subject<unknown> = new Subject<unknown>();
+  //something changed that influences the tenant values
+  tenantValueEventSubject: Subject<unknown> = new Subject<unknown>();
+  //something changed that influences selcted Instrument or its values
+  selectedInstrumentEventSubject: Subject<unknown> = new Subject<unknown>();
 
   constructor(private mfDataService: MfdataService) {
     this.mfDataService.tenantChangedSubject.subscribe(
@@ -62,18 +69,13 @@ export class AssetviewService {
     return this.budgetDetails;
   }
 
-  setSelectedAccount(busnesskey: string) {
-    this.selectedAccountKey = busnesskey;
-    this.accValueEventSubject.next(true);
+  setSelectedInstrument(busnesskey: string) {
+    this.selectedInstrumentKey = busnesskey;
+    this.loadInstrumentDetails();
   }
 
-  getSelectedAccountValue(): number {
-    //const value = this.accountValues.get(this.selectedAccountKey);
-    //if (value!==undefined) {
-    //  return value;
-    //}
-    //else 
-    return 0.0;
+  getSelectedInstrument(): InstrumentFullDetails|undefined {
+    return this.selectedInstrumentFullDetails;
   }
 
 
@@ -83,7 +85,8 @@ export class AssetviewService {
 
   setDateForAnalysis(dateaforAnalysis:Date) {
     this.dateaforAnalysis = dateaforAnalysis;
-    this.loadAccountDetails();
+    this.loadDetails();
+    this.loadInstrumentDetails();
   }
 
   getReferenceDate(): Date {
@@ -92,7 +95,8 @@ export class AssetviewService {
 
   setReferenceDate(referenceDate:Date) {
     this.referenceDate = referenceDate;
-    this.loadAccountDetails();
+    this.loadDetails();
+    this.loadInstrumentDetails();
   }
 
   getRangeDates(): Date[] {
@@ -103,6 +107,7 @@ export class AssetviewService {
     this.rangeDates[0] = rangeDate[0];
     this.rangeDates[1] = rangeDate[1];
     this.loadTenantValueCurve();
+    this.loadInstrumentDetails();
   }
 
   getTenantValueCurve(): Map<Date, number> {
@@ -111,6 +116,12 @@ export class AssetviewService {
 
   loadData(){
     this.loadTenantValueCurve();
+    this.loadDetails();
+    this.loadInstrumentDetails();
+
+  }
+
+  loadDetails(){
     this.loadAccountDetails();
     this.loadBudgetDetails();
 
@@ -121,7 +132,7 @@ export class AssetviewService {
       {
         next: (valueCurve) => {
           this.tenantValueCurve = valueCurve.valueCurve;
-          this.accValueEventSubject.next(true);
+          this.tenantValueEventSubject.next(true);
         },
         error: (e) => console.error(e)
       }
@@ -145,11 +156,26 @@ export class AssetviewService {
       {
         next: (instrumentDetails) => {
           this.budgetDetails = instrumentDetails;
-          this.accValueEventSubject.next(true);
+          this.budgetValueEventSubject.next(true);
         },
         error: (e) => console.error(e)
       }
     )
+  }
+
+  private loadInstrumentDetails() {
+    if(this.selectedInstrumentKey!== null && this.selectedInstrumentKey!==""){
+      this.mfDataService.getInstrumenDetails(this.selectedInstrumentKey, this.dateaforAnalysis, this.referenceDate, this.rangeDates[0], this.rangeDates[1], this.referenceDate, this.dateaforAnalysis).subscribe(
+        {
+          next: (instrumentFullDetails) => {
+            this.selectedInstrumentFullDetails = instrumentFullDetails;
+            this.selectedInstrumentEventSubject.next(true);
+          },
+          error: (e) => console.error(e)
+        }
+      )
+    }
+
   }
 
 } 

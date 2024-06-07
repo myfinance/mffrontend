@@ -219,11 +219,13 @@ export class MfdataService {
       + "&referencedate="+referenceDate.toISOString().split('T')[0]);
   }
 
-  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date) : Observable<InstrumentFullDetails[]> {
+  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date, startTimeSeries:Date, endTimeSeries:Date, firstCashflowDate:Date, lastCashflowDate:Date) : Observable<InstrumentFullDetails> {
     return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
     + "&duedate="+duedate.toISOString().split('T')[0]
-    + "&referencedate="+referenceDate.toISOString().split('T')[0]);
+    + "&referencedate="+referenceDate.toISOString().split('T')[0]
+    + "&starttimeseries="+startTimeSeries.toISOString().split('T')[0]
+    + "&endtimeseries="+endTimeSeries.toISOString().split('T')[0]
+    + "&firstcashflowdate="+firstCashflowDate.toISOString().split('T')[0]
+    + "&lastcashflowdate="+lastCashflowDate.toISOString().split('T')[0]);
   }
-
-
 }

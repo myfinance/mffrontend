@@ -37,7 +37,7 @@ export class BudgetvaluechangeviewComponent implements OnInit {
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        this.service.accValueEventSubject.subscribe(
+        this.service.budgetValueEventSubject.subscribe(
             {
                 next: () => {
                     this.setData();
@@ -151,13 +151,9 @@ export class BudgetvaluechangeviewComponent implements OnInit {
     }
 
     handleBarClick(event: any) {
-        // Access the clicked dataset and index
-        //const datasetIndex = event.element.datasetIndex;
-        const dataIndex = event.element.index;
-
-        // Access the data point that was clicked
-        //const clickedDataPoint = this.basicData.datasets[datasetIndex].data[dataIndex];
-        this.service.setSelectedAccount(this.basicData.labels[dataIndex]);
+        const datasetIndex = event.element.datasetIndex;
+        const datasetLabel = this.basicData.datasets[datasetIndex].label;
+        this.service.setSelectedInstrument(datasetLabel);
 
     }
 }

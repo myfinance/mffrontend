@@ -27,7 +27,7 @@ export class AssetValueHistoryViewComponent implements OnInit {
     const surfaceBorder = this.documentStyle.getPropertyValue('--surface-border');
     const textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
 
-    this.service.accValueEventSubject.subscribe(
+    this.service.tenantValueEventSubject.subscribe(
       {
           next: () => {
               this.setData();
@@ -35,8 +35,6 @@ export class AssetValueHistoryViewComponent implements OnInit {
           error: (e) => console.error(e)
       }
   )
-
-
 
     this.options = {
       stacked: false,

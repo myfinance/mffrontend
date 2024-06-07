@@ -1,38 +1,39 @@
+import { Cashflow } from "./cashflow";
 import { InstrumentTypeEnum } from "./instrument";
-import { Transaction } from "./transaction";
 
 export class InstrumentFullDetails { 
 
 
     businesskey: string;
     description: string;
-    instrumenttype: InstrumentTypeEnum;
+    instrumentType: InstrumentTypeEnum;
     additionalValues: Map<string, number>
     valueCurve: Map<Date, number>;
-    expensesLastMonth: Transaction[];
-    incomeLastMonth: Transaction[];
+    incomeInPeriod: Cashflow[];
+    expensesInPeriod: Cashflow[];
 
 
 
-    constructor(businesskey: string, description: string, instrumenttype: InstrumentTypeEnum, 
-        additionalValues: Map<string, number>, valueCurve: Map<Date, number>,expensesLastMonth:Transaction[],incomeLastMonth:Transaction[]) {
+    constructor(businesskey: string, description: string, instrumentType: InstrumentTypeEnum, 
+        expensesInPeriod:Cashflow[],incomeInPeriod:Cashflow[], additionalValues: Map<string, number>) {
         this.businesskey = businesskey;
         this.description = description;
-        this.instrumenttype = instrumenttype;
-        this.additionalValues = additionalValues;
-        this.valueCurve = valueCurve;
-        this.expensesLastMonth = expensesLastMonth;
-        this.incomeLastMonth = incomeLastMonth;
+        this.instrumentType = instrumentType;
+        this.expensesInPeriod = expensesInPeriod;
+        this.incomeInPeriod = incomeInPeriod;
+        this.additionalValues = new Map<string, number>();
+        this.valueCurve = new Map<Date, number>();
+        this.additionalValues = new Map(Object.entries(additionalValues));
     }
     toJSON() {
         return {
             businesskey: this.businesskey,
             description: this.description,
-            instrumenttype: this.instrumenttype,
-            additionalValues: this.additionalValues,
-            valueCurve: this.valueCurve,
-            expensesLastMonth: this.expensesLastMonth,
-            incomeLastMonth: this.incomeLastMonth
+            instrumentType: this.instrumentType,
+            additionalValues: Object.fromEntries(this.additionalValues),
+            valueCurve: Object.fromEntries(this.valueCurve),
+            expensesInPeriod: this.expensesInPeriod,
+            incomeInPeriod: this.incomeInPeriod
         }
     }   
 }
