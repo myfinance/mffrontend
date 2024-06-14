@@ -132,8 +132,15 @@ export class MfdataService {
     });
   }
 
+  //toIsoString converts the Date to UTC Time. ForDate without Time (hour=0) does this mean day-1 what is not the intention. So add the TimeZoneOffset before
+  private dateToIsoString(date: Date): string {
+    const utcDate = date;
+    utcDate.setMinutes(0-date.getTimezoneOffset());
+    return utcDate.toISOString().split('T')[0];
+  }
+
   getTransactions(startDate: Date, endDate: Date): Observable<Transaction[]> {
-    return this.mfClientservice.getResource("transactions?startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
+    return this.mfClientservice.getResource("transactions?startDate="+this.dateToIsoString(startDate) + "&endDate="+this.dateToIsoString(endDate) );
   }
   saveTransaction(transaction: Transaction) {
     return this.mfClientservice.postRequest(JSON.stringify(transaction), "saveTransaction").subscribe({
@@ -200,32 +207,32 @@ export class MfdataService {
   }
 
   getInstrumentValue(businesskey:string, valueDate: Date): Observable<number> {
-    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+valueDate.toISOString().split('T')[0]);
+    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+this.dateToIsoString(valueDate));
   }
 
   getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve> {
-    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+startDate.toISOString().split('T')[0] + "&endDate="+endDate.toISOString().split('T')[0]);
+    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+this.dateToIsoString(startDate) + "&endDate="+this.dateToIsoString(endDate));
   }
 
   getDetailedAccounts(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedaccounts?tenantbusinesskey="+this.currentTenant.businesskey 
-      + "&duedate="+duedate.toISOString().split('T')[0]
-      + "&referencedate="+referenceDate.toISOString().split('T')[0]);
+      + "&duedate="+this.dateToIsoString(duedate)
+      + "&referencedate="+this.dateToIsoString(referenceDate));
   }
 
   getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
-      + "&duedate="+duedate.toISOString().split('T')[0]
-      + "&referencedate="+referenceDate.toISOString().split('T')[0]);
+      + "&duedate="+this.dateToIsoString(duedate)
+      + "&referencedate="+this.dateToIsoString(referenceDate));
   }
 
   getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date, startTimeSeries:Date, endTimeSeries:Date, firstCashflowDate:Date, lastCashflowDate:Date) : Observable<InstrumentFullDetails> {
     return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
-    + "&duedate="+duedate.toISOString().split('T')[0]
-    + "&referencedate="+referenceDate.toISOString().split('T')[0]
-    + "&starttimeseries="+startTimeSeries.toISOString().split('T')[0]
-    + "&endtimeseries="+endTimeSeries.toISOString().split('T')[0]
-    + "&firstcashflowdate="+firstCashflowDate.toISOString().split('T')[0]
-    + "&lastcashflowdate="+lastCashflowDate.toISOString().split('T')[0]);
+    + "&duedate="+this.dateToIsoString(duedate)
+    + "&referencedate="+this.dateToIsoString(referenceDate)
+    + "&starttimeseries="+this.dateToIsoString(startTimeSeries)
+    + "&endtimeseries="+this.dateToIsoString(endTimeSeries)
+    + "&firstcashflowdate="+this.dateToIsoString(firstCashflowDate)
+    + "&lastcashflowdate="+this.dateToIsoString(lastCashflowDate));
   }
 }

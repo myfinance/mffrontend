@@ -5,7 +5,7 @@ import { HomeViewComponent } from './home-view/home-view.component';
 import { TenanteditorComponent } from '@mffrontend/tenanteditor';
 import { AssetviewComponent } from '@mffrontend/assetview';
 import { InstrumenteditorComponent } from '@mffrontend/instrumenteditor';
-import { TransactioneditorComponent } from '@mffrontend/transactioneditor';
+import { MassloadComponent, TransactioneditorComponent } from '@mffrontend/transactioneditor';
 import { LoginComponent, LogoutComponent } from '@mffrontend/shared/data-access-mfdata';
 
 export const appRoutes: Route[] = [  {
@@ -36,6 +36,10 @@ export const appRoutes: Route[] = [  {
       {
         path: 'transactioneditor',
         component: TransactioneditorComponent,
+      },
+      {
+        path: 'transactionmassload',
+        component: MassloadComponent,
       },
       {
         path: 'assetview',

@@ -1,15 +1,14 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Instrument, Transaction} from '@mffrontend/shared/data-access-mfdata';
+import { Instrument, Transaction } from '@mffrontend/shared/data-access-mfdata';
 import { TransactionService } from '../transaction.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatDividerModule} from '@angular/material/divider';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
 import { TransactionObjectView } from '../TransactionObjectView';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { SidebarModule } from 'primeng/sidebar';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { DividerModule } from 'primeng/divider';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -17,27 +16,21 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 @Component({
   selector: 'mffrontend-transactionview',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatDatepickerModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatDividerModule, MatSelectModule, MatSortModule],
+  imports: [CommonModule, SidebarModule, CalendarModule, DropdownModule, FormsModule, DividerModule, TableModule],
   templateUrl: './transactionview.component.html',
   styleUrls: ['./transactionview.component.scss'],
 })
-export class TransactionviewComponent implements AfterViewInit {
-  displayedColumns: string[] = ['transactiondate', 'description', 'transactionType', 'value', 'instrument1', 'instrument2'];
-  selectedTransaction: TransactionObjectView | undefined;
-  version = 'na';
+export class TransactionviewComponent{
+  sidebarVisible = false;
+  rangeDates: Date[] = [new Date(new Date().getFullYear(), new Date().getMonth() - 1, new Date().getDate()), new Date(Date.now())];
   instruments: Instrument[] = [];
   transactionViewObjects: TransactionObjectView[] = [];
   filteredTransactionViewObjects: TransactionObjectView[] = [];
-  range = new FormGroup({
-    start: new FormControl<Date>(new Date(2023,11,2)),
-    end: new FormControl<Date>(new Date(Date.now())),
-    instrument: new FormControl<Instrument | null>(null, {
-      nonNullable: false
-    })
-  });
-  instrumentFilter: Instrument|undefined;
-  dataSource = new MatTableDataSource(this.filteredTransactionViewObjects);
-  @ViewChild(MatSort) sort = new MatSort();
+  instrumentFilter: Instrument | undefined;
+
+  displayedColumns: string[] = ['transactiondate', 'description', 'transactionType', 'value', 'instrument1', 'instrument2'];
+  selectedTransaction: TransactionObjectView | undefined;
+  version = 'na';
 
   constructor(private transactionService: TransactionService) {
     this.transactionService.getConfigLoadedSubject().subscribe({
@@ -56,24 +49,18 @@ export class TransactionviewComponent implements AfterViewInit {
         this.loadInstruments();
       }
     )
-    this.loadInstruments();    
+    this.loadInstruments();
     this.transactionService.getTransactionEventSubject().subscribe(
       () => {
         this.loadTransactions();
       }
     )
-    
+
   }
 
   loadTransactions() {
-    let startDate = new Date(Date.now());
-    startDate.setMonth(startDate.getMonth() -1);
-    let endDate = new Date(Date.now());
-    if(this.range.value.start!== undefined && this.range.value.end!== undefined && this.range.value.start!== null && this.range.value.end!== null) {
-      startDate = this.range.value.start;
-      endDate = this.range.value.end;
-    }
-    this.transactionService.getTransactions(startDate, endDate).subscribe(
+
+    this.transactionService.getTransactions(this.rangeDates[0], this.rangeDates[1]).subscribe(
       (transactions) => {
         this.transactionViewObjects = this.convertTransactions(transactions);
         this.filter();
@@ -103,10 +90,10 @@ export class TransactionviewComponent implements AfterViewInit {
         instrument2: undefined,
         instrument3: undefined
       };
-      if(transaction.transactionId) {
+      if (transaction.transactionId) {
         transactionViewObject.id = transaction.transactionId;
       }
-      
+
       const keys: string[] = Object.keys(transaction.cashflows);
       const key1 = keys[0];
       const key2 = keys[1];
@@ -128,23 +115,24 @@ export class TransactionviewComponent implements AfterViewInit {
   }
 
   filter() {
-    this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.instrument1?.businesskey === this.instrumentFilter?.businesskey 
-                                                    || transaction.instrument2?.businesskey === this.instrumentFilter?.businesskey
-                                                    || transaction.instrument3?.businesskey === this.instrumentFilter?.businesskey);
-    this.dataSource = new MatTableDataSource(this.filteredTransactionViewObjects);   
-    this.dataSource.sort = this.sort;                                             
+    this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.instrument1?.businesskey === this.instrumentFilter?.businesskey
+      || transaction.instrument2?.businesskey === this.instrumentFilter?.businesskey
+      || transaction.instrument3?.businesskey === this.instrumentFilter?.businesskey);
 
-  } 
+  }
 
-  clearFilter(){
+  clearFilter() {
     this.instrumentFilter = undefined;
     this.filter();
   }
 
-  
+  onInstrumentChange(event: any) {
+    this.filter();
+  }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-        
+  handleRangeDateChanged(date: Date[] | any) {
+    this.rangeDates[0] = date[0];
+    this.rangeDates[1] = date[1];
+    this.loadTransactions();
   }
 }

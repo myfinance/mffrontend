@@ -183,7 +183,7 @@ export class NavigationComponent implements OnInit {
           label: 'Ausgabenmassenupload',
           icon: 'pi pi-upload',
           command: () => {
-            //this.instrumenteditor();
+            this.transactionmassload();
           }
         },
         {
@@ -224,6 +224,10 @@ export class NavigationComponent implements OnInit {
 
   transactioneditor() {
     this.router.navigate(['/transactioneditor']);
+  }
+
+  transactionmassload() {
+    this.router.navigate(['/transactionmassload']);
   }
 
   assetview() {

@@ -1,75 +1,65 @@
+<p-divider/>
+<p-sidebar [(visible)]="sidebarVisible" styleClass="p-sidebar-lg">
+
+  <label>Betrachtungszeitraum:</label>
+  <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+  <label>Instrument:</label>
+  <p-dropdown 
+    [options]="instruments" 
+    [(ngModel)]="instrumentFilter" 
+    optionLabel="description" 
+    placeholder="Filter an Instrument" 
+    (onChange)="onInstrumentChange($event)"/>
+    <p-divider/>
+    <p-button 
+    label="clearFilter" 
+    (onClick)="clearFilter()" />
+</p-sidebar>
+<p-button (click)="sidebarVisible = true" icon="pi pi-calendar" [outlined]="true"></p-button>
+
+
+
+
+
 <div class="view-container">
-  <br>
-  <mat-divider></mat-divider>
-  <br>
-  <div [formGroup]="range">
-    <mat-form-field>
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-        <input matStartDate placeholder="Start date" formControlName="start" (dateChange)="loadTransactions()">
-        <input matEndDate placeholder="End date" formControlName="end" (dateChange)="loadTransactions()">
-      </mat-date-range-input>
-      <mat-hint>DD.MM.YYYY – DD.MM.YYYY</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Instrument</mat-label>
-      <mat-select formControlName="instrument" [(ngModel)]="instrumentFilter" (selectionChange)="filter()">
-        <mat-option
-          *ngFor="let anInstrument of instruments"
-          [value]="anInstrument"
-        >
-          {{ anInstrument.description }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field> 
-    <button mat-raised-button (click)="clearFilter()">Clear Filter</button>
-  </div>
-  <br>
-  <mat-divider></mat-divider>
+
   <br>
   <div class="scrollable-container">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort >
-        <!-- businesskey Column -->
-        <ng-container matColumnDef="transactiondate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> transactiondate </th>
-          <td mat-cell *matCellDef="let element"> {{element.transactiondate}} </td>
-        </ng-container>
-      
-        <!-- description Column -->
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> description </th>
-          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-        </ng-container>    
-
-        <!-- transaction Column -->
-        <ng-container matColumnDef="transactionType">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> transactionType </th>
-          <td mat-cell *matCellDef="let element"> {{element.transactionType}} </td>
-        </ng-container>            
-
-        <ng-container matColumnDef="value">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> value </th>
-            <td mat-cell *matCellDef="let element"> {{element.value}} </td>
-          </ng-container>    
-
-          <ng-container matColumnDef="instrument1">
-            <th mat-header-cell *matHeaderCellDef> instrument1 </th>
-            <td mat-cell *matCellDef="let element"> {{element.instrument1.description}} </td>
-          </ng-container>    
-
-          <ng-container matColumnDef="instrument2">
-            <th mat-header-cell *matHeaderCellDef> instrument2 </th>
-            <td mat-cell *matCellDef="let element"> {{element.instrument2.description}} </td>
-          </ng-container>                        
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row class="transaction-row" 
-            (click)="selectTransaction(row)" 
-            [class.selected-row-hover]="selectedTransaction === row"
-            [class.selected-row]="selectedTransaction === row"
-            *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+    <p-table [value]="filteredTransactionViewObjects" 
+    dataKey="id" 
+    expandableRows
+    selectionMode="single" 
+    [(selection)]="selectedTransaction" >
+<ng-template pTemplate="header">
+  <tr>
+    <th style="width: 3em"></th>
+    <th pSortableColumn="transactiondate">Date<p-sortIcon field="transactiondate"/></th>
+    <th pSortableColumn="value">Value<p-sortIcon field="value"/></th>
+  </tr>
+</ng-template>
+<ng-template pTemplate="body" let-transaction let-expanded="expanded">
+  <tr>
+    <td>
+      <p-button type="button" [pRowToggler]="transaction" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+  </td>
+    <td>{{ transaction.transactiondate }}</td>
+    <td>{{ transaction.value }}</td>
+  </tr>
+</ng-template>
+<ng-template pTemplate="rowexpansion" let-transaction>
+  <tr>
+    <td colspan="3">
+      <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-3"><p-button label="Select" (click)="selectTransaction(transaction)"/></div>
+        <div class="p-col-12 p-md-3"><strong>Type:</strong> {{ transaction.transactionType }}</div>
+        <div class="p-col-12 p-md-3"><strong>Type:</strong> {{ transaction.description }}</div>
+        <div class="p-col-12 p-md-3"><strong>Instrument 1:</strong> {{ transaction.instrument1?.description }}</div>
+        <div class="p-col-12 p-md-3"><strong>Instrument 2:</strong> {{ transaction.instrument2?.description }}</div>
+        <div class="p-col-12 p-md-3"><strong>Instrument 3:</strong> {{ transaction.instrument3?.description }}</div>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+</p-table>
     </div>
 <div>

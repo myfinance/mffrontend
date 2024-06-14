@@ -75,7 +75,7 @@ export class TransactionService {
     return this.mfDataService.getInstruments();
   }
 
-  setSelectedTransaction(transaction:TransactionObjectView) {
+  setSelectedTransaction(transaction?:TransactionObjectView) {
     this.selectedTransaction = transaction;
     this.newTransactionSelectedSubject.next(true);
   }
