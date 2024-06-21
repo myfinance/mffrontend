@@ -1,0 +1,35 @@
+<p-button label="save" (click)="save"/>
+
+<label>Massentrasaktionsverarbeitung für Giro</label>
+
+<p-dropdown 
+    [options]="giros" 
+    [(ngModel)]="selectedGiro" 
+    optionLabel="description" 
+    placeholder="Select a Giro" />
+
+<p-table [value]="content" *ngIf="content.length">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Beschreibung</th>
+        <th>Datum</th>
+        <th>Betrag</th>
+        <th>Budget</th>
+        <th>ignorieren</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td><p-dropdown 
+            [options]="budgets" 
+            [(ngModel)]="content[row[0]-1][4]" 
+            optionLabel="description" 
+            placeholder="Select a Budget" />
+        </td>
+        <td><p-inputSwitch [(ngModel)]="content[row[0]-1][5]" /></td>
+      </tr>
+    </ng-template>
+  </p-table>

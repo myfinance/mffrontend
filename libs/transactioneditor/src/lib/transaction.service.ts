@@ -8,8 +8,11 @@ import { TransactionObjectView } from './TransactionObjectView';
 })
 export class TransactionService {
 
+  content: string[][] = [];
+
   selectedTransaction: TransactionObjectView | undefined
   public newTransactionSelectedSubject: Subject<unknown> = new Subject<unknown>()
+  public newFileSelectedSubject: Subject<unknown> = new Subject<unknown>()
 
   constructor(private mfDataService: MfdataService) { 
   }
@@ -88,5 +91,25 @@ export class TransactionService {
   }
   getTransactionEventSubject() : Subject<unknown>{
     return this.mfDataService.getTransactionEventSubject();
+  }
+
+  setMassloadContent(content: string[][]) {
+    this.content = content;
+    this.newFileSelectedSubject.next(true);
+  }
+
+  getMassloadContent():string[][]{
+    return this.content;
+  }
+
+  saveTransactions(data: string[][], giro: Instrument|undefined ){
+    data.forEach(t=>{
+      const value = t[3];
+      //let transactionType = TransactionTypeEnum.INCOME;
+      /*if(value < 0) {
+        transactionType = TransactionTypeEnum.EXPENSE
+      }
+      const transaction: Transaction = new Transaction(transactionType, t[1], t[2], cashflows, trades); */
+    })
   }
 }

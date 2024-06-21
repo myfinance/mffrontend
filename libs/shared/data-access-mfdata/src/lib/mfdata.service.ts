@@ -152,6 +152,16 @@ export class MfdataService {
     });
   }
 
+  saveTransactions(transactions: Transaction[]) {
+    return this.mfClientservice.postRequest(JSON.stringify(transactions), "saveTransactions").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
   deleteTransaction(transactionId: string) {
     return this.mfClientservice.deleteResource("delTransaction/"+transactionId).subscribe({
       next:
