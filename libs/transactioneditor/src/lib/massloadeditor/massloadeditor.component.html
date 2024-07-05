@@ -15,7 +15,7 @@
         
       <p-button type="submit" label="Submit" icon="pi pi-check"></p-button>
 
-      <p-table [value]="rows.controls" formArrayName="rows">
+      <p-table [value]="rows.controls" formArrayName="rows" [scrollable]="true" scrollHeight="75vh" [style]="{'min-height': '75vh', 'max-height': '75vh'}">
         <ng-template pTemplate="header">
           <tr>
             <th>Beschreibung</th>
@@ -51,7 +51,8 @@
                 formControlName="budget"
                 [options]="budgets" 
                 optionLabel="description" 
-                placeholder="Select a Budget" />
+                placeholder="Select a Budget" 
+                [appendTo]="'body'"/>
             </td>
             <td>
                 <p-inputSwitch formControlName="ignore" />
