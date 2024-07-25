@@ -1,0 +1,8 @@
+<p-tabView>
+    <p-tabPanel header="New">
+      <mffrontend-tenantinputform/>
+    </p-tabPanel>
+    <p-tabPanel header="Update" [disabled]="noTenantSelected">
+      <mffrontend-tenantupdateform/>
+    </p-tabPanel>
+</p-tabView>

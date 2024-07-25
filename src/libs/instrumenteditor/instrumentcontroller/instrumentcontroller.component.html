@@ -1,0 +1,8 @@
+<p-tabView>
+    <p-tabPanel header="New">
+      <mffrontend-instrumentinputform/>
+    </p-tabPanel>
+    <p-tabPanel header="Update" [disabled]="noInstrumentSelected">
+      <mffrontend-instrumentupdateform/>
+    </p-tabPanel>
+</p-tabView>

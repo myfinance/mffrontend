@@ -1,0 +1,23 @@
+<div class="scrollable-container">
+
+  <p-table [value]="instruments" selectionMode="single" [(selection)]="selectedInstrument" dataKey="businesskey" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>businesskey</th>
+            <th>description</th>
+            <th>active</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+        <tr [pSelectableRow]="row">
+            <td>{{ row.businesskey }}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.active }}</td>
+        </tr>
+    </ng-template>
+  </p-table>
+  </div>
+
+
+
+

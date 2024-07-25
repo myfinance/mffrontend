@@ -1,0 +1,6 @@
+<p-toast></p-toast>
+<p-button size="small" (click)="showDialog()" icon="pi pi-inbox" badge="{{this.received.length}}" badgeClass="p-badge-info" [outlined]="true"></p-button>
+
+<p-dialog header="Log" [(visible)]="visible" [style]="{width: '100vw'}">
+  <p-messages></p-messages>
+</p-dialog>

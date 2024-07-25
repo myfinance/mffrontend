@@ -1,0 +1,113 @@
+<div *ngIf="content.length">
+  <form
+    [formGroup]="dynamicForm"
+    (ngSubmit)="onSubmit()"
+    *ngIf="content.length"
+  >
+    <label>Massentransaktionsverarbeitung für Giro</label>
+
+    <p-dropdown
+      [options]="giros"
+      [(ngModel)]="selectedGiro"
+      formControlName="giro"
+      optionLabel="description"
+      placeholder="Select a Giro"
+    />
+    <div *ngIf="dynamicForm.controls['giro']?.invalid" class="p-error">
+        Selection is required.
+      </div>
+    <p-button type="submit" label="Save" icon="pi pi-check"></p-button>
+
+    <p-table
+      [value]="rows.controls"
+      formArrayName="rows"
+      [scrollable]="true"
+      scrollHeight="75vh"
+      [style]="{ 'min-height': '75vh', 'max-height': '75vh' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Beschreibung</th>
+          <th>Datum</th>
+          <th>Betrag</th>
+          <th>Budget</th>
+          <th>ignorieren</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+        <tr [formGroupName]="rowIndex">
+          <td>
+            <input
+              pInputText
+              formControlName="description"
+              placeholder="Enter text"
+            />
+            <div
+              *ngIf="
+                rows.controls[rowIndex].get('description')?.invalid &&
+                rows.controls[rowIndex].get('description')?.touched
+              "
+              class="p-error"
+            >
+              Text is required
+            </div>
+          </td>
+          <td>
+            <p-calendar
+              formControlName="transactiondate"
+              dateFormat="dd.mm.yy"
+              placeholder="Select a date"
+            ></p-calendar>
+            <div
+              *ngIf="
+                rows.controls[rowIndex].get('transactiondate')?.invalid &&
+                rows.controls[rowIndex].get('transactiondate')?.touched
+              "
+              class="p-error"
+            >
+              Date is required
+            </div>
+          </td>
+          <td>
+            <p-inputNumber
+              formControlName="value"
+              mode="decimal" 
+              locale="de-DE" 
+              [useGrouping]="true" 
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              inputStyleClass="p-inputtext p-component p-element"
+              placeholder="Enter a number"
+            />
+            <div
+              *ngIf="
+                rows.controls[rowIndex].get('value')?.invalid &&
+                rows.controls[rowIndex].get('value')?.touched
+              "
+              class="p-error"
+            >
+              Value is required
+            </div>
+          </td>
+          <td>
+            <p-dropdown
+              formControlName="budget"
+              [options]="budgets"
+              optionLabel="description"
+              placeholder="Select a Budget"
+              [appendTo]="'body'"
+            />
+            <div *ngIf="rows.controls[rowIndex].get('budget')?.invalid" class="p-error">
+                Selection is required.
+              </div>
+        
+          </td>
+          <td>
+            <p-inputSwitch formControlName="ignore" />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button type="submit">Submit</button>
+  </form>
+</div>

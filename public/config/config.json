@@ -1,0 +1,40 @@
+{
+  "zones": [
+    {
+      "name": "Test",
+      "identifier": "test",
+      "backendurl": "http://192.168.100.73:30130",
+      "openidurl": "http://192.168.100.73:30124",
+      "logstreamurl": "ws://192.168.100.73:30136/ws/logs"
+    },    
+    {
+      "name": "Dev",
+      "identifier": "dev",
+      "backendurl": "http://localhost:30030",
+      "openidurl": "http://192.168.100.73:30024",
+      "logstreamurl": "ws://localhost:30036/ws/logs"
+    },  
+    {
+      "name": "Localhost",
+      "identifier": "local",
+      "backendurl": "http://localhost:30030",
+      "openidurl": "http://localhost:30024",
+      "logstreamurl": "ws://localhost:30036/ws/logs"
+    },
+    {
+      "name": "Produktion",
+      "identifier": "prod",
+      "backendurl": "https://babcom.myds.me:8443/dac/rest",
+      "logstreamurl": "na"
+    },
+    {
+      "name": "Mock",
+      "identifier": "mock",
+      "backendurl": "na",
+      "openidurl": "na",
+      "logstreamurl": "na"
+    }
+
+  ],
+  "defaultZone": "local"
+}
