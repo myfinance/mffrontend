@@ -8,6 +8,8 @@ import { Transaction } from './model/transaction';
 import { ValueCurve } from './model/valuecurve';
 import { InstrumentDetails } from './model/instrumentdetails';
 import { InstrumentFullDetails } from './model/instrumentfulldetails';
+import { RecurrentTransaction } from './model/recurrenttransaction';
+import { JsonConvertHelper } from './jsonconverthelper';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,7 @@ export class MfdataService {
   tenantChangedSubject: Subject<unknown> = new Subject<unknown>()
   instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
   transactionEventSubject: Subject<unknown> = new Subject<unknown>()
+  recurrentTransactionEventSubject: Subject<unknown> = new Subject<unknown>()
   loginEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
@@ -139,18 +142,24 @@ export class MfdataService {
     });
   }
 
-  //toIsoString converts the Date to UTC Time. ForDate without Time (hour=0) does this mean day-1 what is not the intention. So add the TimeZoneOffset before
-  private dateToIsoString(date: Date): string {
-    const utcDate = date;
-    utcDate.setMinutes(0-date.getTimezoneOffset());
-    return utcDate.toISOString().split('T')[0];
-  }
-
   getTransactions(startDate: Date, endDate: Date): Observable<Transaction[]> {
-    return this.mfClientservice.getResource("transactions?startDate="+this.dateToIsoString(startDate) + "&endDate="+this.dateToIsoString(endDate) );
+    return this.mfClientservice.getResource("transactions?startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate) );
   }
   saveTransaction(transaction: Transaction) {
     return this.mfClientservice.postRequest(JSON.stringify(transaction), "saveTransaction").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  getRecurrentTransactions(): Observable<RecurrentTransaction[]> {
+    return this.mfClientservice.getResource("recurrenttransactions");
+  }
+  saveRecurrentTransaction(recurrentTransaction: RecurrentTransaction) {
+    return this.mfClientservice.postRequest(JSON.stringify(recurrentTransaction), "saveRecurrentTransaction").subscribe({
       next:
         () => {
           console.info('saved');
@@ -173,7 +182,17 @@ export class MfdataService {
     return this.mfClientservice.deleteResource("delTransaction/"+transactionId).subscribe({
       next:
         () => {
-          console.info('delted');
+          console.info('deleted');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  deleteRecurrentTransaction(recurrentTransactionId: string) {
+    return this.mfClientservice.deleteResource("delrecurrenttransfer/"+recurrentTransactionId).subscribe({
+      next:
+        () => {
+          console.info('deleted');
         },
       error: (e) => console.error(e)
     });
@@ -191,6 +210,13 @@ export class MfdataService {
   }
   triggerTransactionEvent() {
     this.transactionEventSubject.next(true);
+  }
+
+  getRecurrentTransactionEventSubject(){
+    return this.recurrentTransactionEventSubject;
+  }
+  triggerRecurrentTransactionEvent() {
+    this.recurrentTransactionEventSubject.next(true);
   }
 
   getVersion(): Observable<string> {
@@ -219,33 +245,33 @@ export class MfdataService {
   }
 
   getInstrumentValue(businesskey:string, valueDate: Date): Observable<number> {
-    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+this.dateToIsoString(valueDate));
+    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+JsonConvertHelper.dateToIsoString(valueDate));
   }
 
   getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve> {
-    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+this.dateToIsoString(startDate) + "&endDate="+this.dateToIsoString(endDate));
+    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate));
   }
 
   getDetailedAccounts(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedaccounts?tenantbusinesskey="+this.currentTenant.businesskey 
-      + "&duedate="+this.dateToIsoString(duedate)
-      + "&referencedate="+this.dateToIsoString(referenceDate));
+      + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
+      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
   }
 
   getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
-      + "&duedate="+this.dateToIsoString(duedate)
-      + "&referencedate="+this.dateToIsoString(referenceDate));
+      + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
+      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
   }
 
   getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date, startTimeSeries:Date, endTimeSeries:Date, firstCashflowDate:Date, lastCashflowDate:Date) : Observable<InstrumentFullDetails> {
     return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
-    + "&duedate="+this.dateToIsoString(duedate)
-    + "&referencedate="+this.dateToIsoString(referenceDate)
-    + "&starttimeseries="+this.dateToIsoString(startTimeSeries)
-    + "&endtimeseries="+this.dateToIsoString(endTimeSeries)
-    + "&firstcashflowdate="+this.dateToIsoString(firstCashflowDate)
-    + "&lastcashflowdate="+this.dateToIsoString(lastCashflowDate));
+    + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
+    + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate)
+    + "&starttimeseries="+JsonConvertHelper.dateToIsoString(startTimeSeries)
+    + "&endtimeseries="+JsonConvertHelper.dateToIsoString(endTimeSeries)
+    + "&firstcashflowdate="+JsonConvertHelper.dateToIsoString(firstCashflowDate)
+    + "&lastcashflowdate="+JsonConvertHelper.dateToIsoString(lastCashflowDate));
   }
 
   getToken() : string {

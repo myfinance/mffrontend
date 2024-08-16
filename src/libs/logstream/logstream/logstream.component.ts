@@ -64,6 +64,9 @@ export class LogstreamComponent {
     if(messageParts[0] === 'TRANSACTIONEVENT') {
       this.websocketService.triggerTransactionEvent();
     }
+    if(messageParts[0] === 'RECURRENTTRANSACTIONEVENT') {
+      this.websocketService.triggerRecurrentTransactionEvent();
+    }
     if(messageParts[0] === 'ERROR' || messageParts[0] === 'FATAL') {
       this.messageService.add({ severity: 'Error', summary: 'Error', detail: message });
     } else {

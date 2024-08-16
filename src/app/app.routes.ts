@@ -9,6 +9,7 @@ import { InstrumenteditorComponent } from '../libs/instrumenteditor/instrumented
 import { TransactioneditorComponent } from '../libs/transactioneditor/transactioneditor/transactioneditor.component';
 import { MassloadComponent } from '../libs/transactioneditor/massload/massload.component';
 import { AssetviewComponent } from '../libs/assetview/assetview/assetview.component';
+import { RecurrenttransactioneditorComponent } from '../libs/recurrenttransactioneditor/recurrenttransactioneditor/recurrenttransactioneditor.component';
 
 export const appRoutes: Route[] = [  
    /* {
@@ -44,10 +45,10 @@ export const appRoutes: Route[] = [
         path: 'transactionmassload',
         component: MassloadComponent,
       },
-      /*{
+      {
         path: 'recurrenttransactioneditor',
         component: RecurrenttransactioneditorComponent,
-      },*/
+      },
       {
         path: 'assetview',
         component: AssetviewComponent,

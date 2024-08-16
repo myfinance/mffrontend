@@ -1,0 +1,111 @@
+<form [formGroup]="transactionForm">
+
+
+    <div class="form-group">
+      <p>TransactionType:</p>
+      <select class="btn btn-primary dropdown-toggle" formControlName="transactionType">
+        <option class="mydropdown-item" [ngValue]="transactionType" *ngFor="let transactionType of transactionTypes">
+          {{ transactionType }}
+        </option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label>Beschreibung:</label>
+      <input class="form-control" formControlName="description" />
+      <span *ngIf="
+          !transactionForm.controls.description.valid &&
+          transactionForm.controls.description.touched
+        ">
+        Bitte geben Sie eine Beschreibung für die Transaction ein!
+      </span>
+    </div>
+  
+  
+  
+    <div class="form-group">
+      <label>nächstes Transactionsdatum:</label>
+      <p-calendar formControlName="nextTransactionDate" dateFormat="dd.mm.yy" placeholder="Select a date"></p-calendar>
+      <div *ngIf="
+          !transactionForm.controls.nextTransactionDate.valid &&
+          transactionForm.controls.nextTransactionDate.touched
+    " class="p-error">
+        Date is required
+      </div>
+    </div>
+  
+  
+    <div class="form-group"
+      *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='TRANSFER'">
+      <label>Quell-Konto</label>
+  
+      <select class="btn btn-primary dropdown-toggle" formControlName="srcAcc">
+        <option class="mydropdown-item" [ngValue]="giro" *ngFor="let giro of giros">
+          {{ giro.description }}
+        </option>
+      </select>
+    </div>
+  
+    <div class="form-group"
+      *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUDGETTRANSFER'">
+      <label>Quell-Budget</label>
+  
+      <select class="btn btn-primary dropdown-toggle" formControlName="srcBudget">
+        <option class="mydropdown-item" [ngValue]="budget" *ngFor="let budget of budgets">
+          {{ budget.description }}
+        </option>
+      </select>
+    </div>
+  
+    <div class="form-group" *ngIf="transactionForm.value.transactionType==='TRANSFER'">
+      <label>Ziel-Konto</label>
+      <select class="btn btn-primary dropdown-toggle" formControlName="trgAcc">
+        <option class="mydropdown-item" [ngValue]="giro" *ngFor="let giro of giros">
+          {{ giro.description }}
+        </option>
+      </select>
+    </div>
+  
+    <div class="form-group" *ngIf="transactionForm.value.transactionType==='BUDGETTRANSFER'">
+      <label>Ziel-Budget</label>
+      <select class="btn btn-primary dropdown-toggle" formControlName="trgBudget">
+        <option class="mydropdown-item" [ngValue]="budget" *ngFor="let budget of budgets">
+          {{ budget.description }}
+        </option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label>Value</label>
+      <p-inputNumber formControlName="value" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+        [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+      <div *ngIf="
+        !transactionForm.controls.description.valid &&
+        transactionForm.controls.description.touched
+    " class="p-error">
+        Value is required
+      </div>
+    </div>
+
+    <div class="form-group">
+        <p>TransactionType:</p>
+        <select class="btn btn-primary dropdown-toggle" formControlName="recurrentFrequency">
+          <option class="mydropdown-item" [ngValue]="recurrentFrequency" *ngFor="let recurrentFrequency of frequencies">
+            {{ recurrentFrequency }}
+          </option>
+        </select>
+      </div>
+    
+  
+  
+    <br>
+    <div class="button-row">
+      <button class="btn btn-primary" (click)="insertTransaction()" type="button">Insert</button>
+      <button class="btn btn-primary" (click)="updateTransaction()" type="button"
+        [disabled]="!transactionSelected">Update</button>
+      <button class="btn btn-primary" (click)="deleteTransaction()" type="button"
+        [disabled]="!transactionSelected">Delete</button>
+  
+    </div>
+  
+  </form>

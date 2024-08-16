@@ -1,3 +1,4 @@
+import { JsonConvertHelper } from "../jsonconverthelper";
 import { Trade } from "./trade";
 
 export class Transaction { 
@@ -21,7 +22,7 @@ export class Transaction {
             transactionId: this.transactionId,
             transactionType: this.transactionType,
             description: this.description,
-            transactiondate: this.transactiondate,
+            transactiondate: JsonConvertHelper.dateToIsoString(this.transactiondate),
             cashflows: Object.fromEntries(this.cashflows),
             trades: this.trades
         }
