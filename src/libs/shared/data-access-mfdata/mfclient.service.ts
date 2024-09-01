@@ -31,7 +31,7 @@ export class MfClientService {
   }
 
   getResource(resource:string): Observable<any> {
-    return this.http.get<Instrument[]>(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
+    return this.http.get(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
   }
 
   postRequest(body:string, resource:string): Observable<any> {

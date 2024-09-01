@@ -12,10 +12,11 @@ import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Inst
   styleUrls: ['./instrumentinputform.component.scss'],
 })
 export class InstrumentinputformComponent {
-  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET];
+  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY];
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
   instruments: Instrument[] = [];
   budgetGroups: Instrument[] = [];
+  currencies: Instrument[] = [];
   accPf?: Instrument;
   instrumentForm= new FormGroup({
 
@@ -36,12 +37,24 @@ export class InstrumentinputformComponent {
     }),
     iban: new FormControl<string>('', {
       nonNullable: false
+    }),
+    symbol: new FormControl<string>('', {
+      nonNullable: false
+    }),
+    isin: new FormControl<string>('', {
+      nonNullable: false
+    }),
+    currency: new FormControl<Instrument|null>(null, {
+      validators: [Validators.required, this.isCurrencyNecessary.bind(this)]
+    }),
+    currencyCode: new FormControl<string>('', {
+      nonNullable: false
     })
 
   });
 
   constructor(private instrumentService: InstrumentService) {
-    this.instrumentService.getConfigLoadedSubject().subscribe({
+    this.instrumentService.newInstrumentsLoadedSubject.subscribe({
       next:
         () => this.loadInstruments(),
       error:
@@ -50,22 +63,15 @@ export class InstrumentinputformComponent {
           alert('Invalid Credentials');
         }
     })
-    this.instrumentService.getInstrumentEventSubject().subscribe(
-      () => {
-        this.loadInstruments();
-      }
-    )
     this.loadInstruments();
   }
 
   loadInstruments() {
-    this.instrumentService.getInstruments().subscribe(
-      (instruments) => {
-        this.instruments = instruments;
-        this.budgetGroups = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGETGROUP);
-        this.accPf = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.ACCOUNTPORTFOLIO)[0];
-      }
-    )
+    this.instruments=this.instrumentService.getInstruments();
+    this.budgetGroups = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGETGROUP);
+    this.accPf = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.ACCOUNTPORTFOLIO)[0];
+    this.currencies = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.CURRENCY);
+
   }
 
   isBudgetGroupNecessary(control: FormControl): {[s: string]: boolean} {
@@ -76,9 +82,17 @@ export class InstrumentinputformComponent {
     } else { return {'BudgetGroup is not necessary': false}; }
   }
 
+  isCurrencyNecessary(control: FormControl): {[s: string]: boolean} {
+    if (control== null) { return {'Currency is not necessary': false}; }
+    if (control.value == null) { return {'Currency is not necessary': false}; }
+    if (control.value.instrumentType === InstrumentTypeEnum.EQUITY) {
+      return {'Currency is necessary': true};
+    } else { return {'Currency is not necessary': false}; }
+  }
+
   onSubmit() {
     let parent = "";
-    const maps = new Map<AdditionalMapsEnum, string>();
+    const maps = new Map<AdditionalMapsEnum, Map<string,string>>();
     const properties = new Map<AdditionalPropertiesEnum, string>();
     const lists = new Map<AdditionalListsEnum, ['']>();
 
@@ -92,6 +106,26 @@ export class InstrumentinputformComponent {
     }
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.BUDGET) {
       parent = this.instrumentForm.value.budgetGroup?.businesskey || ""
+    } 
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.EQUITY) {
+      const symbolCurrencyMap = new Map<string,string>();
+      const symbol = this.instrumentForm.value.symbol;
+      if(symbol && symbol !=="") {
+        const currencyObj = this.instrumentForm.value.currency;
+        let currencyBK: string|undefined;
+        if(currencyObj){
+          currencyBK=currencyObj.businesskey;
+        }
+        symbolCurrencyMap.set(symbol, currencyBK || "NA")
+      }
+      
+      maps.set(AdditionalMapsEnum.EQUITYSYMBOLS,symbolCurrencyMap);
+      properties.set(AdditionalPropertiesEnum.ISIN, this.instrumentForm.value.isin || "");
+      
+    } 
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.CURRENCY) {
+      properties.set(AdditionalPropertiesEnum.CURRENCYCODE, this.instrumentForm.value.currencyCode || "");
+      
     } 
     console.log(this.instrumentForm)
     if(this.instrumentForm.value.description!=null && this.instrumentForm.value.instrumentType!=null) {

@@ -22,5 +22,24 @@
       </option>
     </select>
   </div>  
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'EQUITY'">
+    <p>SYMBOL:</p>
+    <input class="form-control" formControlName="symbol" />
+  </div>  
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'EQUITY'">
+    <p>Währung:</p>
+    <select class="btn btn-primary dropdown-toggle" formControlName="currency">
+      <option class="mydropdown-item" [ngValue]="currency" *ngFor="let currency of currencies" >
+        {{currency.description}}
+      </option>
+    </select>
+    <span *ngIf="!instrumentForm.get('currency')?.valid && instrumentForm.get('currency')?.touched">
+      Bitte geben Sie eine Währung für das Instrument ein!
+    </span>
+  </div>  
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType ==='CURRENCY'">
+    <p>WährungCode:</p>
+    <input class="form-control" formControlName="currencyCode" />
+  </div> 
   <button class="btn btn-primary" type="submit">Speichern</button>
 </form>

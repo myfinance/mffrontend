@@ -24,7 +24,7 @@
         instrumentForm.controls.description.touched
       "
     >
-      Bitte geben Sie eine Beschriebung für den Mandanten ein!
+      Bitte geben Sie eine Beschriebung für das Instrument ein!
     </span>
   </div>
   <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'BUDGET'">
@@ -51,6 +51,32 @@
     <p>IBAN:</p>
     <input class="form-control" formControlName="iban" />
   </div>  
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'">
+    <p>ISIN:</p>
+    <input class="form-control" formControlName="isin" />
+  </div>  
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'">
+    <p>SYMBOL:</p>
+    <input class="form-control" formControlName="symbol" />
+  </div>  
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'">
+    <p>Währung:</p>
+    <select class="btn btn-primary dropdown-toggle" formControlName="currency">
+      <option class="mydropdown-item" [ngValue]="currency" *ngFor="let currency of currencies" >
+        {{currency.description}}
+      </option>
+    </select>
+    <span *ngIf="!instrumentForm.get('currency')?.valid && instrumentForm.get('currency')?.touched">
+      Bitte geben Sie eine Währung für das Instrument ein!
+    </span>
+  </div>  
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'CURRENCY'">
+    <p>WährungCode:</p>
+    <input class="form-control" formControlName="currencyCode" />
+  </div> 
 
   <button class="btn btn-primary" type="submit">Speichern</button>
 </form>

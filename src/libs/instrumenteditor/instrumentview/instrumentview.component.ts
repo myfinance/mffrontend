@@ -18,36 +18,26 @@ export class InstrumentviewComponent {
   version = 'na';
 
   constructor(private instrumentService: InstrumentService) {
-    this.instrumentService.getConfigLoadedSubject().subscribe({
+    this.instrumentService.newInstrumentsLoadedSubject.subscribe({
       next:
-        () => this.loadInstruments(),
+        () => this.instruments=this.instrumentService.getInstruments(),
       error:
         (e) => {
           console.error(e);
           alert('Invalid Credentials');
         }
     })
-    this.instrumentService.getInstrumentEventSubject().subscribe(
-      () => {
-        this.loadInstruments();
-      }
-    )
-    this.loadInstruments();
-  }
-
-  loadInstruments() {
-    this.instrumentService.getInstruments().subscribe(
-      (instruments) => {
-        this.instruments = instruments;
-      }
-    )
+    this.instruments=this.instrumentService.getInstruments()
   }
 
   onRowSelect(event: any) {
-    this.instrumentService.setSelectedInstrument(this.selectedInstrument);
+    if(this.selectedInstrument!=null){
+      this.instrumentService.setSelectedInstrument(this.selectedInstrument.businesskey);
+    }
+    
 }
 
   onRowUnselect(event: any) {
-    this.instrumentService.setSelectedInstrument(this.selectedInstrument);
+    this.instrumentService.deSelectInstrument();
   }
 }

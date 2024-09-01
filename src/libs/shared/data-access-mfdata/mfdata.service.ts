@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MfClientService } from './mfclient.service';
-import { Observable, Subject } from 'rxjs';
-import { AdditionalPropertiesEnum, Instrument, InstrumentTypeEnum } from './model/instrument';
+import { map, Observable, Subject } from 'rxjs';
+import { Instrument, InstrumentTypeEnum } from './model/instrument';
 import { MfconfigService } from './mfconfig.service';
 import { AuthService } from './auth.service';
 import { Transaction } from './model/transaction';
@@ -130,10 +130,18 @@ export class MfdataService {
   getInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey);
   }
+  getEditableInstruments(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)      
+              .pipe(
+                map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+              );
+  }
   saveInstrument(instrument: Instrument) {
-    console.info('instrument: '+instrument.additionalProperties.get(AdditionalPropertiesEnum.IBAN));
-    console.info('instrumentjson: '+JSON.stringify(instrument));
-    return this.mfClientservice.postRequest(JSON.stringify(instrument), "saveinstrument").subscribe({
+
+    const jsonString = Instrument.instrumentToJson(instrument);
+    console.info('instrumentjson: '+jsonString);
+
+    return this.mfClientservice.postRequest(jsonString, "saveinstrument").subscribe({
       next:
         () => {
           console.info('saved');
@@ -278,3 +286,5 @@ export class MfdataService {
     return this.auth.getToken();
   }
 }
+
+
