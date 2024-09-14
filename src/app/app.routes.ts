@@ -10,6 +10,7 @@ import { TransactioneditorComponent } from '../libs/transactioneditor/transactio
 import { MassloadComponent } from '../libs/transactioneditor/massload/massload.component';
 import { AssetviewComponent } from '../libs/assetview/assetview/assetview.component';
 import { RecurrenttransactioneditorComponent } from '../libs/recurrenttransactioneditor/recurrenttransactioneditor/recurrenttransactioneditor.component';
+import { SecurityAnalysisViewComponent } from '../libs/securityanalysisview/security-analysis-view/security-analysis-view.component';
 
 export const appRoutes: Route[] = [  
    /* {
@@ -52,6 +53,10 @@ export const appRoutes: Route[] = [
       {
         path: 'assetview',
         component: AssetviewComponent,
+      },      
+      {
+        path: 'securityanalysisview',
+        component: SecurityAnalysisViewComponent,
       },
       {
         path: 'login',

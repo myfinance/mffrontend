@@ -157,6 +157,13 @@ export class NavigationComponent implements OnInit {
           command: () => {
             this.assetview();
           }
+        },
+        {
+          label: 'Wertpapieranalyse',
+          icon: 'pi pi-chart-line',
+          command: () => {
+            this.securityanalysisview();
+          }
         }
         ]
       },
@@ -228,6 +235,10 @@ export class NavigationComponent implements OnInit {
 
   assetview() {
     this.router.navigate(['/assetview']);
+  }
+
+  securityanalysisview() {
+    this.router.navigate(['/securityanalysisview']);
   }
 
   handleZoneSelect(identifier: string): void {

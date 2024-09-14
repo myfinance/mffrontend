@@ -122,13 +122,22 @@ export class MfdataService {
   }
 
   getAccounts(): Observable<Instrument[]> {
-    return this.mfClientservice.getResource("accounts?tenantbusinesskey="+this.currentTenant.businesskey);
+    return this.mfClientservice.getResource("accounts?tenantbusinesskey="+this.currentTenant.businesskey)              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
   }
   getBudgets(): Observable<Instrument[]> {
-    return this.mfClientservice.getResource("budgets?tenantbusinesskey="+this.currentTenant.businesskey);
+    return this.mfClientservice.getResource("budgets?tenantbusinesskey="+this.currentTenant.businesskey)              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
   }
   getInstruments(): Observable<Instrument[]> {
-    return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey);
+    return this.mfClientservice.getResource("instrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
   }
   getEditableInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)      
@@ -280,6 +289,10 @@ export class MfdataService {
     + "&endtimeseries="+JsonConvertHelper.dateToIsoString(endTimeSeries)
     + "&firstcashflowdate="+JsonConvertHelper.dateToIsoString(firstCashflowDate)
     + "&lastcashflowdate="+JsonConvertHelper.dateToIsoString(lastCashflowDate));
+  }
+
+  startMarketdataImport() {
+    return this.mfClientservice.getResource("loadNewMarketData");
   }
 
   getToken() : string {
