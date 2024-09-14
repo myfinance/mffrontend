@@ -292,7 +292,13 @@ export class MfdataService {
   }
 
   startMarketdataImport() {
-    return this.mfClientservice.getResource("loadNewMarketData");
+    return this.mfClientservice.postRequest("", "loadNewMarketData").subscribe({
+      next:
+        () => {
+          console.info('import started');
+        },
+      error: (e) => console.error(e)
+    });
   }
 
   getToken() : string {
