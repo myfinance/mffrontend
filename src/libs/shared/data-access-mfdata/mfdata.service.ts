@@ -10,6 +10,7 @@ import { InstrumentDetails } from './model/instrumentdetails';
 import { InstrumentFullDetails } from './model/instrumentfulldetails';
 import { RecurrentTransaction } from './model/recurrenttransaction';
 import { JsonConvertHelper } from './jsonconverthelper';
+import { SecurityDetails } from './model/securitydetails';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class MfdataService {
   transactionEventSubject: Subject<unknown> = new Subject<unknown>()
   recurrentTransactionEventSubject: Subject<unknown> = new Subject<unknown>()
   loginEventSubject: Subject<unknown> = new Subject<unknown>()
+  valueChangedEventSubject: Subject<unknown> = new Subject<unknown>()
 
   tenants: Instrument[] = []
   currentTenant: Instrument = new Instrument(InstrumentTypeEnum.TENANT, 'NA', '', '')
@@ -291,6 +293,11 @@ export class MfdataService {
     + "&lastcashflowdate="+JsonConvertHelper.dateToIsoString(lastCashflowDate));
   }
 
+  getSecurityDetails(duedate: Date, referenceDate:Date) : Observable<SecurityDetails[]> {
+    return this.mfClientservice.getResource("listdetailedsecurities?duedate="+JsonConvertHelper.dateToIsoString(duedate)
+      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
+  }
+
   startMarketdataImport() {
     return this.mfClientservice.postRequest("", "loadNewMarketData").subscribe({
       next:
@@ -303,6 +310,13 @@ export class MfdataService {
 
   getToken() : string {
     return this.auth.getToken();
+  }
+
+  getValueChangedEventSubject(){
+    return this.valueChangedEventSubject;
+  }
+  triggerValueChangedEvent() {
+    this.valueChangedEventSubject.next(true);
   }
 }
 
