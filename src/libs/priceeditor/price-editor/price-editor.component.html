@@ -1,0 +1,41 @@
+<form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="security">Security:</label>
+      <select class="btn btn-primary dropdown-toggle" formControlName="security">
+        <option class="mydropdown-item" [ngValue]="security" *ngFor="let security of securities">
+          {{ security.description }}
+        </option>
+      </select>
+    </div>
+  
+  
+    <div class="form-group">
+      <label>Datum des Preises:</label>
+      <p-calendar formControlName="priceDate" dateFormat="dd.mm.yy" placeholder="Select a date"></p-calendar>
+      <div *ngIf="
+          !inputForm.controls.priceDate.valid &&
+          inputForm.controls.priceDate.touched
+    " class="p-error">
+        Date is required
+      </div>
+    </div>
+  
+  
+
+  
+    <div class="form-group">
+      <label>Value</label>
+      <p-inputNumber formControlName="value" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+        [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+      <div *ngIf="
+        !inputForm.controls.value.valid &&
+        inputForm.controls.value.touched
+    " class="p-error">
+        Value is required
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Insert</button>
+  
+  </form>

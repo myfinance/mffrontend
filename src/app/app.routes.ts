@@ -11,6 +11,7 @@ import { MassloadComponent } from '../libs/transactioneditor/massload/massload.c
 import { AssetviewComponent } from '../libs/assetview/assetview/assetview.component';
 import { RecurrenttransactioneditorComponent } from '../libs/recurrenttransactioneditor/recurrenttransactioneditor/recurrenttransactioneditor.component';
 import { SecurityAnalysisViewComponent } from '../libs/securityanalysisview/security-analysis-view/security-analysis-view.component';
+import { PriceEditorComponent } from '../libs/priceeditor/price-editor/price-editor.component';
 
 export const appRoutes: Route[] = [  
    /* {
@@ -41,6 +42,10 @@ export const appRoutes: Route[] = [
       {
         path: 'transactioneditor',
         component: TransactioneditorComponent,
+      },
+      {
+        path: 'priceeditor',
+        component: PriceEditorComponent,
       },
       {
         path: 'transactionmassload',

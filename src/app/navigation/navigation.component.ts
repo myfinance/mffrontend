@@ -197,6 +197,13 @@ export class NavigationComponent implements OnInit {
           command: () => {
             this.recurrenttransactioneditor();
           }
+        },
+        {
+          label: 'Preise',
+          icon: 'pi pi-dollar',
+          command: () => {
+            this.priceeditor();
+          }
         }
         ]
       }
@@ -231,6 +238,10 @@ export class NavigationComponent implements OnInit {
 
   recurrenttransactioneditor() {
     this.router.navigate(['/recurrenttransactioneditor']);
+  }
+
+  priceeditor() {
+    this.router.navigate(['/priceeditor']);
   }
 
   assetview() {

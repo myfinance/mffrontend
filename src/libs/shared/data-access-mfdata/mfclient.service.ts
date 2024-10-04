@@ -14,6 +14,7 @@ export class MfClientService {
   private url = 'http://localhost:7009';
   private path2resource = "mf";
   dataServiceSubject: Subject<unknown> = new Subject<unknown>();
+  private isInitialized = false;
 
   constructor(private http: HttpClient, private mfConfigService: MfconfigService, private auth: AuthService) {
     this.mfConfigService.configLoaded.subscribe({
@@ -27,20 +28,29 @@ export class MfClientService {
 
   private loadConfig() {
     this.url= this.mfConfigService.getCurrentBackendUrl();
-
+    this.isInitialized = true;
   }
 
   getResource(resource:string): Observable<any> {
+    if(!this.isInitialized) {
+      return new Observable();
+    }
     return this.http.get(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
   }
 
   postRequest(body:string, resource:string): Observable<any> {
+    if(!this.isInitialized) {
+      return new Observable();
+    }
     const options = { headers: this.buildHeader() };
     console.log("body:" + body);
     return this.http.post<string>(`${this.url}/${this.path2resource}/${resource}`, body, options);
   } 
   
   deleteResource(resource:string): Observable<any> {
+    if(!this.isInitialized) {
+      return new Observable();
+    }
     return this.http.delete<string>(`${this.url}/${this.path2resource}/${resource}`, { headers: this.buildHeader() })
   }
 

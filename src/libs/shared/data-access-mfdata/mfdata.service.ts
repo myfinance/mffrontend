@@ -11,6 +11,8 @@ import { InstrumentFullDetails } from './model/instrumentfulldetails';
 import { RecurrentTransaction } from './model/recurrenttransaction';
 import { JsonConvertHelper } from './jsonconverthelper';
 import { SecurityDetails } from './model/securitydetails';
+import { EndOfDayPrices } from './model/endofdayprices';
+import { EndOfDayPrice } from './model/endofdayprice';
 
 @Injectable({
   providedIn: 'root'
@@ -141,6 +143,12 @@ export class MfdataService {
       map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
     );
   }
+  getAllInstruments(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("instruments")              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
+  }
   getEditableInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)      
               .pipe(
@@ -217,6 +225,19 @@ export class MfdataService {
     });
   }
 
+  saveEndOfDayPrice(securityBusinesskey: string, priceDate: Date, value: number) {
+    const price = new EndOfDayPrice("EUR@13", value);
+    const priceMap = new Map<Date, EndOfDayPrice>();
+    priceMap.set(priceDate, price);
+    const prices = new EndOfDayPrices(securityBusinesskey, priceMap);
+    return this.mfClientservice.postRequest(JSON.stringify(prices), "validateSinglePrice").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
+  }
   getInstrumentEventSubject(){
     return this.instrumentEventSubject;
   }

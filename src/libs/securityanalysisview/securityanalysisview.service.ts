@@ -22,7 +22,15 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
     private valueCurve:ValueCurve | undefined;
 
     constructor(private service: MfdataService) {
-
+      this.service.getConfigLoadedSubject().subscribe({
+        next:
+          () => this.loadSecurities(),
+        error:
+          (e) => {
+            console.error(e);
+            alert('Invalid Credentials');
+          }
+      })
       this.service.getInstrumentEventSubject().subscribe(
         {
           next: () => {
