@@ -1,3 +1,4 @@
+import { JsonConvertHelper } from "../jsonconverthelper";
 import { EndOfDayPrice } from "./endofdayprice";
 
 export class EndOfDayPrices { 
@@ -9,14 +10,12 @@ export class EndOfDayPrices {
 
     constructor(instrumentBusinesskey: string, prices: Map<Date, EndOfDayPrice>) {
         this.instrumentBusinesskey = instrumentBusinesskey;
-        this.prices = new Map(
-            Object.entries(prices).map(([key, value]) => [new Date(key), value])
-        );
+        this.prices = prices;
     }
     toJSON() {
         return {
             instrumentBusinesskey: this.instrumentBusinesskey,
-            prices: Object.fromEntries(this.prices)
+            prices: Object.fromEntries(Array.from(this.prices.entries()).map(([date, price]) => [JsonConvertHelper.dateToIsoString(date), price]))
         }
     }   
 }
