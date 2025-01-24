@@ -128,7 +128,7 @@ export const AdditionalMapsEnum = {
     REALESTATEPROFITS: 'REALESTATEPROFITS' as AdditionalMapsEnum,
     EQUITYSYMBOLS: 'EQUITYSYMBOLS' as AdditionalMapsEnum
 };
-export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN' | 'IBAN';
+export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN' | 'IBAN' | 'VALUEBUDGETID';
 export const AdditionalPropertiesEnum = {
     DEFAULTGIROID: 'DEFAULTGIROID' as AdditionalPropertiesEnum,
     INCOMEBUDGETID: 'INCOMEBUDGETID' as AdditionalPropertiesEnum,
@@ -136,6 +136,7 @@ export const AdditionalPropertiesEnum = {
     MATURITYDATE: 'MATURITYDATE' as AdditionalPropertiesEnum,
     CURRENCYCODE: 'CURRENCYCODE' as AdditionalPropertiesEnum,
     ISIN: 'ISIN' as AdditionalPropertiesEnum,
-    IBAN: 'IBAN' as AdditionalPropertiesEnum
+    IBAN: 'IBAN' as AdditionalPropertiesEnum,
+    VALUEBUDGETID: 'VALUEBUDGETID' as AdditionalPropertiesEnum,
 };
 export type AdditionalListsEnum = 'CHILDS';

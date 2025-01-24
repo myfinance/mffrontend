@@ -12,11 +12,12 @@ import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Inst
   styleUrls: ['./instrumentinputform.component.scss'],
 })
 export class InstrumentinputformComponent {
-  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY];
+  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT];
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
   instruments: Instrument[] = [];
   budgetGroups: Instrument[] = [];
   currencies: Instrument[] = [];
+  budgets: Instrument[] = [];
   accPf?: Instrument;
   instrumentForm= new FormGroup({
 
@@ -49,8 +50,10 @@ export class InstrumentinputformComponent {
     }),
     currencyCode: new FormControl<string>('', {
       nonNullable: false
-    })
-
+    }),
+    valuebudget: new FormControl<Instrument|null>(null, {
+      validators: [Validators.required, this.isValueBudgetNecessary.bind(this)]
+    }),
   });
 
   constructor(private instrumentService: InstrumentService) {
@@ -71,7 +74,16 @@ export class InstrumentinputformComponent {
     this.budgetGroups = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGETGROUP);
     this.accPf = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.ACCOUNTPORTFOLIO)[0];
     this.currencies = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.CURRENCY);
+    this.budgets = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
 
+  }
+
+  isValueBudgetNecessary(control: FormControl): {[s: string]: boolean} {
+    if (control== null) { return {'BudgetGroup is not necessary': false}; }
+    if (control.value == null) { return {'BudgetGroup is not necessary': false}; }
+    if (control.value.instrumentType === InstrumentTypeEnum.DEPOT && control.value.valuebudget == null) {
+      return {'ValueBudget is necessary': true};
+    } else { return {'ValueBudget is not necessary': false}; }
   }
 
   isBudgetGroupNecessary(control: FormControl): {[s: string]: boolean} {
@@ -125,7 +137,10 @@ export class InstrumentinputformComponent {
     } 
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.CURRENCY) {
       properties.set(AdditionalPropertiesEnum.CURRENCYCODE, this.instrumentForm.value.currencyCode || "");
-      
+    } 
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPOT) {
+      properties.set(AdditionalPropertiesEnum.VALUEBUDGETID, this.instrumentForm.value.valuebudget?.businesskey || "");
+      parent = this.accPf?.businesskey || "";
     } 
     console.log(this.instrumentForm)
     if(this.instrumentForm.value.description!=null && this.instrumentForm.value.instrumentType!=null) {
