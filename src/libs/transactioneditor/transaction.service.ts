@@ -4,6 +4,7 @@ import { TransactionObjectView } from './TransactionObjectView';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Transaction, TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
+import { Trade } from "../shared/data-access-mfdata/model/trade";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class TransactionService {
     const cashflows:Map<string, number> = new Map();
     cashflows.set(acc.businesskey, value);
     cashflows.set(budget.businesskey, value);
-    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, []); 
+
+    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, new Trade("","",0), "", ""); 
     if(transactionId!==undefined){
       transaction.transactionId=transactionId;
     }
@@ -48,6 +50,26 @@ export class TransactionService {
     this.mfDataService.saveTransaction(this.createIncomeExpense(desc, transactionDate, finalValue, acc, budget, transactionId));
   }
 
+  saveBuySell(isBuy: boolean, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined, depotId: string, securityId: string, amount:number) {
+    let transactionType = TransactionTypeEnum.SELL;
+    let finalValue = value;
+    if(value < 0) {
+      finalValue = - value;
+    }
+    if(isBuy) {
+      finalValue = - finalValue;
+      transactionType = TransactionTypeEnum.BUY;
+    }
+    const cashflows:Map<string, number> = new Map();
+    cashflows.set(acc.businesskey, finalValue);
+    cashflows.set(budget.businesskey, finalValue);
+    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, new Trade(depotId,securityId,amount), "", ""); 
+    if(transactionId!==undefined){
+      transaction.transactionId=transactionId;
+    }
+    this.mfDataService.saveTransaction(transaction);
+  }
+
   saveTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string|undefined ) {
     this.saveInstrumentTransfer(desc, transactionDate, value, srcInstrument, trgInstrument, TransactionTypeEnum.TRANSFER, transactionId);
   }
@@ -60,7 +82,7 @@ export class TransactionService {
     const cashflows:Map<string, number> = new Map();
     cashflows.set(src.businesskey, value);
     cashflows.set(trg.businesskey, -value);
-    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, []); 
+    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, cashflows, new Trade("","",0), "", ""); 
     if(transactionId!==undefined){
       transaction.transactionId=transactionId;
     }
@@ -86,7 +108,7 @@ export class TransactionService {
   }
 
   getInstruments(): Observable<Instrument[]> {
-    return this.mfDataService.getInstruments();
+    return this.mfDataService.getInstrumentsAndSecurities();
   }
 
   setSelectedTransaction(transaction?:TransactionObjectView) {

@@ -143,6 +143,14 @@ export class MfdataService {
       map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
     );
   }
+
+  getInstrumentsAndSecurities(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
+  }
+
   getAllInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("instruments")              
     .pipe(

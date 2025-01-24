@@ -36,7 +36,8 @@
 
 
   <div class="form-group"
-    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='TRANSFER'">
+    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' 
+          || transactionForm.value.transactionType==='DEPOTCASHFLOW' || transactionForm.value.transactionType==='INTERESTS'|| transactionForm.value.transactionType==='TRANSFER'">
     <label>Quell-Konto</label>
 
     <select class="btn btn-primary dropdown-toggle" formControlName="srcAcc">
@@ -47,7 +48,8 @@
   </div>
 
   <div class="form-group"
-    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUDGETTRANSFER'">
+    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' 
+          || transactionForm.value.transactionType==='DEPOTCASHFLOW' || transactionForm.value.transactionType==='INTERESTS' || transactionForm.value.transactionType==='BUDGETTRANSFER'">
     <label>Quell-Budget</label>
 
     <select class="btn btn-primary dropdown-toggle" formControlName="srcBudget">
@@ -75,13 +77,46 @@
     </select>
   </div>
 
+  <div class="form-group" *ngIf="transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' || transactionForm.value.transactionType==='DEPOTCASHFLOW'">
+    <label>Depot</label>
+    <select class="btn btn-primary dropdown-toggle" formControlName="depot">
+      <option class="mydropdown-item" [ngValue]="depot" *ngFor="let depot of depots">
+        {{ depot.description }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="transactionForm.value.transactionType==='INTERESTS'">
+    <label>Konto</label>
+    <select class="btn btn-primary dropdown-toggle" formControlName="depot">
+      <option class="mydropdown-item" [ngValue]="account" *ngFor="let account of accounts">
+        {{ account.description }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' || transactionForm.value.transactionType==='DEPOTCASHFLOW'">
+    <label>Security</label>
+    <select class="btn btn-primary dropdown-toggle" formControlName="security">
+      <option class="mydropdown-item" [ngValue]="security" *ngFor="let security of securities">
+        {{ security.description }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL'">
+      <label>Amount</label>
+      <p-inputNumber formControlName="amount" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="0"
+        [maxFractionDigits]="8" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+  </div>
+
   <div class="form-group">
     <label>Value</label>
     <p-inputNumber formControlName="value" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
       [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
     <div *ngIf="
-      !transactionForm.controls.description.valid &&
-      transactionForm.controls.description.touched
+      !transactionForm.controls.value.valid &&
+      transactionForm.controls.value.touched
   " class="p-error">
       Value is required
     </div>

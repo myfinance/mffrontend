@@ -18,9 +18,12 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrls: ['./transactioninputform.component.scss'],
 })
 export class TransactioninputformComponent {
-  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER];
+  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER,TransactionTypeEnum.BUY, TransactionTypeEnum.SELL, TransactionTypeEnum.DEPOTCASHFLOW, TransactionTypeEnum.INTERESTS];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
+  depots: Instrument[] = [];
+  securities: Instrument[] = [];
+  accounts: Instrument[] = [];//for interests
   transactionSelected = false;
   transactionForm = new FormGroup({
 
@@ -40,6 +43,10 @@ export class TransactioninputformComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    amount: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     srcAcc: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     }),
@@ -50,6 +57,12 @@ export class TransactioninputformComponent {
       nonNullable: false
     }),
     trgBudget: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
+    depot: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
+    security: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     })
 
@@ -84,6 +97,9 @@ export class TransactioninputformComponent {
       (instruments) => {
         this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO);
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
+        this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT);
+        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY || instrument.instrumentType === InstrumentTypeEnum.BOND || instrument.instrumentType === InstrumentTypeEnum.ETF|| instrument.instrumentType === InstrumentTypeEnum.FONDS);
+        this.accounts = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN|| instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT);
       }
     )
   }
@@ -116,6 +132,18 @@ export class TransactioninputformComponent {
         case TransactionTypeEnum.INCOME: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
             this.transactionService.saveIncomeExpense(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.BUY: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.depot!=null && this.transactionForm.value.security!=null && this.transactionForm.value.amount!=null) {
+            this.transactionService.saveBuySell(true, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
+          }
+          break;
+        }
+        case TransactionTypeEnum.SELL: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.depot!=null && this.transactionForm.value.security!=null && this.transactionForm.value.amount!=null) {
+            this.transactionService.saveBuySell(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
           }
           break;
         }
