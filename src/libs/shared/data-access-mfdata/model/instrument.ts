@@ -7,6 +7,8 @@ export class Instrument {
     parentBusinesskey: string;
     serviceAddress: string;
     tenantBusinesskey: string;
+
+    // Dates as isostring
     additionalMaps: Map<AdditionalMapsEnum, Map<string, string>>;
     additionalProperties: Map<AdditionalPropertiesEnum, string>;
     additionalLists: Map<AdditionalListsEnum, string[]>;
@@ -126,7 +128,8 @@ export const AdditionalMapsEnum = {
     KEYVALUE: 'KEYVALUE' as AdditionalMapsEnum,
     YIELDGOAL: 'YIELDGOAL' as AdditionalMapsEnum,
     REALESTATEPROFITS: 'REALESTATEPROFITS' as AdditionalMapsEnum,
-    EQUITYSYMBOLS: 'EQUITYSYMBOLS' as AdditionalMapsEnum
+    EQUITYSYMBOLS: 'EQUITYSYMBOLS' as AdditionalMapsEnum,
+    SURRENDERVALUES: 'SURRENDERVALUES' as AdditionalMapsEnum
 };
 export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN' | 'IBAN' | 'VALUEBUDGETID';
 export const AdditionalPropertiesEnum = {
@@ -134,6 +137,11 @@ export const AdditionalPropertiesEnum = {
     INCOMEBUDGETID: 'INCOMEBUDGETID' as AdditionalPropertiesEnum,
     REALESTATEBUDGETGROUPID: 'REALESTATEBUDGETGROUPID' as AdditionalPropertiesEnum,
     MATURITYDATE: 'MATURITYDATE' as AdditionalPropertiesEnum,
+    ACQUISITIONDATE: 'ACQUISITIONDATE' as AdditionalPropertiesEnum,
+    ACQUISITIONVALUE: 'ACQUISITIONVALUE' as AdditionalPropertiesEnum,
+    INTERESTRATE: 'INTERESTRATE' as AdditionalPropertiesEnum,
+    ANNUITYRATE: 'ANNUITYRATE' as AdditionalPropertiesEnum,
+    REFERENCEGIRO: 'REFERENCEGIRO' as AdditionalPropertiesEnum,
     CURRENCYCODE: 'CURRENCYCODE' as AdditionalPropertiesEnum,
     ISIN: 'ISIN' as AdditionalPropertiesEnum,
     IBAN: 'IBAN' as AdditionalPropertiesEnum,

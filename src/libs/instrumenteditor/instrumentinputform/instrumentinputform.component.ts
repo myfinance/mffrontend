@@ -1,24 +1,42 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { TableModule } from 'primeng/table';
 import { InstrumentService } from '../instrument.service';
 import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument, InstrumentTypeEnum, LiquidityTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
+import { JsonConvertHelper } from '../../shared/data-access-mfdata/jsonconverthelper';
+
+interface tableRowTuple{
+	date: Date;
+	value: number;
+}
 
 @Component({
   selector: 'mffrontend-instrumentinputform',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, CalendarModule, TableModule],
   templateUrl: './instrumentinputform.component.html',
   styleUrls: ['./instrumentinputform.component.scss'],
 })
 export class InstrumentinputformComponent {
-  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT];
+  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT, InstrumentTypeEnum.BOND, InstrumentTypeEnum.ETF, InstrumentTypeEnum.FONDS, 
+    InstrumentTypeEnum.REALESTATE, InstrumentTypeEnum.DEPRECATIONOBJECT, InstrumentTypeEnum.LIFEINSURANCE, InstrumentTypeEnum.LOAN, InstrumentTypeEnum.MONEYATCALL, InstrumentTypeEnum.TIMEDEPOSIT,InstrumentTypeEnum.BUILDINGSAVINGACCOUNT];
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
   instruments: Instrument[] = [];
   budgetGroups: Instrument[] = [];
   currencies: Instrument[] = [];
   budgets: Instrument[] = [];
+  giros: Instrument[] = [];
   accPf?: Instrument;
+  yieldgoals: tableRowTuple[]= [];
+  selectedYieldGoal?: tableRowTuple;
+  realestateProfits: tableRowTuple[]= [];
+  selectedRealestateProfit?: tableRowTuple;
+  surrendervalues: tableRowTuple[]= [];
+  selectedSurrendervalue?: tableRowTuple;
+
+
   instrumentForm= new FormGroup({
 
     description: new FormControl<string>('', {
@@ -54,6 +72,42 @@ export class InstrumentinputformComponent {
     valuebudget: new FormControl<Instrument|null>(null, {
       validators: [Validators.required, this.isValueBudgetNecessary.bind(this)]
     }),
+    newYieldGoal: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    yieldGoalDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    newRealestateProfit: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    realestateProfitDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    newSurrendervalue: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    surrendervalueDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    maturityDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    acquisitionDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    acquisitionValue: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    interestRate: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    annuityRate: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
+    referenceGiro: new FormControl<Instrument|null>(null, {
+      validators: [Validators.required, this.isReferenceGiroNecessary.bind(this)]
+    }),
   });
 
   constructor(private instrumentService: InstrumentService) {
@@ -75,13 +129,15 @@ export class InstrumentinputformComponent {
     this.accPf = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.ACCOUNTPORTFOLIO)[0];
     this.currencies = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.CURRENCY);
     this.budgets = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
+    this.giros = this.instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO);
 
   }
 
   isValueBudgetNecessary(control: FormControl): {[s: string]: boolean} {
     if (control== null) { return {'BudgetGroup is not necessary': false}; }
     if (control.value == null) { return {'BudgetGroup is not necessary': false}; }
-    if (control.value.instrumentType === InstrumentTypeEnum.DEPOT && control.value.valuebudget == null) {
+    if ((control.value.instrumentType === InstrumentTypeEnum.DEPOT || control.value.instrumentType === InstrumentTypeEnum.DEPRECATIONOBJECT || control.value.instrumentType === InstrumentTypeEnum.LIFEINSURANCE)
+      && control.value.valuebudget == null) {
       return {'ValueBudget is necessary': true};
     } else { return {'ValueBudget is not necessary': false}; }
   }
@@ -100,6 +156,80 @@ export class InstrumentinputformComponent {
     if (control.value.instrumentType === InstrumentTypeEnum.EQUITY) {
       return {'Currency is necessary': true};
     } else { return {'Currency is not necessary': false}; }
+  }
+
+  isReferenceGiroNecessary(control: FormControl): {[s: string]: boolean} {
+    if (control== null) { return {'ReferenceGiro is not necessary': false}; }
+    if (control.value == null) { return {'ReferenceGiro is not necessary': false}; }
+    if (control.value.instrumentType === InstrumentTypeEnum.LOAN && control.value.valuebudget == null) {
+      return {'ReferenceGiro is necessary': true};
+    } else { return {'ReferenceGiro is not necessary': false}; }
+  }
+
+  addYieldGoal() {
+    const yieldGoalDate = this.instrumentForm.value.yieldGoalDate;
+    const newYieldGoal = this.instrumentForm.value.newYieldGoal;
+    if(yieldGoalDate && newYieldGoal) {
+      const newTuple : tableRowTuple={
+        date: yieldGoalDate, 
+        value: newYieldGoal
+      }
+      this.yieldgoals.push(newTuple);
+    }
+    
+  }
+
+  removeYieldGoal() {
+    if(this.selectedYieldGoal!==undefined) {
+      const selectedDate = this.selectedYieldGoal.date;
+      this.yieldgoals = this.yieldgoals.filter(( obj ) => {
+        return obj.date !== selectedDate;
+      });
+    }
+  }
+
+  addRealestateProfit() {
+    const realestateProfitDate = this.instrumentForm.value.realestateProfitDate;
+    const newRealestateProfit = this.instrumentForm.value.newRealestateProfit;
+    if(realestateProfitDate && newRealestateProfit) {
+      const newTuple : tableRowTuple={
+        date: realestateProfitDate, 
+        value: newRealestateProfit
+      }
+      this.realestateProfits.push(newTuple);
+    }
+    
+  }
+
+  removeRealestateProfit() {
+    if(this.selectedRealestateProfit!==undefined) {
+      const selectedDate = this.selectedRealestateProfit.date;
+      this.realestateProfits = this.realestateProfits.filter(( obj ) => {
+        return obj.date !== selectedDate;
+      });
+    }
+  }
+
+  addSurrendervalue() {
+    const surrendervalueDate = this.instrumentForm.value.surrendervalueDate;
+    const newSurrendervalue = this.instrumentForm.value.newSurrendervalue;
+    if(surrendervalueDate && newSurrendervalue) {
+      const newTuple : tableRowTuple={
+        date: surrendervalueDate, 
+        value: newSurrendervalue
+      }
+      this.surrendervalues.push(newTuple);
+    }
+    
+  }
+
+  removeSurrendervalue() {
+    if(this.selectedSurrendervalue!==undefined) {
+      const selectedDate = this.selectedSurrendervalue.date;
+      this.surrendervalues = this.surrendervalues.filter(( obj ) => {
+        return obj.date !== selectedDate;
+      });
+    }
   }
 
   onSubmit() {
@@ -138,10 +268,56 @@ export class InstrumentinputformComponent {
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.CURRENCY) {
       properties.set(AdditionalPropertiesEnum.CURRENCYCODE, this.instrumentForm.value.currencyCode || "");
     } 
-    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPOT) {
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPOT || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.REALESTATE|| this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPRECATIONOBJECT|| this.instrumentForm.value.instrumentType === InstrumentTypeEnum.LIFEINSURANCE) {
       properties.set(AdditionalPropertiesEnum.VALUEBUDGETID, this.instrumentForm.value.valuebudget?.businesskey || "");
       parent = this.accPf?.businesskey || "";
     } 
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.REALESTATE) {
+      const yieldGoalMap: Map<string,string> = new Map<string,string>();
+      this.yieldgoals.forEach((obj) => {
+        yieldGoalMap.set(JsonConvertHelper.dateToIsoString(obj.date), obj.value.toString());
+      });
+      maps.set(AdditionalMapsEnum.YIELDGOAL, yieldGoalMap);
+
+      const realestateProfitMap: Map<string,string> = new Map<string,string>();
+      this.realestateProfits.forEach((obj) => {
+        realestateProfitMap.set(JsonConvertHelper.dateToIsoString(obj.date), obj.value.toString());
+      });
+      maps.set(AdditionalMapsEnum.REALESTATEPROFITS, realestateProfitMap);
+    } 
+
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.LIFEINSURANCE) {
+      const surrendervalueMap: Map<string,string> = new Map<string,string>();
+      this.surrendervalues.forEach((obj) => {
+        surrendervalueMap.set(JsonConvertHelper.dateToIsoString(obj.date), obj.value.toString());
+      });
+      maps.set(AdditionalMapsEnum.SURRENDERVALUES, surrendervalueMap);
+    } 
+
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPRECATIONOBJECT|| this.instrumentForm.value.instrumentType === InstrumentTypeEnum.LIFEINSURANCE|| this.instrumentForm.value.instrumentType === InstrumentTypeEnum.LOAN) {
+      const date = this.instrumentForm.value.maturityDate;
+      if(date!== undefined && date!== null) {
+        properties.set(AdditionalPropertiesEnum.MATURITYDATE, JsonConvertHelper.dateToIsoString(date));
+      }
+    } 
+
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.DEPRECATIONOBJECT) {
+      const date = this.instrumentForm.value.acquisitionDate;
+      if(date!== undefined && date!== null) {
+        properties.set(AdditionalPropertiesEnum.ACQUISITIONDATE, JsonConvertHelper.dateToIsoString(date));
+      }
+      const value = this.instrumentForm.value.acquisitionValue || 0.0;
+      properties.set(AdditionalPropertiesEnum.ACQUISITIONVALUE, value.toString());
+    } 
+
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.LOAN) {
+      const interstrate = this.instrumentForm.value.interestRate || 0.0;
+      properties.set(AdditionalPropertiesEnum.INTERESTRATE, interstrate.toString());
+      const annuity = this.instrumentForm.value.annuityRate || 0.0;
+      properties.set(AdditionalPropertiesEnum.ANNUITYRATE, annuity.toString());
+      properties.set(AdditionalPropertiesEnum.REFERENCEGIRO, this.instrumentForm.value.referenceGiro?.businesskey || "");
+    } 
+
     console.log(this.instrumentForm)
     if(this.instrumentForm.value.description!=null && this.instrumentForm.value.instrumentType!=null) {
       this.instrumentService.saveInstrument(this.instrumentForm.value.description, 

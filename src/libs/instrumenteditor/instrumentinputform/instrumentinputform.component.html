@@ -47,12 +47,12 @@
     </select>
   </div>  
 
-  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'GIRO'">
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'GIRO'||instrumentForm.get('instrumentType')?.value === 'MONEYATCALL'||instrumentForm.get('instrumentType')?.value === 'TIMEDEPOSIT'||instrumentForm.get('instrumentType')?.value === 'BUILDINGSAVINGACCOUNT'">
     <p>IBAN:</p>
     <input class="form-control" formControlName="iban" />
   </div>  
 
-  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'">
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'||instrumentForm.get('instrumentType')?.value === 'BOND'||instrumentForm.get('instrumentType')?.value === 'ETF'||instrumentForm.get('instrumentType')?.value === 'FONDS'">
     <p>ISIN:</p>
     <input class="form-control" formControlName="isin" />
   </div>  
@@ -78,7 +78,7 @@
     <input class="form-control" formControlName="currencyCode" />
   </div> 
 
-  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'DEPOT'">
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'DEPOT'||instrumentForm.get('instrumentType')?.value === 'REALESTATE'||instrumentForm.get('instrumentType')?.value === 'DEPRECATIONOBJECT'||instrumentForm.get('instrumentType')?.value === 'LIFEINSURANCE'">
     <p>Wertbudget:</p>
     <select class="btn btn-primary dropdown-toggle" formControlName="valuebudget">
       <option class="mydropdown-item" [ngValue]="valuebudget" *ngFor="let valuebudget of budgets" >
@@ -89,6 +89,116 @@
       Bitte geben Sie eine Budgetgruppe für das Instrument ein!
     </span>
   </div>   
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'REALESTATE'">
+    <p>YieldGoalDate:</p>
+    <p-calendar formControlName="yieldGoalDate" dateFormat="dd.mm.yy"/>
+    <p>YieldGoal:</p>
+    <input class="form-control" formControlName="newYieldGoal" />
+    <button class="btn btn-primary" type="button" (click)="addYieldGoal()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeYieldGoal()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="yieldgoals" selectionMode="single" [(selection)]="selectedYieldGoal" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>YieldGoal</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'REALESTATE'">
+    <p>YieldGoalDate:</p>
+    <p-calendar formControlName="realestateProfitDate" dateFormat="dd.mm.yy"/>
+    <p>realestateProfit:</p>
+    <input class="form-control" formControlName="newRealestateProfit" />
+    <button class="btn btn-primary" type="button" (click)="addRealestateProfit()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeRealestateProfit()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="realestateProfits" selectionMode="single" [(selection)]="selectedRealestateProfit" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>RealestateProfit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'LIFEINSURANCE'">
+    <p>Rückkaufswertzeitpunkt:</p>
+    <p-calendar formControlName="surrendervalueDate" dateFormat="dd.mm.yy"/>
+    <p>Rückkaufswert:</p>
+    <input class="form-control" formControlName="newSurrendervalue" />
+    <button class="btn btn-primary" type="button" (click)="addSurrendervalue()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeSurrendervalue()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="surrendervalues" selectionMode="single" [(selection)]="selectedSurrendervalue" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>Rückkaufswert</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'DEPRECATIONOBJECT'">
+    <p>Datum des Erwerbs:</p>
+    <p-calendar formControlName="acquisitionDate" dateFormat="dd.mm.yy"/>
+  </div> 
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'DEPRECATIONOBJECT'">
+    <p>Kaufpreis:</p>
+    <input class="form-control" formControlName="acquisitionValue" />
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'DEPRECATIONOBJECT'||instrumentForm.get('instrumentType')?.value === 'LIFEINSURANCE'||instrumentForm.get('instrumentType')?.value === 'LOAN'">
+    <p>Ablaufdatum:</p>
+    <p-calendar formControlName="maturityDate" dateFormat="dd.mm.yy"/>
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'LOAN'">
+    <p>Zinssatz:</p>
+    <input class="form-control" formControlName="interestRate" />
+  </div> 
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'LOAN'">
+    <p>Tilgungsrate:</p>
+    <input class="form-control" formControlName="annuityRate" />
+  </div> 
+
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'LOAN'">
+    <p>Referenzkonto:</p>
+    <select class="btn btn-primary dropdown-toggle" formControlName="referenceGiro">
+      <option class="mydropdown-item" [ngValue]="giro" *ngFor="let giro of giros" >
+        {{giro.description}}
+      </option>
+    </select>
+    <span *ngIf="!instrumentForm.get('referenceGiro')?.valid && instrumentForm.get('referenceGiro')?.touched">
+      Bitte geben Sie ein Referenzkonto für das Instrument ein!
+    </span>
+  </div>  
 
   <button class="btn btn-primary" type="submit">Speichern</button>
 </form>
