@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
-import { InstrumentService } from '../instrument.service';
+import { InstrumentService, tableRowTuple } from '../instrument.service';
 import { AdditionalListsEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, Instrument, InstrumentTypeEnum, LiquidityTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { JsonConvertHelper } from '../../shared/data-access-mfdata/jsonconverthelper';
 
-interface tableRowTuple{
-	date: Date;
-	value: number;
-}
+
 
 @Component({
   selector: 'mffrontend-instrumentinputform',

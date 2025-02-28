@@ -48,17 +48,21 @@ export class Instrument {
         instrument.businesskey = data.businesskey;
         instrument.active = data.active;
         instrument.liquidityType = data.liquidityType;
-        instrument.additionalLists = data.additionalLists;
-        instrument.additionalMaps = data.additionalMaps;
+        instrument.additionalLists = additionalLists;
+        instrument.additionalMaps = additionalMaps;
         instrument.additionalProperties = additionalProperties;
         return instrument;
     }
 
     public static instrumentToJson(instrument: Instrument): string {
-        const additionalMapsObj: { [key: string]: { [key: string]: string } } = {};
-        instrument.additionalMaps.forEach((innerMap, key) => {
-          additionalMapsObj[key] = Object.fromEntries(innerMap);
-        });
+        let additionalMapsObj: { [key: string]: { [key: string]: string } } = {};
+        if(instrument.additionalMaps instanceof Map){
+          instrument.additionalMaps.forEach((innerMap, key) => {
+            additionalMapsObj[key] = Object.fromEntries(innerMap);
+          });
+        } else {// it is already an object and not a map because it is loaded from the backend and there aonly parsed from json to object
+          additionalMapsObj = instrument.additionalMaps
+        }
     
         let additionalPropertiesObj: { [key: string]: string } = {};
         if(instrument.additionalProperties instanceof Map){

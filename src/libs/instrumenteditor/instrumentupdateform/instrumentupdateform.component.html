@@ -41,5 +41,83 @@
     <p>WährungCode:</p>
     <input class="form-control" formControlName="currencyCode" />
   </div> 
+
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'REALESTATE'">
+    <p>YieldGoalDate:</p>
+    <p-calendar formControlName="yieldGoalDate" dateFormat="dd.mm.yy"/>
+    <p>YieldGoal:</p>
+    <input class="form-control" formControlName="newYieldGoal" />
+    <button class="btn btn-primary" type="button" (click)="addYieldGoal()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeYieldGoal()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="yieldgoals" selectionMode="single" [(selection)]="selectedYieldGoal" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>YieldGoal</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'REALESTATE'">
+    <p>Date of Profit:</p>
+    <p-calendar formControlName="realestateProfitDate" dateFormat="dd.mm.yy"/>
+    <p>realestateProfit:</p>
+    <input class="form-control" formControlName="newRealestateProfit" />
+    <button class="btn btn-primary" type="button" (click)="addRealestateProfit()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeRealestateProfit()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="realestateProfits" selectionMode="single" [(selection)]="selectedRealestateProfit" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>RealestateProfit</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+  <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'LIFEINSURANCE'">
+    <p>Rückkaufswertzeitpunkt:</p>
+    <p-calendar formControlName="surrendervalueDate" dateFormat="dd.mm.yy"/>
+    <p>Rückkaufswert:</p>
+    <input class="form-control" formControlName="newSurrendervalue" />
+    <button class="btn btn-primary" type="button" (click)="addSurrendervalue()">add</button>
+    <button class="btn btn-primary" type="button" (click)="removeSurrendervalue()">removeSelected</button>
+    <div class="card">
+      <p-table [value]="surrendervalues" selectionMode="single" [(selection)]="selectedSurrendervalue" dataKey="date"  [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Date</th>
+              <th>Rückkaufswert</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.date }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div> 
+
+
+ 
   <button class="btn btn-primary" type="submit">Speichern</button>
 </form>

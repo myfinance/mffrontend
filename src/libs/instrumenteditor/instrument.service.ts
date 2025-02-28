@@ -3,6 +3,10 @@ import { Observable, Subject } from 'rxjs';
 import { Instrument, MfdataService } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum, AdditionalMapsEnum, AdditionalPropertiesEnum, AdditionalListsEnum, LiquidityTypeEnum } from '../shared/data-access-mfdata/model/instrument';
 
+export interface tableRowTuple{
+	date: Date;
+	value: number;
+}
 @Injectable({
   providedIn: 'root'
 })
