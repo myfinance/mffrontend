@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { InstrumentService } from '../instrument.service';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { TagModule } from 'primeng/tag';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'mffrontend-instrumentview',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule, TagModule, DropdownModule, FormsModule],
   templateUrl: './instrumentview.component.html',
   styleUrls: ['./instrumentview.component.scss'],
 })
@@ -16,6 +19,12 @@ export class InstrumentviewComponent {
   displayedColumns: string[] = ['businesskey', 'description', 'isactive'];
   selectedInstrument: Instrument | undefined;
   version = 'na';
+  filterValue: any;
+
+statuses: any[] = [
+  { label: 'True', value: 'true' },
+  { label: 'False', value: 'false' }
+];
 
   constructor(private instrumentService: InstrumentService) {
     this.instrumentService.newInstrumentsLoadedSubject.subscribe({

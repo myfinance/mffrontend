@@ -1,17 +1,38 @@
 <div class="scrollable-container">
 
-  <p-table [value]="instruments" selectionMode="single" [(selection)]="selectedInstrument" dataKey="businesskey" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table [value]="instruments" selectionMode="single" 
+        [(selection)]="selectedInstrument" 
+        dataKey="businesskey" 
+        (onRowSelect)="onRowSelect($event)" 
+        (onRowUnselect)="onRowUnselect($event)" 
+        [metaKeySelection]="false" 
+        [tableStyle]="{ 'min-width': '50rem' }">
+
     <ng-template pTemplate="header">
         <tr>
-            <th>businesskey</th>
-            <th>description</th>
-            <th>active</th>
+            <th pSortableColumn="description"> 
+                <div class="flex items-center">
+                    Description
+                    <p-sortIcon field="description" />
+                    <p-columnFilter type="text" field="description" display="menu" />
+                </div>
+            </th >
+            <th>
+                <div class="flex items-center">
+                    Type
+                    <p-columnFilter type="text" field="instrumentType" display="menu" />
+                </div>
+            </th>
+            <th>
+                Active
+                <p-columnFilter type="text" field="active" display="menu" />
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-row>
         <tr [pSelectableRow]="row">
-            <td>{{ row.businesskey }}</td>
             <td>{{ row.description }}</td>
+            <td>{{ row.instrumentType }}</td>
             <td>{{ row.active }}</td>
         </tr>
     </ng-template>

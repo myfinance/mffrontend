@@ -235,7 +235,7 @@ export class InstrumentinputformComponent {
     const properties = new Map<AdditionalPropertiesEnum, string>();
     const lists = new Map<AdditionalListsEnum, ['']>();
 
-    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.GIRO || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.MONEYATCALL || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT) {
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.GIRO || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.MONEYATCALL || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT) {
       if (this.accPf!==null) {
         parent = this.accPf?.businesskey || "";
       } 
