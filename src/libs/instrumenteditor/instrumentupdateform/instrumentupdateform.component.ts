@@ -133,14 +133,13 @@ export class InstrumentupdateformComponent implements OnInit {
   addSurrendervalue() {
     const surrendervalueDate = this.instrumentForm.value.surrendervalueDate;
     const newSurrendervalue = this.instrumentForm.value.newSurrendervalue;
-    if (surrendervalueDate && newSurrendervalue) {
-      const newTuple: tableRowTuple = {
-        date: surrendervalueDate,
+    if(surrendervalueDate && newSurrendervalue!==undefined && newSurrendervalue!==null) {
+      const newTuple : tableRowTuple={
+        date: surrendervalueDate, 
         value: newSurrendervalue
       }
       this.surrendervalues.push(newTuple);
     }
-
   }
 
   removeSurrendervalue() {
@@ -214,8 +213,8 @@ export class InstrumentupdateformComponent implements OnInit {
       }
       if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE) {
         const surrenderValues = this.selectedInstrument.additionalMaps.get(AdditionalMapsEnum.SURRENDERVALUES);
+        this.surrendervalues =[];
         if (surrenderValues && surrenderValues.size > 0) {
-          this.surrendervalues =[];
           surrenderValues.forEach((value, key) => {
             const newTuple: tableRowTuple = {
               date: new Date(key),
