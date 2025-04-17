@@ -19,7 +19,7 @@ export class AssetviewService {
   private dateaforAnalysis = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   private referenceDate = new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate());
   private rangeDates: Date[] = [
-    new Date(2024, 1, 1),
+    new Date(2012, 1, 1),
     new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   ];
 

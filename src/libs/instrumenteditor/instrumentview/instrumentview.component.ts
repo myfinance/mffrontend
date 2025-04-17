@@ -19,7 +19,6 @@ export class InstrumentviewComponent {
   displayedColumns: string[] = ['businesskey', 'description', 'isactive'];
   selectedInstrument: Instrument | undefined;
   version = 'na';
-  filterValue: any;
 
 statuses: any[] = [
   { label: 'True', value: 'true' },

@@ -7,6 +7,7 @@ import { LiquidityTypeEnum } from '../../shared/data-access-mfdata/model/instrum
 
 interface ChartDataSet {
     label: string;
+    id: String;
     data: number[];
 }
 
@@ -51,6 +52,7 @@ export class AccountvalueviewComponent implements OnInit {
         this.basicOptions = {
             plugins: {
                 legend: {
+                    display: false,
                     labels: {
                         color: textColor
                     }
@@ -101,63 +103,75 @@ export class AccountvalueviewComponent implements OnInit {
         this.sum = 0.0;
         this.service.getAccountDetails().forEach(i => {
             this.sum+=i.value;
-            switch (i.liquiditytype) {
-                case LiquidityTypeEnum.LIQUIDE: {
-                    this.liquidSum += i.value;
-                    const dataSet: ChartDataSet = {
-                        label: i.businesskey,
-                        data: [i.value, 0, 0, 0]
+            const value = this.roundToTwoDigets(i.value);
+            if(value>0){
+                switch (i.liquiditytype) {
+                    case LiquidityTypeEnum.LIQUIDE: {
+                        this.liquidSum += i.value;
+                        const dataSet: ChartDataSet = {
+                            label: i.description,
+                            id: i.businesskey,
+                            data: [value, 0, 0, 0]
+                        }
+                        datasets.push(dataSet);
+                        break;
                     }
-                    datasets.push(dataSet);
-                    break;
-                }
-                case LiquidityTypeEnum.SHORTTERM: {
-                    this.shortTermSum += i.value;
-                    const dataSet: ChartDataSet = {
-                        label: i.businesskey,
-                        data: [0, i.value, 0, 0]
+                    case LiquidityTypeEnum.SHORTTERM: {
+                        this.shortTermSum += i.value;
+                        const dataSet: ChartDataSet = {
+                            label: i.description,
+                            id: i.businesskey,
+                            data: [0, value, 0, 0]
+                        }
+                        datasets.push(dataSet);
+                        break;
                     }
-                    datasets.push(dataSet);
-                    break;
-                }
-                case LiquidityTypeEnum.MIDTERM: {
-                    this.midTermSum += i.value;
-                    const dataSet: ChartDataSet = {
-                        label: i.businesskey,
-                        data: [0, 0, i.value, 0]
+                    case LiquidityTypeEnum.MIDTERM: {
+                        this.midTermSum += i.value;
+                        const dataSet: ChartDataSet = {
+                            label: i.description,
+                            id: i.businesskey,
+                            data: [0, 0, value, 0]
+                        }
+                        datasets.push(dataSet);
+                        break;
                     }
-                    datasets.push(dataSet);
-                    break;
-                }
-                case LiquidityTypeEnum.LONGTERM: {
-                    this.longTermSum += i.value;
-                    const dataSet: ChartDataSet = {
-                        label: i.businesskey,
-                        data: [0, 0, 0, i.value]
+                    case LiquidityTypeEnum.LONGTERM: {
+                        this.longTermSum += i.value;
+                        const dataSet: ChartDataSet = {
+                            label: i.description,
+                            id: i.businesskey,
+                            data: [0, 0, 0, value]
+                        }
+                        datasets.push(dataSet);
+                        break;
                     }
-                    datasets.push(dataSet);
-                    break;
-                }
-                default: {
-                    //statements; 
-                    break;
+                    default: {
+                        //statements; 
+                        break;
+                    }
                 }
             }
+
         })
-        datasets = this.service.getAccountDetails().map(i => ({
-            label: i.businesskey,
-            data: [i.value, 0, 0, 0]
-        }))
+        this.sum=this.roundToTwoDigets(this.sum);
+        this.liquidSum=this.roundToTwoDigets(this.liquidSum);
+        this.shortTermSum=this.roundToTwoDigets(this.shortTermSum); 
+        this.midTermSum=this.roundToTwoDigets(this.midTermSum);
+        this.longTermSum=this.roundToTwoDigets(this.longTermSum);
         return datasets;
+    }
+
+    roundToTwoDigets(value:number):number {
+        return Math.round(value * 100) / 100;
     }
 
     handleBarClick(event: any) {
         const datasetIndex = event.element.datasetIndex;
-        //const dataIndex = event.element.index;
-        //const label = this.basicData.labels[dataIndex];
         const datasetLabel = this.basicData.datasets[datasetIndex].label;
+        const dataseId = this.basicData.datasets[datasetIndex].id;
     
-        this.service.setSelectedInstrument(datasetLabel);
+        this.service.setSelectedInstrument(dataseId);
 
     }
 }
