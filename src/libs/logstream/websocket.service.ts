@@ -93,4 +93,8 @@ export class WebsocketService {
   triggerValueChangedEvent() {
     this.mfDataService.triggerRecurrentTransactionEvent();
   }
+
+  triggerPriceChangedEvent() {
+    this.mfDataService.triggerPriceEvent();
+  }
 }

@@ -162,6 +162,7 @@ export class InstrumentupdateformComponent implements OnInit {
   updateSelectedInstrument() {
     this.selectedInstrument = this.instrumentService.selectedInstrument
     if (this.selectedInstrument) {
+      this.instrumentForm.reset();
       this.noInstrumentSelected = false;
       this.instrumentForm.get('description')?.setValue(this.selectedInstrument.description);
       this.instrumentForm.get('active')?.setValue(this.selectedInstrument.active);
@@ -172,7 +173,8 @@ export class InstrumentupdateformComponent implements OnInit {
           if (symbolsmap && symbolsmap.size > 0) {
             const symbol = symbolsmap.keys().next().value;
             if (symbol) {
-              const currency = symbolsmap.get(symbol);
+              const currencyKey = symbolsmap.get(symbol);
+              const currency = this.currencies.filter(c=>c.businesskey==currencyKey)[0];
               this.instrumentForm.get('symbol')?.setValue(symbol);
               this.instrumentForm.get('currency')?.setValue(currency);
             }

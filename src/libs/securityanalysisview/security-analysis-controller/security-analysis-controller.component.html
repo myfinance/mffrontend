@@ -3,7 +3,7 @@
 <p-sidebar [(visible)]="sidebarVisible">
 
     <p-button (click)="import()">starte Preisimport</p-button>
-    
+    <p-button (click)="importPrice4SelectedInstrument()">starte Preisimport für {{this.getSelectedInstrumentDesc()}}</p-button>
     <label>Referenzstichtag</label>
     <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
 

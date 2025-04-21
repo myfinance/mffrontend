@@ -4,6 +4,7 @@ import { SecurityAnalysisViewService } from '../securityanalysisview.service';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
+import { SecurityDetails } from '../../shared/data-access-mfdata/model/securitydetails';
 
 @Component({
   selector: 'app-security-analysis-controller',
@@ -36,6 +37,16 @@ export class SecurityAnalysisControllerComponent {
 
   import(){
     this.service.import();
+  }
+
+  importPrice4SelectedInstrument(){
+    this.service.importPrice4Instrument();
+  }
+
+  getSelectedInstrumentDesc():string {
+    const instr = this.service.getSelectedInstrument();
+    if(instr) return instr.description
+    return "NA";
   }
 
 }

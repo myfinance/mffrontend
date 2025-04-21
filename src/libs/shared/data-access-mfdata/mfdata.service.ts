@@ -22,6 +22,7 @@ export class MfdataService {
   tenantChangedSubject: Subject<unknown> = new Subject<unknown>()
   instrumentEventSubject: Subject<unknown> = new Subject<unknown>()
   transactionEventSubject: Subject<unknown> = new Subject<unknown>()
+  priceEventSubject: Subject<unknown> = new Subject<unknown>()
   recurrentTransactionEventSubject: Subject<unknown> = new Subject<unknown>()
   loginEventSubject: Subject<unknown> = new Subject<unknown>()
   valueChangedEventSubject: Subject<unknown> = new Subject<unknown>()
@@ -267,6 +268,13 @@ export class MfdataService {
     this.recurrentTransactionEventSubject.next(true);
   }
 
+  getPriceEventSubject(){
+    return this.priceEventSubject;
+  }
+  triggerPriceEvent() {
+    this.priceEventSubject.next(true);
+  }
+
   getVersion(): Observable<string> {
     return this.mfClientservice.getResource("index");
   }
@@ -329,6 +337,16 @@ export class MfdataService {
 
   startMarketdataImport() {
     return this.mfClientservice.postRequest("", "loadNewMarketData").subscribe({
+      next:
+        () => {
+          console.info('import started');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  startMarketdataImport4Instrument(businesskey:string) {
+    return this.mfClientservice.postRequest("", "loadNewMarketData4Instrument?businesskey="+businesskey).subscribe({
       next:
         () => {
           console.info('import started');

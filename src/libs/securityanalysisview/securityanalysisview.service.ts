@@ -11,7 +11,7 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
     private dateForAnalysis = new Date(Date.now());
     private referenceDate = new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate());
     private rangeDates: Date[] = [
-      new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate()),
+      new Date(new Date().getFullYear()-10, new Date().getMonth(), new Date().getDate()),
       new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
     ];
     private securityDetails: SecurityDetails[] = [];
@@ -53,6 +53,10 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
     import() {
         this.service.startMarketdataImport();
     }
+
+    importPrice4Instrument() {
+      this.service.startMarketdataImport4Instrument(this.selectedInstrumentKey);
+  }
 
     getDateForAnalysis(): Date {
       return this.dateForAnalysis;
@@ -116,6 +120,10 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
     setSelectedInstrument(busnesskey: string) {
       this.selectedInstrumentKey = busnesskey;
       this.loadSecuritiyChart();
+    }
+
+    getSelectedInstrument():SecurityDetails {
+      return this.getSecurities().filter(i=>i.businesskey==this.selectedInstrumentKey)[0];
     }
     
   }

@@ -229,6 +229,13 @@ export class InstrumentinputformComponent {
     }
   }
 
+  clearForm() {
+    this.instrumentForm.reset();
+    this.yieldgoals = [];
+    this.realestateProfits = [];
+    this.surrendervalues= [];
+  }
+
   onSubmit() {
     let parent = "";
     const maps = new Map<AdditionalMapsEnum, Map<string,string>>();
@@ -322,5 +329,6 @@ export class InstrumentinputformComponent {
         this.instrumentForm.value.instrumentType  as InstrumentTypeEnum,
         parent, maps, properties, lists, this.instrumentForm.value.liquidityType as LiquidityTypeEnum);
     }
+    this.clearForm();
   }
 }
