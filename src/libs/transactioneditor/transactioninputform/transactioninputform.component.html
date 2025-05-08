@@ -10,7 +10,8 @@
     </select>
   </div>
 
-  <div class="form-group">
+  <div class="form-group"
+    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUDGETTRANSFER'|| transactionForm.value.transactionType==='TRANSFER'">
     <label>Beschreibung:</label>
     <input class="form-control" formControlName="description" />
     <span *ngIf="

@@ -95,11 +95,11 @@ export class TransactioninputformComponent {
   loadInstruments() {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
-        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO);
-        this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
-        this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT);
-        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY || instrument.instrumentType === InstrumentTypeEnum.BOND || instrument.instrumentType === InstrumentTypeEnum.ETF|| instrument.instrumentType === InstrumentTypeEnum.FONDS);
-        this.accounts = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN|| instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT);
+        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO).sort((a, b) => a.description.localeCompare(b.description));
+        this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
+        this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT).sort((a, b) => a.description.localeCompare(b.description));
+        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY || instrument.instrumentType === InstrumentTypeEnum.BOND || instrument.instrumentType === InstrumentTypeEnum.ETF|| instrument.instrumentType === InstrumentTypeEnum.FONDS).sort((a, b) => a.description.localeCompare(b.description));
+        this.accounts = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN|| instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT).sort((a, b) => a.description.localeCompare(b.description));
       }
     )
   }
@@ -110,10 +110,11 @@ export class TransactioninputformComponent {
       this.transactionSelected = true;
       this.transactionForm.controls['description'].setValue(transaction.description);
       this.transactionForm.controls['transactionType'].setValue(transaction.transactionType);
-      this.transactionForm.controls['transactionDate'].setValue(transaction.transactiondate);
+     this.transactionForm.controls['transactionDate'].setValue(transaction.transactiondate);
       this.transactionForm.controls['value'].setValue(transaction.value);
-      this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.instrument1?.businesskey)[0]);
-      this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.instrument2?.businesskey)[0]);
+      this.transactionForm.controls['amount'].setValue(transaction.amount);
+      this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.accKey)[0]);
+      this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.budgetKey)[0]);
     }
 
   }
@@ -125,25 +126,27 @@ export class TransactioninputformComponent {
       switch (this.transactionForm.value.transactionType) {
         case TransactionTypeEnum.EXPENSE: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.transactionService.saveIncomeExpense(true, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
+            this.transactionService.saveExpense(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.INCOME: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.transactionService.saveIncomeExpense(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
+            this.transactionService.saveIncome(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.BUY: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.depot!=null && this.transactionForm.value.security!=null && this.transactionForm.value.amount!=null) {
-            this.transactionService.saveBuySell(true, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
+            const desc = 'buy ' + this.transactionForm.value.security.description;
+            this.transactionService.saveBuy(desc, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
           }
           break;
         }
         case TransactionTypeEnum.SELL: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.depot!=null && this.transactionForm.value.security!=null && this.transactionForm.value.amount!=null) {
-            this.transactionService.saveBuySell(false, this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
+            const desc = 'sell ' + this.transactionForm.value.security.description;
+            this.transactionService.saveSell(desc, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, this.transactionForm.value.amount);
           }
           break;
         }
@@ -174,7 +177,7 @@ export class TransactioninputformComponent {
   updateTransaction(){
     let transactionId = undefined;
     if(this.transactionSelected){
-      transactionId = this.transactionService.getSelectedTransaction()?.id;
+      transactionId = this.transactionService.getSelectedTransaction()?.transactionId;
     }
     this.saveTransaction(transactionId);
   }

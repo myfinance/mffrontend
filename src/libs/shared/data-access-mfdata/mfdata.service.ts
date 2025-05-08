@@ -179,7 +179,10 @@ export class MfdataService {
   }
 
   getTransactions(startDate: Date, endDate: Date): Observable<Transaction[]> {
-    return this.mfClientservice.getResource("transactions?startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate) );
+    return this.mfClientservice.getResource("transactions?startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate) )
+    .pipe(
+      map((data: any[]) => data.map(item => Transaction.fromJson(item)))  // Convert each item to Instrument
+    );
   }
   saveTransaction(transaction: Transaction) {
     return this.mfClientservice.postRequest(JSON.stringify(transaction), "saveTransaction").subscribe({

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Instrument } from './model/instrument';
 import { AuthService } from './auth.service';
 import { MfconfigService } from './mfconfig.service';
 

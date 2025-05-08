@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { RecurrentTransactionObjectView } from './recurrenttransactionobjectview';
 import { Observable, Subject } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
-import { Transaction, TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
+import { TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
-import { TransactionObjectView } from '../transactioneditor/TransactionObjectView';
 import { RecurrentFrequencyEnum, RecurrentTransaction } from '../shared/data-access-mfdata/model/recurrenttransaction';
 
 @Injectable({

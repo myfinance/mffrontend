@@ -10,7 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
-import { Transaction } from '../../shared/data-access-mfdata/model/transaction';
+import { Transaction, TransactionTypeEnum } from '../../shared/data-access-mfdata/model/transaction';
 
 @Component({
   selector: 'mffrontend-massloadeditor',
@@ -93,7 +93,14 @@ export class MassloadeditorComponent {
       this.rows.controls.forEach(element => {
         if(!element.get('ignore')?.value){
           const transactionDate = this.parseGermanDate(element.get('transactiondate')?.value);
-          result.push(this.transactionService.createIncomeExpense(element.get('description')?.value, transactionDate, element.get('value')?.value, this.dynamicForm.get('giro')?.value, element.get('budget')?.value, undefined ));
+          const value = element.get('value')?.value;
+          let transactionType = TransactionTypeEnum.EXPENSE
+          if(value>0){
+            transactionType = TransactionTypeEnum.INCOME
+          }
+          const transaction = this.transactionService.createTransaction(transactionType, element.get('description')?.value, transactionDate, value, this.dynamicForm.get('giro')?.value, element.get('budget')?.value, 
+            "", "", "", "", 0, "", undefined );
+          result.push(transaction);
         }
       });
       this.transactionService.saveTransactions(result);

@@ -1,24 +1,35 @@
 import { JsonConvertHelper } from "../jsonconverthelper";
-import { Trade } from "./trade";
 
 export class Transaction { 
     transactionType: TransactionTypeEnum;
     description: string;
     transactiondate: Date;
-    cashflows: Map<string, number>;
-    tradeInfo: Trade;
     transactionId: string | undefined;
-    accId: string;
-    securityId: string;
+    accKey: string;
+    budgetKey: string;
+    trgBudgetKey: string;
+    trgAccKey: string;
+    value: number;
+    depotBusinessKey: string;
+    securityBusinessKey: string;
+    amount: number;
+    insuranceKey: string;
 
-    constructor(transactionType: TransactionTypeEnum, description: string, transactiondate: Date, cashflows: Map<string, number>, tradeInfo: Trade, accId: string, securityId: string) {
+ 
+
+    constructor(transactionType: TransactionTypeEnum, description: string, transactiondate: Date, accKey: string, budgetKey: string, trgBudgetKey: string, trgAccKey: string, value: number, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string) {
         this.transactionType = transactionType;
         this.description = description;
         this.transactiondate = transactiondate;
-        this.cashflows = cashflows;
-        this.tradeInfo = tradeInfo;
-        this.accId = accId;
-        this.securityId = securityId;
+        this.budgetKey = budgetKey;
+        this.accKey = accKey;
+        this.trgBudgetKey = trgBudgetKey;
+        this.trgAccKey = trgAccKey;
+        this.value = value;
+        this.securityBusinessKey = securityBusinessKey;
+        this.depotBusinessKey = depotBusinessKey;
+        this.amount = amount;
+        this.insuranceKey = insuranceKey;
     }
     toJSON() {
         return {
@@ -26,13 +37,27 @@ export class Transaction {
             transactionType: this.transactionType,
             description: this.description,
             transactiondate: JsonConvertHelper.dateToIsoString(this.transactiondate),
-            cashflows: Object.fromEntries(this.cashflows),
-            tradeInfo: this.tradeInfo,
-            accId: this.accId,
-            securityId: this.securityId
+            budgetKey: this.budgetKey,
+            accKey: this.accKey,
+            trgBudgetKey: this.trgBudgetKey,
+            trgAccKey: this.trgAccKey,
+            value: this.value,
+            securityBusinessKey: this.securityBusinessKey,
+            depotBusinessKey: this.depotBusinessKey,
+            amount: this.amount,
+            insuranceKey: this.insuranceKey,
+
         }
-    }   
+    }  
+    
+    static fromJson(data: any): Transaction {
+                const transaction = new Transaction(data.transactionType, data.description, new Date(data.transactiondate), data.accKey, data.budgetKey, data.trgBudgetKey, data.trgAccKey, data.value, data.securityBusinessKey, data.depotBusinessKey, data.amount, data.insuranceKey);
+        return transaction;
+    }
 }
+
+
+
 export type TransactionTypeEnum = 'INCOME' | 'EXPENSE' | 'TRANSFER' | 'BUDGETTRANSFER' | 'DEPOTCASHFLOW' | 'INTERESTS' | 'BUY' | 'SELL' | 'UNKNOWN';
 export const TransactionTypeEnum = {
     INCOME: 'INCOME' as TransactionTypeEnum,
