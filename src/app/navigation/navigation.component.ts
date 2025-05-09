@@ -164,6 +164,13 @@ export class NavigationComponent implements OnInit {
           command: () => {
             this.securityanalysisview();
           }
+        },
+        {
+          label: 'Portfolioanalyse',
+          icon: 'pi pi-chart-bar',
+          command: () => {
+            this.portfolioanalysisview();
+          }
         }
         ]
       },
@@ -251,6 +258,11 @@ export class NavigationComponent implements OnInit {
   securityanalysisview() {
     this.router.navigate(['/securityanalysisview']);
   }
+
+  portfolioanalysisview() {
+    this.router.navigate(['/portfolioanalysisview']);
+  }
+
 
   handleZoneSelect(identifier: string): void {
     this.mfdataService.setCurrentZone(identifier);
