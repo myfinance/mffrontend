@@ -44,6 +44,11 @@ export class TransactionviewComponent{
           alert('Invalid Credentials');
         }
     })
+    this.transactionService.getTenantEventSubject().subscribe(
+      () => {
+        this.loadInstruments();
+      }
+    )
     this.transactionService.getInstrumentEventSubject().subscribe(
       () => {
         this.loadInstruments();
@@ -83,10 +88,15 @@ export class TransactionviewComponent{
   }
 
   filter() {
-    this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.accKey === this.instrumentFilter?.businesskey
-      || transaction.budgetKey === this.instrumentFilter?.businesskey
-      || transaction.trgBudgetKey === this.instrumentFilter?.businesskey
-      || transaction.trgAccKey === this.instrumentFilter?.businesskey);
+    if(this.instrumentFilter){
+      this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.accKey === this.instrumentFilter?.businesskey
+        || transaction.budgetKey === this.instrumentFilter?.businesskey
+        || transaction.trgBudgetKey === this.instrumentFilter?.businesskey
+        || transaction.trgAccKey === this.instrumentFilter?.businesskey);
+    }
+    else {
+      this.filteredTransactionViewObjects = this.transactionViewObjects;
+    }
 
   }
 

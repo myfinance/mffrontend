@@ -72,6 +72,9 @@ export class TransactionService {
   getConfigLoadedSubject() : Subject<unknown>{
     return this.mfDataService.getConfigLoadedSubject();
   }
+  getTenantEventSubject() : Subject<unknown>{
+    return this.mfDataService.getTenantEventSubject();
+  }
   getLoginSubject() : Subject<unknown>{
     return this.mfDataService.loginEventSubject;
   }

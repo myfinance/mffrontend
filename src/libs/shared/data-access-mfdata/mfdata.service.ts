@@ -13,6 +13,7 @@ import { JsonConvertHelper } from './jsonconverthelper';
 import { SecurityDetails } from './model/securitydetails';
 import { EndOfDayPrices } from './model/endofdayprices';
 import { EndOfDayPrice } from './model/endofdayprice';
+import { Position } from './model/position';
 
 @Injectable({
   providedIn: 'root'
@@ -146,6 +147,9 @@ export class MfdataService {
   }
 
   getInstrumentsAndSecurities(): Observable<Instrument[]> {
+    if(this.currentTenant==null || this.currentTenant.businesskey==""){
+      return new Observable<Instrument[]>(subscriber => subscriber.complete());
+    }
     return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)              
     .pipe(
       map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
@@ -249,6 +253,9 @@ export class MfdataService {
         },
       error: (e) => console.error(e)
     });
+  }
+  getTenantEventSubject(){
+    return this.tenantChangedSubject;
   }
   getInstrumentEventSubject(){
     return this.instrumentEventSubject;
@@ -356,6 +363,13 @@ export class MfdataService {
         },
       error: (e) => console.error(e)
     });
+  }
+
+  getPositions(): Observable<Position[]> {
+    if(this.currentTenant==null || this.currentTenant.businesskey==""){
+      return new Observable<Position[]>(subscriber => subscriber.complete());
+    }
+    return this.mfClientservice.getResource("positions?tenantbusinesskey="+this.currentTenant.businesskey);
   }
 
   getToken() : string {

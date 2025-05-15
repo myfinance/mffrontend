@@ -52,10 +52,7 @@
       <div class="p-grid p-fluid">
         <div class="p-col-12 p-md-3"><p-button label="Select" (click)="selectTransaction(transaction)"/></div>
         <div class="p-col-12 p-md-3"><strong>Type:</strong> {{ transaction.transactionType }}</div>
-        <div class="p-col-12 p-md-3"><strong>Type:</strong> {{ transaction.description }}</div>
-        <div class="p-col-12 p-md-3"><strong>Instrument 1:</strong> {{ transaction.instrument1?.description }}</div>
-        <div class="p-col-12 p-md-3"><strong>Instrument 2:</strong> {{ transaction.instrument2?.description }}</div>
-        <div class="p-col-12 p-md-3"><strong>Instrument 3:</strong> {{ transaction.instrument3?.description }}</div>
+        <div class="p-col-12 p-md-3"><strong>Beschreibung:</strong> {{ transaction.description }}</div>
       </div>
     </td>
   </tr>

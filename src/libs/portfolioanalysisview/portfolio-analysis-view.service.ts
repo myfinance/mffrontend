@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
+import { Position } from '../shared/data-access-mfdata/model/position';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +13,62 @@ export class PortfolioAnalysisViewService {
     new Date(new Date().getFullYear()-10, new Date().getMonth(), new Date().getDate()),
     new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   ];
+  private positions: Position[] = [];
 
-  constructor() { }
+  portfolioEventSubject: Subject<unknown> = new Subject<unknown>();
+  
+  constructor(private service: MfdataService) {
+    this.service.getConfigLoadedSubject().subscribe({
+      next:
+        () => this.loadPositions(),
+      error:
+        (e) => {
+          console.error(e);
+          alert('Invalid Credentials');
+        }
+    })
+    this.service.getPriceEventSubject().subscribe(
+      {
+        next: () => {
+          this.loadPositions();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+    this.service.tenantChangedSubject.subscribe(
+      {
+        next: () => {
+          this.loadPositions();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+    this.service.getValueChangedEventSubject().subscribe(
+      {
+        next: () => {
+          this.loadPositions();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+    this.loadPositions();
+  }
+
+  private loadPositions() {
+    this.service.getPositions().subscribe(
+      {
+        next: (positions) => {
+          this.positions = positions;
+          this.portfolioEventSubject.next(true);
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  getPositions() : Position[]{
+    return this.positions;
+  }
 
   getDateForAnalysis(): Date {
     return this.dateForAnalysis;

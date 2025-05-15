@@ -1,1 +1,53 @@
-<p>depot-overview works!</p>
+<div class="scrollable-container">
+
+    <p-table [value]="positions" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="depotDescription">
+                    <div class="flex items-center">
+                        Description
+                        <p-sortIcon field="depotDescription" />
+                        <p-columnFilter type="text" field="depotDescription" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="securityDescription">
+                    <div class="flex items-center">
+                        Value
+                        <p-sortIcon field="securityDescription" />
+                        <p-columnFilter type="text" field="securityDescription" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="securityType">
+                    <div class="flex items-center">
+                        securityType
+                        <p-sortIcon field="securityType" />
+                        <p-columnFilter type="text" field="securityType" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="amount">
+                    <div class="flex items-center">
+                        amount
+                        <p-sortIcon field="amount" />
+                        <p-columnFilter type="text" field="amount" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="value">
+                    <div class="flex items-center">
+                        value
+                        <p-sortIcon field="value" />
+                        <p-columnFilter type="text" field="value" display="menu" />
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+            <tr [pSelectableRow]="row">
+                <td>{{ row.depotDescription }}</td>
+                <td>{{ row.securityDescription }}</td>
+                <td>{{ row.securityType}}</td>
+                <td>{{ row.amount }}</td>
+                <td>{{ row.value }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
