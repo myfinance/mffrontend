@@ -24,7 +24,7 @@ export class TransactionService {
       value = value * (-1); 
     }
 
-    const transaction: Transaction = new Transaction(transactionType, desc, transactionDate, acc, budget,trgBudgetKey,trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey); 
+    const transaction: Transaction = new Transaction("",transactionType, desc, transactionDate, acc, budget,trgBudgetKey,trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey); 
     if(transactionId!==undefined){
       transaction.transactionId=transactionId;
     }
@@ -89,6 +89,10 @@ export class TransactionService {
 
   setSelectedTransaction(transaction?:Transaction) {
     this.selectedTransaction = transaction;
+    this.newTransactionSelectedSubject.next(true);
+  }
+  deSelectTransaction() {
+    this.selectedTransaction = undefined;
     this.newTransactionSelectedSubject.next(true);
   }
   getSelectedTransaction() : Transaction|undefined {

@@ -17,8 +17,9 @@ export class Transaction {
 
  
 
-    constructor(transactionType: TransactionTypeEnum, description: string, transactiondate: Date, accKey: string, budgetKey: string, trgBudgetKey: string, trgAccKey: string, value: number, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string) {
+    constructor(transactionId: string, transactionType: TransactionTypeEnum, description: string, transactiondate: Date, accKey: string, budgetKey: string, trgBudgetKey: string, trgAccKey: string, value: number, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string) {
         this.transactionType = transactionType;
+        this.transactionId = transactionId;
         this.description = description;
         this.transactiondate = transactiondate;
         this.budgetKey = budgetKey;
@@ -51,7 +52,7 @@ export class Transaction {
     }  
     
     static fromJson(data: any): Transaction {
-                const transaction = new Transaction(data.transactionType, data.description, new Date(data.transactiondate), data.accKey, data.budgetKey, data.trgBudgetKey, data.trgAccKey, data.value, data.securityBusinessKey, data.depotBusinessKey, data.amount, data.insuranceKey);
+                const transaction = new Transaction(data.transactionId, data.transactionType, data.description, new Date(data.transactiondate), data.accKey, data.budgetKey, data.trgBudgetKey, data.trgAccKey, data.value, data.securityBusinessKey, data.depotBusinessKey, data.amount, data.insuranceKey);
         return transaction;
     }
 }

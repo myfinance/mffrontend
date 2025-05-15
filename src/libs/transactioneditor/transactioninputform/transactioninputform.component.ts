@@ -110,11 +110,18 @@ export class TransactioninputformComponent {
       this.transactionSelected = true;
       this.transactionForm.controls['description'].setValue(transaction.description);
       this.transactionForm.controls['transactionType'].setValue(transaction.transactionType);
-     this.transactionForm.controls['transactionDate'].setValue(transaction.transactiondate);
+      this.transactionForm.controls['transactionDate'].setValue(transaction.transactiondate);
       this.transactionForm.controls['value'].setValue(transaction.value);
       this.transactionForm.controls['amount'].setValue(transaction.amount);
       this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.accKey)[0]);
       this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.budgetKey)[0]);
+      this.transactionForm.controls['trgAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.trgAccKey)[0]);
+      this.transactionForm.controls['trgBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.trgBudgetKey)[0]);
+      this.transactionForm.controls['depot'].setValue(this.depots.filter(instrument => instrument.businesskey ===transaction.depotBusinessKey)[0]);
+      this.transactionForm.controls['security'].setValue(this.securities.filter(instrument => instrument.businesskey ===transaction.securityBusinessKey)[0]);
+    } else {
+      this.transactionSelected = false;
+      this.transactionForm.reset();
     }
 
   }

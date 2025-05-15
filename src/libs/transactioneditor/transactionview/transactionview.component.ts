@@ -9,7 +9,8 @@ import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { Transaction } from '../../shared/data-access-mfdata/model/transaction';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
-
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 
 
 
@@ -33,6 +34,7 @@ export class TransactionviewComponent{
   version = 'na';
 
   constructor(private transactionService: TransactionService) {
+    registerLocaleData(localeDe);
     this.transactionService.getConfigLoadedSubject().subscribe({
       next:
         () => {
@@ -82,11 +84,6 @@ export class TransactionviewComponent{
     )
   }
 
-  selectTransaction(transaction: Transaction) {
-    this.selectedTransaction = transaction;
-    this.transactionService.setSelectedTransaction(transaction);
-  }
-
   filter() {
     if(this.instrumentFilter){
       this.filteredTransactionViewObjects = this.transactionViewObjects.filter(transaction => transaction.accKey === this.instrumentFilter?.businesskey
@@ -97,7 +94,6 @@ export class TransactionviewComponent{
     else {
       this.filteredTransactionViewObjects = this.transactionViewObjects;
     }
-
   }
 
   clearFilter() {
@@ -113,5 +109,16 @@ export class TransactionviewComponent{
     this.rangeDates[0] = date[0];
     this.rangeDates[1] = date[1];
     this.loadTransactions();
+  }
+
+  onRowSelect(event: any) {
+    if(this.selectedTransaction!=null){
+      this.transactionService.setSelectedTransaction(this.selectedTransaction);
+    }
+    
+}
+
+  onRowUnselect(event: any) {
+    this.transactionService.deSelectTransaction();
   }
 }
