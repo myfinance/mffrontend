@@ -129,16 +129,16 @@ export class TransactioninputformComponent {
   saveTransaction(transactionId: string|undefined){
     console.log(this.transactionForm);
 
-    if (this.transactionForm.value.description != null && this.transactionForm.value.transactionType != null && this.transactionForm.value.transactionDate != null && this.transactionForm.value.value != null) {
+    if (this.transactionForm.value.transactionType != null && this.transactionForm.value.transactionDate != null && this.transactionForm.value.value != null) {
       switch (this.transactionForm.value.transactionType) {
         case TransactionTypeEnum.EXPENSE: {
-          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
+          if(this.transactionForm.value.description != null && this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
             this.transactionService.saveExpense(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.INCOME: {
-          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
+          if(this.transactionForm.value.description != null && this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
             this.transactionService.saveIncome(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
@@ -158,14 +158,27 @@ export class TransactioninputformComponent {
           break;
         }
         case TransactionTypeEnum.TRANSFER: {
-          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.trgAcc!=null) {
+          if(this.transactionForm.value.description != null && this.transactionForm.value.srcAcc!=null && this.transactionForm.value.trgAcc!=null) {
             this.transactionService.saveTransfer(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.trgAcc, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.BUDGETTRANSFER: {
-          if(this.transactionForm.value.srcBudget!=null && this.transactionForm.value.trgBudget!=null) {
+          if(this.transactionForm.value.description != null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.trgBudget!=null) {
             this.transactionService.saveBudgetTransfer(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcBudget, this.transactionForm.value.trgBudget, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.DEPOTCASHFLOW: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.depot!=null && this.transactionForm.value.security!=null ) {
+            const desc = 'depot cashflow for ' + this.transactionForm.value.security.description;
+            this.transactionService.saveDepotCashflow(desc, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, this.transactionForm.value.depot.businesskey, this.transactionForm.value.security.businesskey, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.INTERESTS: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
+            this.transactionService.saveInterest("Zinsen", this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
           }
           break;
         }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RecurrentTransactionObjectView } from '../recurrenttransactionobjectview';
 import { RecurrenttransactionService } from '../recurrenttransaction.service';
 import { RecurrentTransaction } from '../../shared/data-access-mfdata/model/recurrenttransaction';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
@@ -9,20 +8,22 @@ import { FormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'mffrontend-recurrenttransactionview',
   standalone: true,
-  imports: [CommonModule, CalendarModule, DropdownModule, FormsModule, DividerModule, TableModule],
+  imports: [CommonModule, SidebarModule, CalendarModule, DropdownModule, FormsModule, DividerModule, TableModule],
   templateUrl: './recurrenttransactionview.component.html',
   styleUrl: './recurrenttransactionview.component.scss'
 })
 export class RecurrenttransactionviewComponent {
-  recurrentTransactionViewObjects: RecurrentTransactionObjectView[] = [];
-
-  displayedColumns: string[] = ['transactiondate', 'description', 'transactionType', 'value', 'instrument1', 'instrument2'];
-  selectedTransaction: RecurrentTransactionObjectView | undefined;
+  recurrentTransactionViewObjects: RecurrentTransaction[] = [];
+  sidebarVisible = false;
+  selectedTransaction: RecurrentTransaction | undefined;
   instruments: Instrument[] = [];
+  instrumentFilter: Instrument | undefined;
+  filteredTransactionViewObjects: RecurrentTransaction[] = [];
 
   constructor(private service: RecurrenttransactionService) {
     this.service.getConfigLoadedSubject().subscribe({
@@ -63,39 +64,42 @@ export class RecurrenttransactionviewComponent {
 
     this.service.getRecurrentTransactions().subscribe(
       (transactions) => {
-        this.recurrentTransactionViewObjects = this.convertTransactions(transactions);
+        this.recurrentTransactionViewObjects = transactions;
       }
     )
   }
 
-  convertTransactions(recurrentTransactions: RecurrentTransaction[]): RecurrentTransactionObjectView[] {
-    const recurrentTransactionObjectViews: RecurrentTransactionObjectView[] = [];
-    recurrentTransactions.forEach((recurrentTransaction) => {
-      const recurrentTransactionObjectView: RecurrentTransactionObjectView = {
-        id: '',
-        transactionType: recurrentTransaction.transactionType,
-        description: recurrentTransaction.description,
-        nexttransactiondate: recurrentTransaction.nextTransactionDate,
-        value: recurrentTransaction.value,
-        instrument1: undefined,
-        instrument2: undefined,
-        recurrentFrequency: recurrentTransaction.recurrentFrequency
-      };
-      if (recurrentTransaction.recurrentTransactionId) {
-        recurrentTransactionObjectView.id = recurrentTransaction.recurrentTransactionId;
-      }
-      recurrentTransactionObjectView.instrument1 = this.instruments.filter(instrument => instrument.businesskey === recurrentTransaction.firstInstrumentBusinessKey)[0];
-      recurrentTransactionObjectView.instrument2 = this.instruments.filter(instrument => instrument.businesskey === recurrentTransaction.secondInstrumentBusinessKey)[0];
 
-      recurrentTransactionObjectViews.push(recurrentTransactionObjectView);
-    })
+  onRowSelect(event: any) {
+    if (this.selectedTransaction != null) {
+      this.service.setSelectedRecurrentTransaction(this.selectedTransaction);
+    }
 
-    return recurrentTransactionObjectViews;
   }
 
-  selectTransaction(transaction: RecurrentTransactionObjectView) {
-    this.selectedTransaction = transaction;
-    this.service.setSelectedRecurrentTransaction(transaction);
+  onRowUnselect(event: any) {
+    this.service.deSelectRecurrentTransaction();
+  }
+
+  filter() {
+    if(this.instrumentFilter){
+      this.filteredTransactionViewObjects = this.recurrentTransactionViewObjects.filter(transaction => transaction.accKey === this.instrumentFilter?.businesskey
+        || transaction.budgetKey === this.instrumentFilter?.businesskey
+        || transaction.trgBudgetKey === this.instrumentFilter?.businesskey
+        || transaction.trgAccKey === this.instrumentFilter?.businesskey);
+    }
+    else {
+      this.filteredTransactionViewObjects = this.recurrentTransactionViewObjects;
+    }
+  }
+
+  clearFilter() {
+    this.instrumentFilter = undefined;
+    this.filter();
+  }
+
+  onInstrumentChange(event: any) {
+    this.filter();
   }
 
 }

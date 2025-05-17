@@ -29,7 +29,6 @@ export class TransactionviewComponent{
   filteredTransactionViewObjects: Transaction[] = [];
   instrumentFilter: Instrument | undefined;
 
-  displayedColumns: string[] = ['transactiondate', 'description', 'transactionType', 'value', 'instrument1', 'instrument2'];
   selectedTransaction: Transaction | undefined;
   version = 'na';
 

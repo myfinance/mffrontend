@@ -3,21 +3,27 @@ import { TransactionTypeEnum } from "./transaction";
 
 export class RecurrentTransaction { 
     transactionType: TransactionTypeEnum;
-    firstInstrumentBusinessKey: string;
-    secondInstrumentBusinessKey: string;
+    accKey: string;
+    budgetKey: string;
+    trgAccKey: string;
+    trgBudgetKey: string;
+    insuranceKey: string;
     description: string;
     nextTransactionDate: Date;
     recurrentFrequency: RecurrentFrequencyEnum;
     value: number;
     recurrentTransactionId: string | undefined;
 
-    constructor(transactionType: TransactionTypeEnum, description: string, nextTransactionDate: Date, value: number, firstInstrumentBusinessKey: string, secondInstrumentBusinessKey: string, recurrentFrequency: RecurrentFrequencyEnum) {
+    constructor(transactionType: TransactionTypeEnum, description: string, nextTransactionDate: Date, value: number, accKey: string, budgetKey: string, trgAccKey: string, trgBudgetKey: string, insuranceKey: string, recurrentFrequency: RecurrentFrequencyEnum) {
         this.transactionType = transactionType;
         this.description = description;
         this.value = value;
         this.nextTransactionDate = nextTransactionDate;
-        this.firstInstrumentBusinessKey = firstInstrumentBusinessKey;
-        this.secondInstrumentBusinessKey = secondInstrumentBusinessKey;
+        this.accKey = accKey;
+        this.budgetKey = budgetKey;
+        this.trgAccKey = trgAccKey;
+        this.trgBudgetKey = trgBudgetKey;
+        this.insuranceKey = insuranceKey;
         this.recurrentFrequency = recurrentFrequency; 
 
     }
@@ -27,8 +33,11 @@ export class RecurrentTransaction {
             transactionType: this.transactionType,
             description: this.description,
             value: this.value,
-            firstInstrumentBusinessKey: this.firstInstrumentBusinessKey,
-            secondInstrumentBusinessKey: this.secondInstrumentBusinessKey,
+            accKey: this.accKey,
+            budgetKey: this.budgetKey,
+            trgAccKey: this.trgAccKey,
+            trgBudgetKey: this.trgBudgetKey,
+            insuranceKey: this.insuranceKey,
             nextTransactionDate: JsonConvertHelper.dateToIsoString(this.nextTransactionDate),
             recurrentFrequency: this.recurrentFrequency
         }

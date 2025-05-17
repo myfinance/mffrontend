@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { RecurrentTransactionObjectView } from './recurrenttransactionobjectview';
 import { Observable, Subject } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
@@ -13,14 +12,14 @@ export class RecurrenttransactionService {
 
   content: string[][] = [];
 
-  selectedRecurrentTransaction: RecurrentTransactionObjectView | undefined
+  selectedRecurrentTransaction: RecurrentTransaction | undefined
   public newRecurrentTransactionSelectedSubject: Subject<unknown> = new Subject<unknown>()
 
   constructor(private mfDataService: MfdataService) { 
   }
 
-  saveRecurrentTransaction(transactionType: TransactionTypeEnum, description: string, nextTransactionDate: Date, value: number, firstInstrumentBusinessKey: string, secondInstrumentBusinessKey: string, recurrentFrequency: RecurrentFrequencyEnum, recurrentTransactionId: string|undefined ) {
-    const recurrenttransaction: RecurrentTransaction = new RecurrentTransaction(transactionType, description, nextTransactionDate, value, firstInstrumentBusinessKey, secondInstrumentBusinessKey, recurrentFrequency); 
+  saveRecurrentTransaction(transactionType: TransactionTypeEnum, description: string, nextTransactionDate: Date, value: number, accKey: string, budgetKey: string, trgAccKey: string, trgBudgetKey: string, insuranceKey: string, recurrentFrequency: RecurrentFrequencyEnum, recurrentTransactionId: string|undefined ) {
+    const recurrenttransaction: RecurrentTransaction = new RecurrentTransaction(transactionType, description, nextTransactionDate, value, accKey, budgetKey, trgAccKey, trgBudgetKey, insuranceKey, recurrentFrequency); 
     if(recurrentTransactionId!==undefined){
       recurrenttransaction.recurrentTransactionId=recurrentTransactionId;
     }
@@ -28,8 +27,8 @@ export class RecurrenttransactionService {
   }
 
   deleteTransaction() {
-    if (this.selectedRecurrentTransaction!==undefined) {
-      this.mfDataService.deleteRecurrentTransaction(this.selectedRecurrentTransaction.id);
+    if (this.selectedRecurrentTransaction!==undefined && this.selectedRecurrentTransaction.recurrentTransactionId!==undefined) {
+      this.mfDataService.deleteRecurrentTransaction(this.selectedRecurrentTransaction.recurrentTransactionId);
     }
     
   }
@@ -49,11 +48,15 @@ export class RecurrenttransactionService {
     return this.mfDataService.getInstruments();
   }
 
-  setSelectedRecurrentTransaction(recurrenttransaction?:RecurrentTransactionObjectView) {
+  setSelectedRecurrentTransaction(recurrenttransaction?:RecurrentTransaction) {
     this.selectedRecurrentTransaction = recurrenttransaction;
     this.newRecurrentTransactionSelectedSubject.next(true);
   }
-  getSelectedRecurrentTransaction() : RecurrentTransactionObjectView|undefined {
+  deSelectRecurrentTransaction() {
+    this.selectedRecurrentTransaction = undefined;
+    this.newRecurrentTransactionSelectedSubject.next(true);
+  }
+  getSelectedRecurrentTransaction() : RecurrentTransaction|undefined {
     return this.selectedRecurrentTransaction;
   }
 

@@ -19,10 +19,11 @@ import { RecurrentFrequencyEnum } from '../../shared/data-access-mfdata/model/re
   styleUrl: './recurrenttransactioninputform.component.scss'
 })
 export class RecurrenttransactioninputformComponent  {
-  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER];
+  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER,  TransactionTypeEnum.LIFEINSURANCEEXPENSE];
   frequencies: RecurrentFrequencyEnum[] = [RecurrentFrequencyEnum.MONTHLY, RecurrentFrequencyEnum.QUATERLY, RecurrentFrequencyEnum.YEARLY];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
+  lifeinsurences: Instrument[] = [];
   transactionSelected = false;
   transactionForm = new FormGroup({
 
@@ -52,6 +53,9 @@ export class RecurrenttransactioninputformComponent  {
       nonNullable: false
     }),
     trgBudget: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
+    lifeinsurence: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     }),
     recurrentFrequency: new FormControl<string>(RecurrentFrequencyEnum.MONTHLY, {
@@ -90,6 +94,7 @@ export class RecurrenttransactioninputformComponent  {
       (instruments) => {
         this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO);
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
+        this.lifeinsurences = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE);
       }
     )
   }
@@ -100,11 +105,14 @@ export class RecurrenttransactioninputformComponent  {
       this.transactionSelected = true;
       this.transactionForm.controls['description'].setValue(transaction.description);
       this.transactionForm.controls['transactionType'].setValue(transaction.transactionType);
-      this.transactionForm.controls['nextTransactionDate'].setValue(transaction.nexttransactiondate);
+      this.transactionForm.controls['nextTransactionDate'].setValue(transaction.nextTransactionDate);
       this.transactionForm.controls['value'].setValue(transaction.value);
-      this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey ===transaction.instrument1?.businesskey)[0]);
-      this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.instrument2?.businesskey)[0]);
+      this.transactionForm.controls['srcAcc'].setValue(this.giros.filter(instrument => instrument.businesskey === transaction.accKey)[0]);
+      this.transactionForm.controls['srcBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.budgetKey)[0]);
+      this.transactionForm.controls['trgAcc'].setValue(this.giros.filter(instrument => instrument.businesskey === transaction.trgAccKey)[0]);
+      this.transactionForm.controls['trgBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.trgBudgetKey)[0]);
       this.transactionForm.controls['recurrentFrequency'].setValue(transaction.recurrentFrequency);
+      this.transactionForm.controls['lifeinsurence'].setValue(this.lifeinsurences.filter(instrument => instrument.businesskey ===transaction.insuranceKey)[0]);
     }
 
   }
@@ -138,25 +146,31 @@ export class RecurrenttransactioninputformComponent  {
       switch (this.transactionForm.value.transactionType) {
         case TransactionTypeEnum.EXPENSE: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.service.saveRecurrentTransaction(TransactionTypeEnum.EXPENSE, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.srcBudget.businesskey, recurentFrequency, transactionId);
+            this.service.saveRecurrentTransaction(TransactionTypeEnum.EXPENSE, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.srcBudget.businesskey, "","","",recurentFrequency, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.INCOME: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
-            this.service.saveRecurrentTransaction(TransactionTypeEnum.INCOME, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.srcBudget.businesskey, recurentFrequency, transactionId);
+            this.service.saveRecurrentTransaction(TransactionTypeEnum.INCOME, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.srcBudget.businesskey, "","","", recurentFrequency, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.TRANSFER: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.trgAcc!=null) {
-            this.service.saveRecurrentTransaction(TransactionTypeEnum.TRANSFER, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.trgAcc.businesskey, recurentFrequency, transactionId);
+            this.service.saveRecurrentTransaction(TransactionTypeEnum.TRANSFER, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, "", this.transactionForm.value.trgAcc.businesskey,"","", recurentFrequency, transactionId);
           }
           break;
         }
         case TransactionTypeEnum.BUDGETTRANSFER: {
           if(this.transactionForm.value.srcBudget!=null && this.transactionForm.value.trgBudget!=null) {
-            this.service.saveRecurrentTransaction(TransactionTypeEnum.BUDGETTRANSFER, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcBudget.businesskey, this.transactionForm.value.trgBudget.businesskey, recurentFrequency, transactionId);
+            this.service.saveRecurrentTransaction(TransactionTypeEnum.BUDGETTRANSFER, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, "", this.transactionForm.value.srcBudget.businesskey, "", this.transactionForm.value.trgBudget.businesskey, "", recurentFrequency, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.LIFEINSURANCEEXPENSE: {
+          if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.lifeinsurence!=null) {
+            this.service.saveRecurrentTransaction(TransactionTypeEnum.EXPENSE, this.transactionForm.value.description, this.transactionForm.value.nextTransactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc.businesskey, this.transactionForm.value.srcBudget.businesskey, "","",this.transactionForm.value.lifeinsurence.businesskey,recurentFrequency, transactionId);
           }
           break;
         }
@@ -175,7 +189,7 @@ export class RecurrenttransactioninputformComponent  {
   updateTransaction(){
     let transactionId = undefined;
     if(this.transactionSelected){
-      transactionId = this.service.getSelectedRecurrentTransaction()?.id;
+      transactionId = this.service.getSelectedRecurrentTransaction()?.recurrentTransactionId;
     }
     this.saveTransaction(transactionId);
   }

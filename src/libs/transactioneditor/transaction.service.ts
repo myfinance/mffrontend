@@ -62,6 +62,14 @@ export class TransactionService {
     this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.BUDGETTRANSFER, desc, transactionDate, value, "", srcInstrument.businesskey,trgInstrument.businesskey,"", "", "", 0, "", transactionId));
   }
 
+  saveDepotCashflow(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, depotId: string, securityId: string, transactionId: string|undefined ) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.DEPOTCASHFLOW, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", securityId, depotId, 0, "", transactionId));
+  }
+
+  saveInterest(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.INTERESTS, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", "", "", 0, "", transactionId));
+  }
+
   deleteTransaction() {
     if (this.selectedTransaction!==undefined && this.selectedTransaction.transactionId) {
       this.mfDataService.deleteTransaction(this.selectedTransaction.transactionId);

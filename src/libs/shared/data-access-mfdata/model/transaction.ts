@@ -59,7 +59,7 @@ export class Transaction {
 
 
 
-export type TransactionTypeEnum = 'INCOME' | 'EXPENSE' | 'TRANSFER' | 'BUDGETTRANSFER' | 'DEPOTCASHFLOW' | 'INTERESTS' | 'BUY' | 'SELL' | 'UNKNOWN';
+export type TransactionTypeEnum = 'INCOME' | 'EXPENSE' | 'TRANSFER' | 'BUDGETTRANSFER' | 'DEPOTCASHFLOW' | 'INTERESTS' | 'BUY' | 'SELL' | 'LIFEINSURANCEEXPENSE' | 'UNKNOWN';
 export const TransactionTypeEnum = {
     INCOME: 'INCOME' as TransactionTypeEnum,
     EXPENSE: 'EXPENSE' as TransactionTypeEnum,
@@ -69,5 +69,6 @@ export const TransactionTypeEnum = {
     INTERESTS: 'INTERESTS' as TransactionTypeEnum,
     BUY: 'BUY' as TransactionTypeEnum,
     SELL: 'SELL' as TransactionTypeEnum,
+    LIFEINSURANCEEXPENSE: 'LIFEINSURANCEEXPENSE' as TransactionTypeEnum,
     UNKNOWN: 'UNKNOWN' as TransactionTypeEnum
 };
