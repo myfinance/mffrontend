@@ -162,11 +162,19 @@ export class MfdataService {
       map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
     );
   }
+
   getEditableInstruments(): Observable<Instrument[]> {
     return this.mfClientservice.getResource("securitiesandinstrumentsfortenant?tenantbusinesskey="+this.currentTenant.businesskey)      
               .pipe(
                 map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
               );
+  }
+
+  getIncomeBudgets(): Observable<Instrument[]> {
+    return this.mfClientservice.getResource("incomebudgets?tenantbusinesskey="+this.currentTenant.businesskey)              
+    .pipe(
+      map((data: any[]) => data.map(item => Instrument.fromJson(item)))  // Convert each item to Instrument
+    );
   }
   saveInstrument(instrument: Instrument) {
 
@@ -231,8 +239,8 @@ export class MfdataService {
     });
   }
 
-  deleteRecurrentTransaction(recurrentTransactionId: string) {
-    return this.mfClientservice.deleteResource("delrecurrenttransfer/"+recurrentTransactionId).subscribe({
+  deleteRecurrentTransaction(transactionId: string) {
+    return this.mfClientservice.deleteResource("delrecurrenttransfer/"+transactionId).subscribe({
       next:
         () => {
           console.info('deleted');

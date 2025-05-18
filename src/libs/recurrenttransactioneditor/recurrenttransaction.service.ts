@@ -48,6 +48,10 @@ export class RecurrenttransactionService {
     return this.mfDataService.getInstruments();
   }
 
+  getIncomeBudgets(): Observable<Instrument[]> {
+    return this.mfDataService.getIncomeBudgets();
+  }
+
   setSelectedRecurrentTransaction(recurrenttransaction?:RecurrentTransaction) {
     this.selectedRecurrentTransaction = recurrenttransaction;
     this.newRecurrentTransactionSelectedSubject.next(true);
