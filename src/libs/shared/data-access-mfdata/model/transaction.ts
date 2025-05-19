@@ -14,10 +14,11 @@ export class Transaction {
     securityBusinessKey: string;
     amount: number;
     insuranceKey: string;
+    lastchanged: Date;
 
  
 
-    constructor(transactionId: string, transactionType: TransactionTypeEnum, description: string, transactiondate: Date, accKey: string, budgetKey: string, trgBudgetKey: string, trgAccKey: string, value: number, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string) {
+    constructor(transactionId: string, transactionType: TransactionTypeEnum, description: string, transactiondate: Date, accKey: string, budgetKey: string, trgBudgetKey: string, trgAccKey: string, value: number, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string, lastchanged: Date) {
         this.transactionType = transactionType;
         this.transactionId = transactionId;
         this.description = description;
@@ -31,6 +32,7 @@ export class Transaction {
         this.depotBusinessKey = depotBusinessKey;
         this.amount = amount;
         this.insuranceKey = insuranceKey;
+        this.lastchanged = lastchanged;
     }
     toJSON() {
         return {
@@ -47,12 +49,12 @@ export class Transaction {
             depotBusinessKey: this.depotBusinessKey,
             amount: this.amount,
             insuranceKey: this.insuranceKey,
-
+            lastchanged: this.lastchanged,
         }
     }  
     
     static fromJson(data: any): Transaction {
-                const transaction = new Transaction(data.transactionId, data.transactionType, data.description, new Date(data.transactiondate), data.accKey, data.budgetKey, data.trgBudgetKey, data.trgAccKey, data.value, data.securityBusinessKey, data.depotBusinessKey, data.amount, data.insuranceKey);
+                const transaction = new Transaction(data.transactionId, data.transactionType, data.description, new Date(data.transactiondate), data.accKey, data.budgetKey, data.trgBudgetKey, data.trgAccKey, data.value, data.securityBusinessKey, data.depotBusinessKey, data.amount, data.insuranceKey, data.lastchanged);
         return transaction;
     }
 }

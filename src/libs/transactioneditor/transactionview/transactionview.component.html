@@ -48,6 +48,13 @@
               <p-columnFilter type="text" field="description" display="menu" />
             </div>
           </th>
+          <th>
+            <div class="flex items-center">
+              lastchanged
+              <p-sortIcon field="lastchanged" />
+              <p-columnFilter type="text" field="lastchanged" display="menu" />
+            </div>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-row>
@@ -55,6 +62,7 @@
           <td>{{ row.transactiondate | date:'yyyy-MM-dd' }}</td>
           <td>{{ row.value }}</td>
           <td>{{ row.description }}</td>
+          <td>{{ row.lastchanged }}</td>
         </tr>
       </ng-template>
 

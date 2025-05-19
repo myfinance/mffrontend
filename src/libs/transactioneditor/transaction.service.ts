@@ -24,7 +24,7 @@ export class TransactionService {
       value = value * (-1); 
     }
 
-    const transaction: Transaction = new Transaction("",transactionType, desc, transactionDate, acc, budget,trgBudgetKey,trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey); 
+    const transaction: Transaction = new Transaction("",transactionType, desc, transactionDate, acc, budget,trgBudgetKey,trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey, new Date(Date.now())); 
     if(transactionId!==undefined){
       transaction.transactionId=transactionId;
     }
