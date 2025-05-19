@@ -117,6 +117,7 @@ export const InstrumentTypeEnum = {
     REALESTATE: 'REALESTATE' as InstrumentTypeEnum,
     LOAN: 'LOAN' as InstrumentTypeEnum,
     BUDGETPORTFOLIO: 'BUDGETPORTFOLIO' as InstrumentTypeEnum,
+    KRYPTO: 'KRYPTO' as InstrumentTypeEnum,
     UNKNOWN: 'UNKNOWN' as InstrumentTypeEnum
 };
 export type LiquidityTypeEnum = 'LIQUIDE' | 'SHORTTERM' | 'MIDTERM' | 'LONGTERM' | 'UNKNOWN';

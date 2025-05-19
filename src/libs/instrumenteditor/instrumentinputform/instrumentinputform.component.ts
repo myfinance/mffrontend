@@ -17,7 +17,7 @@ import { JsonConvertHelper } from '../../shared/data-access-mfdata/jsonconverthe
   styleUrls: ['./instrumentinputform.component.scss'],
 })
 export class InstrumentinputformComponent {
-  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT, InstrumentTypeEnum.BOND, InstrumentTypeEnum.ETF, InstrumentTypeEnum.FONDS, 
+  instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT, InstrumentTypeEnum.BOND, InstrumentTypeEnum.ETF, InstrumentTypeEnum.KRYPTO, InstrumentTypeEnum.FONDS, 
     InstrumentTypeEnum.REALESTATE, InstrumentTypeEnum.DEPRECATIONOBJECT, InstrumentTypeEnum.LIFEINSURANCE, InstrumentTypeEnum.LOAN, InstrumentTypeEnum.MONEYATCALL, InstrumentTypeEnum.TIMEDEPOSIT,InstrumentTypeEnum.BUILDINGSAVINGACCOUNT];
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
   instruments: Instrument[] = [];
@@ -270,6 +270,9 @@ export class InstrumentinputformComponent {
       properties.set(AdditionalPropertiesEnum.ISIN, this.instrumentForm.value.isin || "");
       
     } 
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.KRYPTO) {
+      properties.set(AdditionalPropertiesEnum.ISIN, this.instrumentForm.value.isin || "");
+    }
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.CURRENCY) {
       properties.set(AdditionalPropertiesEnum.CURRENCYCODE, this.instrumentForm.value.currencyCode || "");
     } 

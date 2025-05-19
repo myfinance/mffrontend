@@ -48,7 +48,7 @@ export class PriceEditorComponent {
   }
 
   private loadSecurities() {
-    this.securities = this.service.getSecurities();
+    this.securities = this.service.getSecurities().sort((a, b) => a.description.localeCompare(b.description));
   }
 
   onSubmit() {

@@ -52,7 +52,11 @@
     <input class="form-control" formControlName="iban" />
   </div>  
 
-  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'||instrumentForm.get('instrumentType')?.value === 'BOND'||instrumentForm.get('instrumentType')?.value === 'ETF'||instrumentForm.get('instrumentType')?.value === 'FONDS'">
+  <div class="form-group" *ngIf="instrumentForm.get('instrumentType')?.value === 'EQUITY'
+      ||instrumentForm.get('instrumentType')?.value === 'BOND'
+      ||instrumentForm.get('instrumentType')?.value === 'ETF'
+      ||instrumentForm.get('instrumentType')?.value === 'KRYPTO'
+      ||instrumentForm.get('instrumentType')?.value === 'FONDS'">
     <p>ISIN:</p>
     <input class="form-control" formControlName="isin" />
   </div>  

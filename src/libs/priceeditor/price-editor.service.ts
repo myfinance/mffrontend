@@ -48,6 +48,7 @@ export class PriceEditorService {
             || i.instrumentType === InstrumentTypeEnum.CURRENCY
             || i.instrumentType === InstrumentTypeEnum.BOND
             || i.instrumentType === InstrumentTypeEnum.ETF
+            || i.instrumentType === InstrumentTypeEnum.KRYPTO
             || i.instrumentType === InstrumentTypeEnum.FONDS
           );
           this.securityEventSubject.next(true);
