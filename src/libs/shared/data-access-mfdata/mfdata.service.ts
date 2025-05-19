@@ -219,6 +219,16 @@ export class MfdataService {
     });
   }
 
+  processRecurrentTransactions(){
+    this.mfClientservice.postRequest("", "processRecurrentTransaction").subscribe({
+      next:
+        () => {
+          console.info('process recurrentTransactions started');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
   saveTransactions(transactions: Transaction[]) {
     return this.mfClientservice.postRequest(JSON.stringify(transactions), "saveTransactions").subscribe({
       next:

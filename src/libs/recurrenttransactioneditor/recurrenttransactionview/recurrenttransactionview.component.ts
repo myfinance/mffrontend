@@ -98,6 +98,10 @@ export class RecurrenttransactionviewComponent {
     this.filter();
   }
 
+  processRecurrentTransactions() {
+    this.service.processRecurrentTransactions();
+  }
+
   onInstrumentChange(event: any) {
     this.filter();
   }

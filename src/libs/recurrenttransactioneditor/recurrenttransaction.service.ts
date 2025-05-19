@@ -70,4 +70,8 @@ export class RecurrenttransactionService {
   getRecurrentTransactionEventSubject() : Subject<unknown>{
     return this.mfDataService.getRecurrentTransactionEventSubject();
   }
+
+  processRecurrentTransactions(){
+    this.mfDataService.processRecurrentTransactions();
+  }
 }
