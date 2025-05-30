@@ -43,6 +43,10 @@ export class TransactionService {
     this.saveIncomeExpense(TransactionTypeEnum.EXPENSE, desc, transactionDate, value, acc, budget, transactionId);
   }
 
+  saveLifeInsuranceExpense(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, lifeinsuranceKey: string, transactionId: string|undefined ){
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.LIFEINSURANCEEXPENSE, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", "", "", 0, lifeinsuranceKey, transactionId));
+  }
+
   private saveBuySell(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined, depotId: string, securityId: string, amount:number) {
     this.mfDataService.saveTransaction(this.createTransaction(transactionType, desc, transactionDate, value, acc.businesskey, budget.businesskey,"","", securityId, depotId, amount, "", transactionId));
   }

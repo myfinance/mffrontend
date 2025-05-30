@@ -11,7 +11,9 @@
   </div>
 
   <div class="form-group"
-    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUDGETTRANSFER'|| transactionForm.value.transactionType==='TRANSFER'">
+    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' 
+    || transactionForm.value.transactionType==='BUDGETTRANSFER'|| transactionForm.value.transactionType==='TRANSFER'
+    || transactionForm.value.transactionType==='LIFEINSURANCEEXPENSE'">
     <label>Beschreibung:</label>
     <input class="form-control" formControlName="description" />
     <span *ngIf="
@@ -37,8 +39,7 @@
 
 
   <div class="form-group"
-    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' 
-          || transactionForm.value.transactionType==='DEPOTCASHFLOW' || transactionForm.value.transactionType==='INTERESTS'|| transactionForm.value.transactionType==='TRANSFER'">
+    *ngIf="transactionForm.value.transactionType!=='BUDGETTRANSFER'">
     <label>Quell-Konto</label>
 
     <select class="btn btn-primary dropdown-toggle" formControlName="srcAcc">
@@ -49,8 +50,7 @@
   </div>
 
   <div class="form-group"
-    *ngIf="transactionForm.value.transactionType==='EXPENSE' || transactionForm.value.transactionType==='INCOME' || transactionForm.value.transactionType==='BUY' || transactionForm.value.transactionType==='SELL' 
-          || transactionForm.value.transactionType==='DEPOTCASHFLOW' || transactionForm.value.transactionType==='INTERESTS' || transactionForm.value.transactionType==='BUDGETTRANSFER'">
+    *ngIf="transactionForm.value.transactionType!=='TRANSFER'">
     <label>Quell-Budget</label>
 
     <select class="btn btn-primary dropdown-toggle" formControlName="srcBudget">
@@ -92,6 +92,15 @@
     <select class="btn btn-primary dropdown-toggle" formControlName="security">
       <option class="mydropdown-item" [ngValue]="security" *ngFor="let security of securities">
         {{ security.description }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group" *ngIf="transactionForm.value.transactionType==='LIFEINSURANCEEXPENSE'">
+    <label>Lebensversicherung</label>
+    <select class="btn btn-primary dropdown-toggle" formControlName="lifeinsurance">
+      <option class="mydropdown-item" [ngValue]="lifeinsurance" *ngFor="let lifeinsurance of lifeinsurances">
+        {{ lifeinsurance.description }}
       </option>
     </select>
   </div>

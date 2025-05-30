@@ -13,6 +13,7 @@ import { RecurrenttransactioneditorComponent } from '../libs/recurrenttransactio
 import { SecurityAnalysisViewComponent } from '../libs/securityanalysisview/security-analysis-view/security-analysis-view.component';
 import { PriceEditorComponent } from '../libs/priceeditor/price-editor/price-editor.component';
 import { PortfolioAnalysisViewComponent } from '../libs/portfolioanalysisview/portfolio-analysis-view/portfolio-analysis-view.component';
+import { AccountanalysisComponent } from '../libs/accountanalysis/accountanalysis/accountanalysis.component';
 
 export const appRoutes: Route[] = [  
    /* {
@@ -67,6 +68,10 @@ export const appRoutes: Route[] = [
       {
         path: 'portfolioanalysisview',
         component: PortfolioAnalysisViewComponent,
+      },
+      {
+        path: 'accountanalysisview',
+        component: AccountanalysisComponent,
       },
       {
         path: 'login',

@@ -171,6 +171,13 @@ export class NavigationComponent implements OnInit {
           command: () => {
             this.portfolioanalysisview();
           }
+        },
+        {
+          label: 'Kontoanalyse',
+          icon: 'pi pi-chart-bar',
+          command: () => {
+            this.accountanalysisview();
+          }
         }
         ]
       },
@@ -261,6 +268,10 @@ export class NavigationComponent implements OnInit {
 
   portfolioanalysisview() {
     this.router.navigate(['/portfolioanalysisview']);
+  }
+
+  accountanalysisview() {
+    this.router.navigate(['/accountanalysisview']);
   }
 
 

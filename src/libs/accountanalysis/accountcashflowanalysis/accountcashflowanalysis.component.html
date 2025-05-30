@@ -1,0 +1,122 @@
+Instrumentkey: {{selectedInstrumentFullDetails.businesskey}}
+<br />
+Instrumentbeschreibung: {{selectedInstrumentFullDetails.description}}
+<br />
+InstrumentType: {{selectedInstrumentFullDetails.instrumentType.toString()}}
+<br />
+Wert zum Stichtag: {{value}}
+<br />
+Wert zum ReferenzStichtag: {{referenceValue}}
+<br />
+Absolute Veräderung: {{valueChangeAbs}}
+<br />
+Relative Veränderung: {{valueChangeRel}}
+<br />
+Summe der Einnahmen: {{sumOfIncome}}
+<br />
+Summe der Ausgaben: {{sumOfExpense}}
+<br />
+Durchschnittliche monatl. Ausgaben des letzten Jahres : {{avgExpensesOfLastYear}}
+
+<div class="tables-wrapper">
+  <!-- First Table -->
+  <div class="table-container">
+    <p-table [value]="cashflows" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="description">
+            <div class="flex items-center">
+              description
+              <p-sortIcon field="description" />
+              <p-columnFilter type="text" field="description" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="transactiondate">
+            <div class="flex items-center">
+              transactiondate
+              <p-sortIcon field="transactiondate" />
+              <p-columnFilter type="text" field="transactiondate" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+          <th>
+            <div class="flex items-center">
+              approved
+              <p-columnFilter type="text" field="approved" display="menu" />
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-entry>
+        <tr>
+          <td>{{ entry.description }}</td>
+          <td>{{ entry.transactiondate }}</td>
+          <td>{{ entry.value }}</td>
+          <td>
+            <i class="pi" [ngClass]="{
+                  'text-green-500 pi-check-circle': entry.approved,
+                  'text-red-500 pi-times-circle': !entry.approved
+                }"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Second Table -->
+  <div class="table-container">
+    <p-table [value]="cashflows2Compare" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="description">
+            <div class="flex items-center">
+              description
+              <p-sortIcon field="description" />
+              <p-columnFilter type="text" field="description" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="transactiondate">
+            <div class="flex items-center">
+              transactiondate
+              <p-sortIcon field="transactiondate" />
+              <p-columnFilter type="text" field="transactiondate" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+          <th>
+            <div class="flex items-center">
+              approved
+              <p-columnFilter type="text" field="approved" display="menu" />
+            </div>
+          </th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-entry>
+        <tr>
+          <td>{{ entry.description }}</td>
+          <td>{{ entry.transactiondate }}</td>
+          <td>{{ entry.value }}</td>
+          <td>
+            <i class="pi" [ngClass]="{
+                  'text-green-500 pi-check-circle': entry.approved,
+                  'text-red-500 pi-times-circle': !entry.approved
+                }"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

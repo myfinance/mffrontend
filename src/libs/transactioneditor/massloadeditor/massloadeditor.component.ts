@@ -11,6 +11,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { Transaction, TransactionTypeEnum } from '../../shared/data-access-mfdata/model/transaction';
+import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
 
 @Component({
   selector: 'mffrontend-massloadeditor',
@@ -92,7 +93,7 @@ export class MassloadeditorComponent {
       const result: Transaction[] = [];
       this.rows.controls.forEach(element => {
         if(!element.get('ignore')?.value){
-          const transactionDate = this.parseGermanDate(element.get('transactiondate')?.value);
+          const transactionDate = TypeConverter.parseGermanDate(element.get('transactiondate')?.value);
           const value = element.get('value')?.value;
           let transactionType = TransactionTypeEnum.EXPENSE
           if(value>0){
@@ -109,30 +110,12 @@ export class MassloadeditorComponent {
     }
   }
 
-  parseGermanDate(dateString: string): Date {
-    const [day, month, year] = dateString.split('.').map(Number);
-    return new Date(year, month - 1, day); // month is 0-indexed
-  }
-
-  parseGermanNumber(value: string): number | null {
-    const parts = new Intl.NumberFormat('de-DE').formatToParts(12345.6);
-    const groupSeparator = parts.find(part => part.type === 'group')?.value || '.';
-    const decimalSeparator = parts.find(part => part.type === 'decimal')?.value || ',';
-
-    // Replace group separators with empty string and decimal separators with a dot
-    const normalizedValue = value.replace(new RegExp(`\\${groupSeparator}`, 'g'), '').replace(decimalSeparator, '.');
-
-    const number = parseFloat(normalizedValue);
-
-    return isNaN(number) ? null : number;
-  }
-
   private initForm(): void {
     this.content.forEach(row => {
       const formGroup = this.fb.group({
         description: [row[2], Validators.required],
         transactiondate: [row[1], Validators.required],
-        value: [this.parseGermanNumber(row[3]), Validators.required],
+        value: [TypeConverter.parseGermanNumber(row[3]), Validators.required],
         budget: [null, Validators.required],
         ignore: [false],
       });

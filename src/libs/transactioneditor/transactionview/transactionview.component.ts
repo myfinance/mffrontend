@@ -77,7 +77,7 @@ export class TransactionviewComponent{
   loadInstruments() {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
-        this.instruments = instruments;
+        this.instruments = instruments.sort((a, b) => a.description.localeCompare(b.description));
         this.loadTransactions();
       }
     )

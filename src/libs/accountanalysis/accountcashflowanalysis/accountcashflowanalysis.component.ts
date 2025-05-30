@@ -1,0 +1,209 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
+import { InstrumentFullDetails } from '../../shared/data-access-mfdata/model/instrumentfulldetails';
+import { AccountanalysisService } from '../accountanalysis.service';
+import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
+
+interface CashflowCompareView { 
+
+  description: string;
+  transactiondate: Date;
+  value: number;  
+  approved:boolean;
+}
+
+@Component({
+  selector: 'mffrontend-accountcashflowanalysis',
+  standalone: true,
+  imports: [CommonModule, TableModule],
+  templateUrl: './accountcashflowanalysis.component.html',
+  styleUrl: './accountcashflowanalysis.component.scss'
+})
+export class AccountcashflowanalysisComponent  implements OnInit {
+
+  selectedInstrumentFullDetails: InstrumentFullDetails = new InstrumentFullDetails("No Instrument Selected", "No Instrument Selected", InstrumentTypeEnum.BUDGET, [], [], new Map<string, number>());
+  value = 0.0;
+  referenceValue = 0.0;
+  valueChangeAbs = 0.0;
+  valueChangeRel = 0.0;
+  sumOfIncome = 0.0;
+  sumOfExpense = 0.0;
+  avgExpensesOfLastYear = 0.0;
+  
+  cashflows: CashflowCompareView[] = [];
+  cashflows2Compare: CashflowCompareView[] = [];
+
+  data: any;
+  options: any;
+  documentStyle = getComputedStyle(document.documentElement);
+
+  constructor(private service: AccountanalysisService) {
+
+  }
+
+
+  ngOnInit() {
+    const textColor = this.documentStyle.getPropertyValue('--text-color');
+    const surfaceBorder = this.documentStyle.getPropertyValue('--surface-border');
+    const textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
+
+    this.service.selectedInstrumentEventSubject.subscribe(
+      {
+        next: () => {
+          this.setData();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+    this.setData();
+
+    this.service.newFileSelectedSubject.subscribe(
+      {
+        next: () => {
+          this.compareCashflows();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+
+    this.options = {
+      stacked: false,
+      maintainAspectRatio: false,
+      //aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: textColor
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        },
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          ticks: {
+            color: textColorSecondary
+          },
+          grid: {
+            color: surfaceBorder
+          }
+        }
+      }
+    };
+  }
+
+  setData() {
+
+    const details = this.service.getSelectedInstrument();
+    if (details !== undefined) {
+      this.selectedInstrumentFullDetails = details;
+      const themap = new Map(Object.entries(details.additionalValues));
+      let valueProperty = themap.get('valueDuedate');
+      if (valueProperty !== undefined) {
+        this.value = valueProperty;
+      }
+      valueProperty = themap.get('valueReferencedate');
+      if (valueProperty !== undefined) {
+        this.referenceValue = valueProperty;
+      }
+      valueProperty = themap.get('valueChangeAbs');
+      if (valueProperty !== undefined) {
+        this.valueChangeAbs = valueProperty;
+      }
+      valueProperty = themap.get('valueChangeRel');
+      if (valueProperty !== undefined) {
+        this.valueChangeRel = valueProperty;
+      }
+      valueProperty = themap.get('sumOfIncome');
+      if (valueProperty !== undefined) {
+        this.sumOfIncome = valueProperty;
+      }
+      valueProperty = themap.get('sumOfExpense');
+      if (valueProperty !== undefined) {
+        this.sumOfExpense = valueProperty;
+      }
+      valueProperty = themap.get('avgExpensesOfLastYear');
+      if (valueProperty !== undefined) {
+        this.avgExpensesOfLastYear = valueProperty;
+      }
+
+      this.cashflows = [
+        ...details.incomeInPeriod.map(c => ({
+          description: c.description,
+          transactiondate: c.transactiondate,
+          value: c.value,
+          approved: false
+        })),
+        ...details.expensesInPeriod.map(c => ({
+          description: c.description,
+          transactiondate: c.transactiondate,
+          value: c.value,
+          approved: false
+        }))
+      ];
+      this.cashflows.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime());
+      this.findMatches();
+
+      const curve = details.valueCurve;
+      const keys = Object.keys(curve);
+      const values = Object.values(curve);
+      this.data = {
+        labels: keys,
+        datasets: [
+          {
+            label: 'Wertentwicklung',
+            fill: false,
+            borderColor: this.documentStyle.getPropertyValue('--blue-500'),
+            yAxisID: 'y',
+            data: values,
+  
+          }
+        ]
+      };
+    }
+  }
+
+  compareCashflows(){
+    this.cashflows2Compare = [];
+    this.service.getCashflow2CompareContent().forEach(row => {
+      let value = 0;
+      const parsedValue = TypeConverter.parseGermanNumber(row[3]);
+      if(parsedValue!=null){
+        value=parsedValue
+      }
+      const cashflowCompareView : CashflowCompareView = {
+        description: row[2],
+        value: value,
+        transactiondate: TypeConverter.parseGermanDate(row[1]),
+        approved: false
+      };
+      this.cashflows2Compare.push(cashflowCompareView);
+    });
+    this.cashflows2Compare.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime());
+    this.findMatches();
+  }
+
+  findMatches(){
+    for(const cfCompare of this.cashflows2Compare){
+      for(const cf of this.cashflows){
+        if(!cf.approved && cf.value==cfCompare.value){
+          cf.approved=true;
+          cfCompare.approved=true;
+          break;
+        }
+      }
+    }
+  }
+}
+

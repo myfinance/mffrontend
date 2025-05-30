@@ -1,0 +1,24 @@
+<p-sidebar [(visible)]="sidebarVisible">
+    <label>Konto:</label>
+    <p-dropdown [options]="accounts" [(ngModel)]="selectedAccount" optionLabel="description"
+      placeholder="select a Account" (onChange)="onInstrumentChange($event)" />
+
+    <p-button (click)="setMaxDateRange()">maximaler Betrachtungszeitraum</p-button>
+    <br>
+    <p-button (click)="setRange2LastMonth()">letzter Monat</p-button>
+    <br>
+    <label>Stichtag</label>
+    <p-calendar [(ngModel)]="dateForAnalysis" (onSelect)="handleDateForAnalysisChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
+    <label>Referenzstichtag</label>
+    <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
+    <label>Betrachtungszeitraum Cashflowanalysis</label>
+    <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
+
+    <p-fileUpload name="csvFile" accept=".csv" mode="basic" chooseLabel="Datei" [auto]="true" (onUpload)="onUpload($event)" [customUpload]="true" (uploadHandler)="onUpload($event)">
+    </p-fileUpload>
+
+
+</p-sidebar>
+<p-button (click)="sidebarVisible = true" icon="pi pi-calendar" [outlined]="true"></p-button>

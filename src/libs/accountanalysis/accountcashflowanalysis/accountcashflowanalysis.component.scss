@@ -1,0 +1,10 @@
+.tables-wrapper {
+    display: flex;
+    overflow-x: auto; /* enable horizontal scroll if needed */
+    gap: 1rem; /* optional spacing between tables */
+  }
+  
+  .table-container {
+    flex: 1 1 50%;
+    min-width: 50px;
+  }

@@ -18,10 +18,19 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrls: ['./transactioninputform.component.scss'],
 })
 export class TransactioninputformComponent {
-  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER,TransactionTypeEnum.BUY, TransactionTypeEnum.SELL, TransactionTypeEnum.DEPOTCASHFLOW, TransactionTypeEnum.INTERESTS];
+  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, 
+    TransactionTypeEnum.INCOME, 
+    TransactionTypeEnum.BUDGETTRANSFER, 
+    TransactionTypeEnum.TRANSFER,
+    TransactionTypeEnum.BUY, 
+    TransactionTypeEnum.SELL, 
+    TransactionTypeEnum.DEPOTCASHFLOW, 
+    TransactionTypeEnum.INTERESTS, 
+    TransactionTypeEnum.LIFEINSURANCEEXPENSE];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
   depots: Instrument[] = [];
+  lifeinsurances: Instrument[] = [];
   securities: Instrument[] = [];
   accounts: Instrument[] = [];//for interests
   transactionSelected = false;
@@ -62,6 +71,9 @@ export class TransactioninputformComponent {
     depot: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     }),
+    lifeinsurance: new FormControl<Instrument | undefined>(undefined, {
+      nonNullable: false
+    }),
     security: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     })
@@ -98,6 +110,7 @@ export class TransactioninputformComponent {
         this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO).sort((a, b) => a.description.localeCompare(b.description));
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
         this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT).sort((a, b) => a.description.localeCompare(b.description));
+        this.lifeinsurances = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE).sort((a, b) => a.description.localeCompare(b.description));
         this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY || instrument.instrumentType === InstrumentTypeEnum.BOND || instrument.instrumentType === InstrumentTypeEnum.ETF|| instrument.instrumentType === InstrumentTypeEnum.FONDS).sort((a, b) => a.description.localeCompare(b.description));
         this.accounts = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN|| instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT).sort((a, b) => a.description.localeCompare(b.description));
       }
@@ -119,6 +132,7 @@ export class TransactioninputformComponent {
       this.transactionForm.controls['trgBudget'].setValue(this.budgets.filter(instrument => instrument.businesskey ===transaction.trgBudgetKey)[0]);
       this.transactionForm.controls['depot'].setValue(this.depots.filter(instrument => instrument.businesskey ===transaction.depotBusinessKey)[0]);
       this.transactionForm.controls['security'].setValue(this.securities.filter(instrument => instrument.businesskey ===transaction.securityBusinessKey)[0]);
+      this.transactionForm.controls['lifeinsurance'].setValue(this.lifeinsurances.filter(instrument => instrument.businesskey ===transaction.insuranceKey)[0]);
     } else {
       this.transactionSelected = false;
       this.transactionForm.reset();
@@ -179,6 +193,12 @@ export class TransactioninputformComponent {
         case TransactionTypeEnum.INTERESTS: {
           if(this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null) {
             this.transactionService.saveInterest("Zinsen", this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget, transactionId);
+          }
+          break;
+        }
+        case TransactionTypeEnum.LIFEINSURANCEEXPENSE: {
+          if(this.transactionForm.value.description != null && this.transactionForm.value.srcAcc!=null && this.transactionForm.value.srcBudget!=null && this.transactionForm.value.lifeinsurance!=null) {
+            this.transactionService.saveLifeInsuranceExpense(this.transactionForm.value.description, this.transactionForm.value.transactionDate, this.transactionForm.value.value, this.transactionForm.value.srcAcc, this.transactionForm.value.srcBudget,  this.transactionForm.value.lifeinsurance.businesskey, transactionId);
           }
           break;
         }
