@@ -20,7 +20,7 @@ import { RecurrentFrequencyEnum } from '../../shared/data-access-mfdata/model/re
 })
 export class RecurrenttransactioninputformComponent  {
   transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, TransactionTypeEnum.INCOME, TransactionTypeEnum.BUDGETTRANSFER, TransactionTypeEnum.TRANSFER,  TransactionTypeEnum.LIFEINSURANCEEXPENSE];
-  frequencies: RecurrentFrequencyEnum[] = [RecurrentFrequencyEnum.MONTHLY, RecurrentFrequencyEnum.QUATERLY, RecurrentFrequencyEnum.YEARLY];
+  frequencies: RecurrentFrequencyEnum[] = [RecurrentFrequencyEnum.MONTHLY, RecurrentFrequencyEnum.QUARTERLY, RecurrentFrequencyEnum.YEARLY];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
   incomeBudgets: Instrument[] = [];
@@ -93,7 +93,13 @@ export class RecurrenttransactioninputformComponent  {
   loadInstruments() {
     this.service.getInstruments().subscribe(
       (instruments) => {
-        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO).sort((a, b) => a.description.localeCompare(b.description));
+        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO
+          || instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT
+          || instrument.instrumentType === InstrumentTypeEnum.LOAN
+          || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL
+          || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT
+        )
+          .sort((a, b) => a.description.localeCompare(b.description));
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
         this.lifeinsurences = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE).sort((a, b) => a.description.localeCompare(b.description));
       }
@@ -144,8 +150,8 @@ export class RecurrenttransactioninputformComponent  {
             recurentFrequency = RecurrentFrequencyEnum.MONTHLY;
             break;
           }
-          case RecurrentFrequencyEnum.QUATERLY: {
-            recurentFrequency = RecurrentFrequencyEnum.QUATERLY;
+          case RecurrentFrequencyEnum.QUARTERLY: {
+            recurentFrequency = RecurrentFrequencyEnum.QUARTERLY;
             break;
           }
           case RecurrentFrequencyEnum.YEARLY: {

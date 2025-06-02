@@ -43,10 +43,10 @@ export class RecurrentTransaction {
         }
     }   
 }
-export type RecurrentFrequencyEnum = 'MONTHLY' | 'QUATERLY' | 'YEARLY' | 'UNKNOWN';
+export type RecurrentFrequencyEnum = 'MONTHLY' | 'QUARTERLY' | 'YEARLY' | 'UNKNOWN';
 export const RecurrentFrequencyEnum = {
     MONTHLY: 'MONTHLY' as RecurrentFrequencyEnum,
-    QUATERLY: 'QUATERLY' as RecurrentFrequencyEnum,
+    QUARTERLY: 'QUARTERLY' as RecurrentFrequencyEnum,
     YEARLY: 'YEARLY' as RecurrentFrequencyEnum,
     UNKNOWN: 'UNKNOWN' as RecurrentFrequencyEnum
 };
