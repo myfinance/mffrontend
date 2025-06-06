@@ -1,3 +1,5 @@
+import { TypeConverter } from "./typeConverter";
+
 export type CSVTypeEnum = 'COBA' | 'C24' | 'MIN';
 export const CSVTypeEnum = {
   COBA: 'COBA' as CSVTypeEnum,
@@ -5,9 +7,13 @@ export const CSVTypeEnum = {
   MIN: 'MIN' as CSVTypeEnum
 };
 
+export class CsvRow {
+  constructor(public rowNumber: string, public transactionDate: Date, public description: string, public value: number, public ignore: boolean) {}
+}
+
 export class CsvImporter {
     //toIsoString converts the Date to UTC Time. ForDate without Time (hour=0) does this mean day-1 what is not the intention. So add the TimeZoneOffset before
-    public static loadFile(file: File, csvType:CSVTypeEnum, callback: (rows: any[][]) => void){
+    public static loadFile(file: File, csvType:CSVTypeEnum, callback: (rows: CsvRow[]) => void){
         //array varibales to store csv data
         const lines = []; //for headings
         //File reader method
@@ -32,11 +38,16 @@ export class CsvImporter {
             const rows = [];
             for (let i = 1; i < arrl; i++) {
               const row = allTextLines[i].split(';');
-              if (row != null && row[0]!=null && row[0]!="") {
-                //rownumber, transactiondate, description, value
-                let minrow = [i.toString(), row[2].toString(), row[0].toString(), row[1].toString()];
+              if (row != null && row[0]!=null && row[0]!="" && row[1]!=null && row[1]!="" && row[4]!=null && row[4]!="") {
+                let minrow = new CsvRow(i.toString(), TypeConverter.parseGermanDate(row[0].toString()), row[3].toString(), TypeConverter.parseGermanNumber(row[4]) ?? 0, false);
                 if(csvType==CSVTypeEnum.COBA){
-                  minrow = [i.toString(), row[0].toString(), row[3].toString(), row[4].toString()];
+                  minrow = new CsvRow(
+                    i.toString(), 
+                    TypeConverter.parseGermanDate(row[0].toString()), 
+                    row[3].toString(), 
+                    TypeConverter.parseGermanNumber(row[4]) ?? 0,
+                    false
+                  );
                 }
                 rows.push(minrow);
               }

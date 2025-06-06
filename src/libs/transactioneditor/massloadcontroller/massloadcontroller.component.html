@@ -1,9 +1,32 @@
+<p-sidebar [(visible)]="sidebarVisible" styleClass="p-sidebar-lg">
 
+  <form [formGroup]="uploadForm">
 
+    <div class="p-field">
+      <label for="instrument">Instrument</label>
+      <p-dropdown formControlName="giro" [options]="giros" optionLabel="description" placeholder="Select an instrument"
+        [filter]="true"></p-dropdown>
+    </div>
 
-    <p-fileUpload name="csvFile" accept=".csv" mode="basic" chooseLabel="Datei" [auto]="true" (onUpload)="onUpload($event)" [customUpload]="true" (uploadHandler)="onUpload($event)">
-      </p-fileUpload>
+    <div class="p-field">
+      <p-fileUpload
+      name="csvFile" 
+      accept=".csv"
+      [multiple]="false" 
+      fileLimit="1"
+      customUpload="true"
+      (onSelect)="onFileSelected($event)"
+      (onUpload)="upload()" 
+      chooseLabel="Choose File"
+      showUploadButton="false"
+      [auto]="false"
+    ></p-fileUpload>
+    </div>
 
-
-
- 
+    <div class="p-dialog-footer">
+      <button pButton type="button" label="Upload" [disabled]="!uploadForm.valid || !selectedFile" (click)="upload()">
+      </button>
+    </div>
+  </form>
+</p-sidebar>
+<p-button (click)="sidebarVisible = true" label="UploadFile" [outlined]="true"></p-button>

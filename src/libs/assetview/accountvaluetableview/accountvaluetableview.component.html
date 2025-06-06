@@ -1,6 +1,12 @@
+<b>Konten </b>>
+<div>Gesamtwert:{{total | currency:'EUR':'symbol':'1.2-2'}} </div> 
+<div [ngClass]="{'increase': totaldiff > 0, 'decrease': totaldiff <= 0}">Wertveränderung:{{ totaldiff | currency:'EUR':'symbol':'1.2-2' }}</div>
 <p-table [value]="accountDetails" selectionMode="single" [(selection)]="selectedInstrument" dataKey="businesskey"
     (onRowSelect)="onRowSelect($event)" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '8rem'}"
-    [styleClass]="'p-datatable-sm'">
+    [styleClass]="'p-datatable-sm'"
+    [sortField]="'diff'"
+    [filters]="tableFilters"
+    [sortOrder]="-1">
 
     <ng-template pTemplate="header">
         <tr class="scaled-header">
@@ -15,13 +21,13 @@
                 <div class="flex items-center">
                     Value
                     <p-sortIcon field="value" />
-                    <p-columnFilter type="text" field="instrumentType" display="menu" />
+                    <p-columnFilter type="numeric" field="value" display="menu" />
                 </div>
             </th>
             <th pSortableColumn="diff" style="width:20%">
                 Diff
                 <p-sortIcon field="diff" />
-                <p-columnFilter type="text" field="active" display="menu" />
+                <p-columnFilter type="numeric" field="diff" display="menu" />
             </th>
             <th pSortableColumn="Typ" style="width:20%">
                 <div class="flex items-center">
@@ -35,8 +41,12 @@
     <ng-template pTemplate="body" let-row>
         <tr [pSelectableRow]="row" class="scaled-row">
             <td>{{ row.description }}</td>
-            <td>{{ row.value }}</td>
-            <td>{{ row.value - row.referenceValue }}</td>
+            <td>{{ row.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>
+                <div [ngClass]="{'increase': row.diff > 0, 'decrease': row.diff <= 0}">
+                    {{ row.diff | currency:'EUR':'symbol':'1.2-2' }}
+                </div>
+            </td>
             <td>{{ row.instrumentType }}</td>
         </tr>
     </ng-template>

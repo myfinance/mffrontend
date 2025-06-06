@@ -12,6 +12,7 @@ import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-m
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { Transaction, TransactionTypeEnum } from '../../shared/data-access-mfdata/model/transaction';
 import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
+import { CsvRow } from '../../shared/data-access-mfdata/csvimporter';
 
 @Component({
   selector: 'mffrontend-massloadeditor',
@@ -22,16 +23,14 @@ import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
 })
 export class MassloadeditorComponent {
 
-  content: string[][] = [];
+  content: CsvRow[] = [];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
-  selectedGiro: Instrument | undefined = undefined;
 
   dynamicForm: FormGroup;
 
   constructor(private transactionService: TransactionService, private fb: FormBuilder) {
     this.dynamicForm = this.fb.group({
-      giro: ['', [Validators.required]],
       rows: this.fb.array([])
     });
 
@@ -81,25 +80,31 @@ export class MassloadeditorComponent {
   loadInstruments() {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
-        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO);
-        this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET);
+        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO && instrument.active).sort((a, b) => a.description.localeCompare(b.description));
+        this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET && instrument.active).sort((a, b) => a.description.localeCompare(b.description));
       }
     )
   }
 
   onSubmit(): void {
-    if (this.dynamicForm.valid ) {
+    if (this.dynamicForm.valid && this.transactionService.getSelectedGiro4MassUpload()!=undefined) {
+      const giro =this.transactionService.getSelectedGiro4MassUpload();
+      let checkedGiro: Instrument;
+      if (giro!=undefined){
+        checkedGiro = giro;
+      } else {return;}
+      
       console.log(this.dynamicForm.value);
       const result: Transaction[] = [];
       this.rows.controls.forEach(element => {
-        if(!element.get('ignore')?.value){
-          const transactionDate = TypeConverter.parseGermanDate(element.get('transactiondate')?.value);
+        if(!element.get('ignore')?.value && element.get('budget')!=undefined){
+          const transactionDate = element.get('transactiondate')?.value;
           const value = element.get('value')?.value;
           let transactionType = TransactionTypeEnum.EXPENSE
           if(value>0){
             transactionType = TransactionTypeEnum.INCOME
           }
-          const transaction = this.transactionService.createTransaction(transactionType, element.get('description')?.value, transactionDate, value, this.dynamicForm.get('giro')?.value, element.get('budget')?.value, 
+          const transaction = this.transactionService.createTransaction(transactionType, element.get('description')?.value, transactionDate, value, checkedGiro.businesskey, element.get('budget')?.value.businesskey, 
             "", "", "", "", 0, "", undefined );
           result.push(transaction);
         }
@@ -113,11 +118,11 @@ export class MassloadeditorComponent {
   private initForm(): void {
     this.content.forEach(row => {
       const formGroup = this.fb.group({
-        description: [row[2], Validators.required],
-        transactiondate: [row[1], Validators.required],
-        value: [TypeConverter.parseGermanNumber(row[3]), Validators.required],
-        budget: [null, Validators.required],
-        ignore: [false],
+        description: [row.description, Validators.required],
+        transactiondate: [row.transactionDate, Validators.required],
+        value: [row.value, Validators.required],
+        budget: [null],
+        ignore: [row.ignore],
       });
       this.rows.push(formGroup);
     });

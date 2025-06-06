@@ -4,18 +4,7 @@
     (ngSubmit)="onSubmit()"
     *ngIf="content.length"
   >
-    <label>Massentransaktionsverarbeitung für Giro</label>
 
-    <p-dropdown
-      [options]="giros"
-      [(ngModel)]="selectedGiro"
-      formControlName="giro"
-      optionLabel="description"
-      placeholder="Select a Giro"
-    />
-    <div *ngIf="dynamicForm.controls['giro']?.invalid" class="p-error">
-        Selection is required.
-      </div>
     <p-button type="submit" label="Save" icon="pi pi-check"></p-button>
 
     <p-table
@@ -108,6 +97,5 @@
         </tr>
       </ng-template>
     </p-table>
-    <button type="submit">Submit</button>
   </form>
 </div>

@@ -4,6 +4,7 @@ import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { InstrumentFullDetails } from '../shared/data-access-mfdata/model/instrumentfulldetails';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum } from '../shared/data-access-mfdata/model/instrument';
+import { CsvRow } from '../shared/data-access-mfdata/csvimporter';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AccountanalysisService {
   private accounts: Instrument[] = [];
   private selectedInstrumentKey="";
   private selectedInstrumentFullDetails: InstrumentFullDetails | undefined;
-  private content: string[][]=[]
+  private content: CsvRow[]=[]
 
   private dateaforAnalysis = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   private referenceDate = new Date(new Date().getFullYear(), new Date().getMonth()-1, new Date().getDate());
@@ -144,13 +145,13 @@ export class AccountanalysisService {
 
   }
 
-  getCashflow2CompareContent(): string[][]{
+  getCashflow2CompareContent(): CsvRow[]{
     if(this.content !=undefined)
       return this.content;
     return [];
   }
 
-  setCashflow2CompareContent(content: string[][]) {
+  setCashflow2CompareContent(content: CsvRow[]) {
     this.content = content;
     this.newFileSelectedSubject.next(true);
   }

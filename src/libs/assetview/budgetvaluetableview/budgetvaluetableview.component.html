@@ -1,9 +1,21 @@
-<p-table [value]="budgetDetails" selectionMode="single" [(selection)]="selectedInstrument" dataKey="businesskey"
-    (onRowSelect)="onRowSelect($event)" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '8rem'}"
-    [styleClass]="'p-datatable-sm'">
+<b>Budgets </b>>
+<div>Gesamtwert:{{total | currency:'EUR':'symbol':'1.2-2'}} </div> 
+<div [ngClass]="{'increase': totaldiff > 0, 'decrease': totaldiff <= 0}">Wertveränderung:{{ totaldiff | currency:'EUR':'symbol':'1.2-2' }}</div>
+
+<p-table [value]="budgetDetails"  dataKey="businesskey"
+    [tableStyle]="{ 'min-width': '8rem'}"
+    [filters]="tableFilters"
+    [sortField]="'diff'"
+    [sortOrder]="1"
+    selectionMode="single"
+    [styleClass]="'p-datatable-sm'" 
+    [groupRowsBy]="'instrumentParent'" 
+    [rowGroupMode]="'subheader'" 
+    expandableRowGroups>
 
     <ng-template pTemplate="header">
-        <tr class="scaled-header">
+
+        <tr>
             <th pSortableColumn="description" style="width:40%">
                 <div class="flex items-center">
                     Description
@@ -15,29 +27,51 @@
                 <div class="flex items-center">
                     Value
                     <p-sortIcon field="value" />
-                    <p-columnFilter type="text" field="instrumentType" display="menu" />
+                    <p-columnFilter type="numeric" field="value" display="menu" />
                 </div>
             </th>
             <th pSortableColumn="diff" style="width:20%">
                 Diff
                 <p-sortIcon field="diff" />
+                <p-columnFilter type="numeric" field="diff" display="menu" />
+            </th>
+            <th>
+                Active
                 <p-columnFilter type="text" field="active" display="menu" />
             </th>
-            <th pSortableColumn="Typ" style="width:20%">
-                <div class="flex items-center">
-                    Typ
-                    <p-sortIcon field="Typ" />
-                    <p-columnFilter type="text" field="instrumentType" display="menu" />
+        </tr>
+
+    </ng-template>
+
+    <ng-template pTemplate="groupheader" let-budget let-rowIndex="rowIndex" let-expanded="expanded">
+        <tr>
+            <td colspan="4">
+                <button type="button" pButton pRipple [pRowToggler]="budget"
+                    class="p-button-text p-button-rounded p-button-plain mr-2"
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+                </button>
+                <span class="font-bold ml-2">{{budget.instrumentParent}}</span>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="groupfooter" let-budget>
+        <tr class="p-rowgroup-footer">
+            <td  style="text-align: right">Total:</td>
+            <td>{{calculateValueTotal(budget.instrumentParent) | currency:'EUR':'symbol':'1.2-2'}}</td>
+            <td colspan="2">{{calculateDiffTotal(budget.instrumentParent) | currency:'EUR':'symbol':'1.2-2'}}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-budget>
+        <tr [pSelectableRow]="budget" (click)="onRowSelect(budget)" >
+            <td>{{ budget.description }}</td>
+            <td>{{ budget.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>
+                <div [ngClass]="{'increase': budget.diff > 0, 'decrease': budget.diff <= 0}">
+                    {{ budget.diff | currency:'EUR':'symbol':'1.2-2' }}
                 </div>
-            </th>
+            </td>
+            <td>{{ budget.active ? 'Yes' : 'No' }}</td>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-row>
-        <tr [pSelectableRow]="row" class="scaled-row">
-            <td>{{ row.description }}</td>
-            <td>{{ row.value }}</td>
-            <td>{{ row.value - row.referenceValue }}</td>
-            <td>{{ row.instrumentType }}</td>
-        </tr>
-    </ng-template>
+
 </p-table>

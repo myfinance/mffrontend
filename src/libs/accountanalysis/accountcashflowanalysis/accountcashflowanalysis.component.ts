@@ -177,15 +177,10 @@ export class AccountcashflowanalysisComponent  implements OnInit {
   compareCashflows(){
     this.cashflows2Compare = [];
     this.service.getCashflow2CompareContent().forEach(row => {
-      let value = 0;
-      const parsedValue = TypeConverter.parseGermanNumber(row[3]);
-      if(parsedValue!=null){
-        value=parsedValue
-      }
       const cashflowCompareView : CashflowCompareView = {
-        description: row[2],
-        value: value,
-        transactiondate: TypeConverter.parseGermanDate(row[1]),
+        description: row.description,
+        value: row.value,
+        transactiondate: row.transactionDate,
         approved: false
       };
       this.cashflows2Compare.push(cashflowCompareView);

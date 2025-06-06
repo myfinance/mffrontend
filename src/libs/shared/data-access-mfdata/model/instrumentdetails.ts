@@ -9,10 +9,19 @@ export class InstrumentDetails {
     referenceValue: number;
     instrumentType: InstrumentTypeEnum;
     active: boolean;
+    instrumentParent: string;
+    diff: number;
 
 
-    constructor(businesskey: string, description: string, value: number, 
-        referenceValue: number, liquiditytype: LiquidityTypeEnum, active: boolean, instrumentType: InstrumentTypeEnum) {
+    constructor(businesskey: string, 
+            description: string, 
+            value: number, 
+            referenceValue: number, 
+            liquiditytype: LiquidityTypeEnum, 
+            active: boolean, 
+            instrumentType: InstrumentTypeEnum,
+            instrumentParent: string,
+            diff: number) {
         this.businesskey = businesskey;
         this.description = description;
         this.value = value;
@@ -20,6 +29,8 @@ export class InstrumentDetails {
         this.liquiditytype = liquiditytype;
         this.active = active;
         this.instrumentType = instrumentType;
+        this.instrumentParent = instrumentParent;
+        this.diff=diff;
     }
     toJSON() {
         return {
@@ -29,7 +40,9 @@ export class InstrumentDetails {
             referenceValue: this.referenceValue,
             liquiditytype: this.liquiditytype,
             active: this.active,
-            instrumentType: this.instrumentType
+            instrumentType: this.instrumentType,
+            instrumentParent: this.instrumentParent,
+            diff: this.diff
         }
     }   
 }

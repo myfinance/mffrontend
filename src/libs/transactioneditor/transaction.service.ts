@@ -3,91 +3,94 @@ import { Observable, Subject } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Transaction, TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
+import { CsvRow } from '../shared/data-access-mfdata/csvimporter';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
 
-  content: string[][] = [];
+  content: CsvRow[] = [];
 
   selectedTransaction: Transaction | undefined
   public newTransactionSelectedSubject: Subject<unknown> = new Subject<unknown>()
   public newFileSelectedSubject: Subject<unknown> = new Subject<unknown>()
 
-  constructor(private mfDataService: MfdataService) { 
+  selectedGiro4MassUpload: Instrument | undefined
+
+  constructor(private mfDataService: MfdataService) {
   }
 
-  createTransaction(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: string, budget: string, 
-        trgBudgetKey: string, trgAccKey: string, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string, transactionId: string|undefined ):Transaction {
-    if(value < 0) {
-      value = value * (-1); 
+  createTransaction(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: string, budget: string,
+    trgBudgetKey: string, trgAccKey: string, securityBusinessKey: string, depotBusinessKey: string, amount: number, insuranceKey: string, transactionId: string | undefined): Transaction {
+    if (value < 0) {
+      value = value * (-1);
     }
 
-    const transaction: Transaction = new Transaction("",transactionType, desc, transactionDate, acc, budget,trgBudgetKey,trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey, new Date(Date.now())); 
-    if(transactionId!==undefined){
-      transaction.transactionId=transactionId;
+    const transaction: Transaction = new Transaction("", transactionType, desc, transactionDate, acc, budget, trgBudgetKey, trgAccKey, value, securityBusinessKey, depotBusinessKey, amount, insuranceKey, new Date(Date.now()));
+    if (transactionId !== undefined) {
+      transaction.transactionId = transactionId;
     }
     return transaction;
   }
 
-  private saveIncomeExpense(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ) {
+  private saveIncomeExpense(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined) {
 
-    this.mfDataService.saveTransaction(this.createTransaction(transactionType, desc, transactionDate, value, acc.businesskey, budget.businesskey, "","", "","", 0, "", transactionId));
+    this.mfDataService.saveTransaction(this.createTransaction(transactionType, desc, transactionDate, value, acc.businesskey, budget.businesskey, "", "", "", "", 0, "", transactionId));
   }
 
-  saveIncome(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ){
+  saveIncome(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined) {
     this.saveIncomeExpense(TransactionTypeEnum.INCOME, desc, transactionDate, value, acc, budget, transactionId);
   }
-  saveExpense(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ){
+  saveExpense(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined) {
     this.saveIncomeExpense(TransactionTypeEnum.EXPENSE, desc, transactionDate, value, acc, budget, transactionId);
   }
 
-  saveLifeInsuranceExpense(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, lifeinsuranceKey: string, transactionId: string|undefined ){
-    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.LIFEINSURANCEEXPENSE, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", "", "", 0, lifeinsuranceKey, transactionId));
+  saveLifeInsuranceExpense(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, lifeinsuranceKey: string, transactionId: string | undefined) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.LIFEINSURANCEEXPENSE, desc, transactionDate, value, acc.businesskey, budget.businesskey, "", "", "", "", 0, lifeinsuranceKey, transactionId));
   }
 
-  private saveBuySell(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined, depotId: string, securityId: string, amount:number) {
-    this.mfDataService.saveTransaction(this.createTransaction(transactionType, desc, transactionDate, value, acc.businesskey, budget.businesskey,"","", securityId, depotId, amount, "", transactionId));
+  private saveBuySell(transactionType: TransactionTypeEnum, desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined, depotId: string, securityId: string, amount: number) {
+    this.mfDataService.saveTransaction(this.createTransaction(transactionType, desc, transactionDate, value, acc.businesskey, budget.businesskey, "", "", securityId, depotId, amount, "", transactionId));
   }
 
-  saveBuy(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined, depotId: string, securityId: string, amount:number ){
-    this.saveBuySell(TransactionTypeEnum.BUY, desc, transactionDate, value, acc, budget, transactionId,depotId,securityId,amount);
+  saveBuy(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined, depotId: string, securityId: string, amount: number) {
+    this.saveBuySell(TransactionTypeEnum.BUY, desc, transactionDate, value, acc, budget, transactionId, depotId, securityId, amount);
   }
-  saveSell(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined, depotId: string, securityId: string, amount:number ){
-    this.saveBuySell(TransactionTypeEnum.SELL, desc, transactionDate, value, acc, budget, transactionId,depotId,securityId,amount);
-  }
-
-  saveTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string|undefined ) {
-    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.TRANSFER, desc, transactionDate, value, srcInstrument.businesskey, "","",trgInstrument.businesskey, "", "", 0, "", transactionId));
+  saveSell(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined, depotId: string, securityId: string, amount: number) {
+    this.saveBuySell(TransactionTypeEnum.SELL, desc, transactionDate, value, acc, budget, transactionId, depotId, securityId, amount);
   }
 
-  saveBudgetTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string|undefined ) {
-    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.BUDGETTRANSFER, desc, transactionDate, value, "", srcInstrument.businesskey,trgInstrument.businesskey,"", "", "", 0, "", transactionId));
+  saveTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string | undefined) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.TRANSFER, desc, transactionDate, value, srcInstrument.businesskey, "", "", trgInstrument.businesskey, "", "", 0, "", transactionId));
   }
 
-  saveDepotCashflow(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, depotId: string, securityId: string, transactionId: string|undefined ) {
-    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.DEPOTCASHFLOW, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", securityId, depotId, 0, "", transactionId));
+  saveBudgetTransfer(desc: string, transactionDate: Date, value: number, srcInstrument: Instrument, trgInstrument: Instrument, transactionId: string | undefined) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.BUDGETTRANSFER, desc, transactionDate, value, "", srcInstrument.businesskey, trgInstrument.businesskey, "", "", "", 0, "", transactionId));
   }
 
-  saveInterest(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string|undefined ) {
-    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.INTERESTS, desc, transactionDate, value, acc.businesskey, budget.businesskey,"", "", "", "", 0, "", transactionId));
+  saveDepotCashflow(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, depotId: string, securityId: string, transactionId: string | undefined) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.DEPOTCASHFLOW, desc, transactionDate, value, acc.businesskey, budget.businesskey, "", "", securityId, depotId, 0, "", transactionId));
+  }
+
+  saveInterest(desc: string, transactionDate: Date, value: number, acc: Instrument, budget: Instrument, transactionId: string | undefined) {
+    this.mfDataService.saveTransaction(this.createTransaction(TransactionTypeEnum.INTERESTS, desc, transactionDate, value, acc.businesskey, budget.businesskey, "", "", "", "", 0, "", transactionId));
   }
 
   deleteTransaction() {
-    if (this.selectedTransaction!==undefined && this.selectedTransaction.transactionId) {
+    if (this.selectedTransaction !== undefined && this.selectedTransaction.transactionId) {
       this.mfDataService.deleteTransaction(this.selectedTransaction.transactionId);
     }
-    
+
   }
 
-  getConfigLoadedSubject() : Subject<unknown>{
+  getConfigLoadedSubject(): Subject<unknown> {
     return this.mfDataService.getConfigLoadedSubject();
   }
-  getTenantEventSubject() : Subject<unknown>{
+  getTenantEventSubject(): Subject<unknown> {
     return this.mfDataService.getTenantEventSubject();
   }
-  getLoginSubject() : Subject<unknown>{
+  getLoginSubject(): Subject<unknown> {
     return this.mfDataService.loginEventSubject;
   }
 
@@ -99,7 +102,7 @@ export class TransactionService {
     return this.mfDataService.getInstrumentsAndSecurities();
   }
 
-  setSelectedTransaction(transaction?:Transaction) {
+  setSelectedTransaction(transaction?: Transaction) {
     this.selectedTransaction = transaction;
     this.newTransactionSelectedSubject.next(true);
   }
@@ -107,27 +110,51 @@ export class TransactionService {
     this.selectedTransaction = undefined;
     this.newTransactionSelectedSubject.next(true);
   }
-  getSelectedTransaction() : Transaction|undefined {
+  getSelectedTransaction(): Transaction | undefined {
     return this.selectedTransaction;
   }
 
-  getInstrumentEventSubject() : Subject<unknown>{
+  getInstrumentEventSubject(): Subject<unknown> {
     return this.mfDataService.getInstrumentEventSubject();
   }
-  getTransactionEventSubject() : Subject<unknown>{
+  getTransactionEventSubject(): Subject<unknown> {
     return this.mfDataService.getTransactionEventSubject();
   }
 
-  setMassloadContent(content: string[][]) {
-    this.content = content;
-    this.newFileSelectedSubject.next(true);
+  setMassloadContent(content: CsvRow[], giro: Instrument) {
+    this.content = content.sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime());
+    this.selectedGiro4MassUpload = giro;
+    let firstDate = new Date(Date.now());
+    content.forEach(t => {
+      if (t.transactionDate < firstDate) {
+        firstDate = t.transactionDate;
+      }
+    })
+    firstDate.setDate(firstDate.getDate() - 2);
+    this.mfDataService.getTransactions(firstDate, new Date(Date.now())).subscribe(
+      (transactions) => {
+        transactions.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime()).forEach(t=>{
+          for(const c of this.content){
+            if(t.value==c.value || (t.value == c.value*(-1) && t.transactionType==TransactionTypeEnum.EXPENSE)){
+              c.ignore=true;
+              break;
+            }
+          }
+        });
+        this.newFileSelectedSubject.next(true);
+      }
+    )
   }
 
-  getMassloadContent():string[][]{
+  getSelectedGiro4MassUpload(): Instrument | undefined {
+    return this.selectedGiro4MassUpload;
+  }
+
+  getMassloadContent(): CsvRow[] {
     return this.content;
   }
 
-  saveTransactions(data: Transaction[] ){
+  saveTransactions(data: Transaction[]) {
     this.mfDataService.saveTransactions(data);
   }
 }
