@@ -11,13 +11,13 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { Transaction, TransactionTypeEnum } from '../../shared/data-access-mfdata/model/transaction';
-import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
 import { CsvRow } from '../../shared/data-access-mfdata/csvimporter';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'mffrontend-massloadeditor',
   standalone: true,
-  imports: [CommonModule, TableModule, DropdownModule, FormsModule, InputSwitchModule, ButtonModule,ReactiveFormsModule, CalendarModule,InputNumberModule],
+  imports: [CommonModule, TableModule, DropdownModule, FormsModule, InputSwitchModule, ButtonModule,ReactiveFormsModule, CalendarModule,InputNumberModule,CheckboxModule],
   templateUrl: './massloadeditor.component.html',
   styleUrl: './massloadeditor.component.scss',
 })
@@ -100,12 +100,16 @@ export class MassloadeditorComponent {
         if(!element.get('ignore')?.value && element.get('budget')!=undefined){
           const transactionDate = element.get('transactiondate')?.value;
           const value = element.get('value')?.value;
-          let transactionType = TransactionTypeEnum.EXPENSE
-          if(value>0){
+          const isTransaction = element.get('description')?.value;
+          let transactionType = TransactionTypeEnum.EXPENSE;
+          if(isTransaction){
+            transactionType = TransactionTypeEnum.TRANSFER
+          }
+          else if(value>0){
             transactionType = TransactionTypeEnum.INCOME
           }
           const transaction = this.transactionService.createTransaction(transactionType, element.get('description')?.value, transactionDate, value, checkedGiro.businesskey, element.get('budget')?.value.businesskey, 
-            "", "", "", "", 0, "", undefined );
+            "", element.get('budget')?.value.businesskey, "", "", 0, "", undefined );
           result.push(transaction);
         }
       });
@@ -121,47 +125,49 @@ export class MassloadeditorComponent {
         description: [row.description, Validators.required],
         transactiondate: [row.transactionDate, Validators.required],
         value: [row.value, Validators.required],
-        budget: [this.matchBudget(row.categorie, row.subcategorie)],
+        budgetOrGiro: [this.matchBudget(row.categorie, row.subcategorie)],
         ignore: [row.ignore],
+        isTransfer: [false]
       });
       this.rows.push(formGroup);
     });
   }
 
   private matchBudget(categorie: String, subcategorie: String): Instrument | null{
+    const budgetList = this.budgets;
     if(categorie != null && categorie!=undefined){
       if(categorie=="Lebensmittel") {
-        return this.budgets.filter(b=>b.description="Lebenserhaltungskosten")[0];
+        return budgetList.filter(b=>b.description=="Lebenserhaltungskosten")[0];
       }
       if(categorie=="Freizeit & Unterhaltung" || categorie=="Restaurant/ Café/ Bar") {
-        return this.budgets.filter(b=>b.description="Urlaub und Party")[0];
+        return budgetList.filter(b=>b.description=="Urlaub und Party")[0];
       }
       if(categorie=="Shopping") {
         if(subcategorie=="Online-Shopping"|| categorie=="Bekleidung") {
-          return this.budgets.filter(b=>b.description="Kleidung")[0];
+          return budgetList.filter(b=>b.description=="Kleidung")[0];
         } 
         if(subcategorie=="Drogerie") {
-          return this.budgets.filter(b=>b.description="Lebenserhaltungskosten")[0];
+          return budgetList.filter(b=>b.description=="Lebenserhaltungskosten")[0];
         } 
-        return this.budgets.filter(b=>b.description="Möbel Technik sonstige Anschaffungen")[0];
+        return budgetList.filter(b=>b.description=="Möbel Technik sonstige Anschaffungen")[0];
       }
       if(categorie=="Wellness & Beauty") {
-        return this.budgets.filter(b=>b.description="Frisör")[0];
+        return budgetList.filter(b=>b.description=="Frisör")[0];
       }
       if(categorie=="Mobilität") {
         if(subcategorie=="Tanken") {
-          return this.budgets.filter(b=>b.description="Benzin")[0];
+          return budgetList.filter(b=>b.description=="Benzin")[0];
         } 
-        return this.budgets.filter(b=>b.description="Möbel Technik sonstige Anschaffungen")[0];
+        return budgetList.filter(b=>b.description=="Möbel Technik sonstige Anschaffungen")[0];
       }
       if(categorie=="Gesundheit") {
         if(subcategorie=="Apotheke") {
-          return this.budgets.filter(b=>b.description="Apotheke")[0];
+          return budgetList.filter(b=>b.description=="Apotheke")[0];
         } 
-        return this.budgets.filter(b=>b.description="PKV")[0];
+        return budgetList.filter(b=>b.description=="PKV")[0];
       }
       if(categorie=="DSL & Mobilfunk") {
-        return this.budgets.filter(b=>b.description="Telefon")[0];
+        return budgetList.filter(b=>b.description=="Telefon")[0];
       }
     }
     return null;

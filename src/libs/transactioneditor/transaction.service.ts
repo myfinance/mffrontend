@@ -127,7 +127,7 @@ export class TransactionService {
     let firstDate = new Date(Date.now());
     content.forEach(t => {
       if (t.transactionDate < firstDate) {
-        firstDate = t.transactionDate;
+        firstDate = new Date(t.transactionDate);
       }
     })
     firstDate.setDate(firstDate.getDate() - 2);

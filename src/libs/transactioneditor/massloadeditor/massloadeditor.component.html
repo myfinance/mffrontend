@@ -19,7 +19,8 @@
           <th>Beschreibung</th>
           <th>Datum</th>
           <th>Betrag</th>
-          <th>Budget</th>
+          <th>isTransfer</th>
+          <th>Budget/Konto</th>
           <th>ignorieren</th>
         </tr>
       </ng-template>
@@ -79,14 +80,32 @@
             </div>
           </td>
           <td>
-            <p-dropdown
-              formControlName="budget"
-              [options]="budgets"
-              optionLabel="description"
-              placeholder="Select a Budget"
-              [appendTo]="'body'"
-            />
-            <div *ngIf="rows.controls[rowIndex].get('budget')?.invalid" class="p-error">
+            <p-checkbox
+              formControlName="isTransfer"
+              binary="true"
+            ></p-checkbox>
+          </td>
+          <td>
+            <ng-container *ngIf="!rows.controls[rowIndex].get('isTransfer')?.value; else giroDropdown">
+              <p-dropdown
+                formControlName="budgetOrGiro"
+                [options]="budgets"
+                optionLabel="description"
+                placeholder="Select a Budget"
+                [appendTo]="'body'"
+              />
+            </ng-container>
+            
+            <ng-template #giroDropdown>
+              <p-dropdown
+                formControlName="budgetOrGiro"
+                [options]="giros"  
+                optionLabel="description"
+                placeholder="Select Giro"
+                [appendTo]="'body'"
+              />
+            </ng-template>
+            <div *ngIf="rows.controls[rowIndex].get('budgetOrGiro')?.invalid" class="p-error">
                 Selection is required.
               </div>
         
