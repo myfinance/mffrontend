@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { SidebarModule } from 'primeng/sidebar';
 import { AccountanalysisService } from '../accountanalysis.service';
@@ -8,11 +8,12 @@ import { Instrument } from '../../shared/data-access-mfdata/shared-data-access-m
 import { DropdownModule } from 'primeng/dropdown';
 import { CsvImporter, CSVTypeEnum } from '../../shared/data-access-mfdata/csvimporter';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 
 @Component({
   selector: 'mffrontend-accountanalysiscontroller',
   standalone: true,
-  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule, DropdownModule, FileUploadModule],
+  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule, DropdownModule, FileUploadModule,ReactiveFormsModule],
   templateUrl: './accountanalysiscontroller.component.html',
   styleUrl: './accountanalysiscontroller.component.scss'
 })
@@ -22,10 +23,14 @@ export class AccountanalysiscontrollerComponent {
   rangeDates: Date[] | undefined;
   accounts: Instrument[] = [];
   selectedAccount: Instrument | undefined;
+  uploadForm: FormGroup;
+  selectedFile: File | null = null;
 
   sidebarVisible = false;
 
-  constructor(private service: AccountanalysisService) {
+  constructor(private service: AccountanalysisService, private fb: FormBuilder) {
+    this.uploadForm = this.fb.group({
+    });
     this.dateForAnalysis = this.service.getDateForAnalysis();
     this.referenceDate = this.service.getReferenceDate();
     this.rangeDates = this.service.getRangeDates();
@@ -62,15 +67,19 @@ export class AccountanalysiscontrollerComponent {
     }
   }
 
-  onUpload(event: any) {
-    for (const file of event.files) {
-      CsvImporter.loadFile(file, CSVTypeEnum.MIN,(rows) => this.service.setCashflow2CompareContent(rows));
+  onFileSelected(event: any) {
+    this.selectedFile = event.files?.[0] || null;
+  }
+
+  upload() {
+    if (this.uploadForm.valid && this.selectedFile && this.selectedAccount != undefined && this.selectedAccount.instrumentType== InstrumentTypeEnum.GIRO) {
+      let fileFormat = CSVTypeEnum.C24;
+      if(this.selectedAccount.description=='GiroCoba'){
+        fileFormat = CSVTypeEnum.COBA;
+      }
+      CsvImporter.loadFile(this.selectedFile, fileFormat,(rows) => this.service.setCashflow2CompareContent(rows));
+      this.sidebarVisible=false;
     }
-    // Reset the file input so the same file can be selected again
-    //event.originalEvent.target.value = '';
-    //event.files = [];
-        // Also manually clear the fileUpload component (optional)
-    //this.fileUpload.clear();
   }
 
   setMaxDateRange() {

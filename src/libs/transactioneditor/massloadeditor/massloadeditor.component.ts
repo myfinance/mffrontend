@@ -121,11 +121,50 @@ export class MassloadeditorComponent {
         description: [row.description, Validators.required],
         transactiondate: [row.transactionDate, Validators.required],
         value: [row.value, Validators.required],
-        budget: [null],
+        budget: [this.matchBudget(row.categorie, row.subcategorie)],
         ignore: [row.ignore],
       });
       this.rows.push(formGroup);
     });
+  }
+
+  private matchBudget(categorie: String, subcategorie: String): Instrument | null{
+    if(categorie != null && categorie!=undefined){
+      if(categorie=="Lebensmittel") {
+        return this.budgets.filter(b=>b.description="Lebenserhaltungskosten")[0];
+      }
+      if(categorie=="Freizeit & Unterhaltung" || categorie=="Restaurant/ Café/ Bar") {
+        return this.budgets.filter(b=>b.description="Urlaub und Party")[0];
+      }
+      if(categorie=="Shopping") {
+        if(subcategorie=="Online-Shopping"|| categorie=="Bekleidung") {
+          return this.budgets.filter(b=>b.description="Kleidung")[0];
+        } 
+        if(subcategorie=="Drogerie") {
+          return this.budgets.filter(b=>b.description="Lebenserhaltungskosten")[0];
+        } 
+        return this.budgets.filter(b=>b.description="Möbel Technik sonstige Anschaffungen")[0];
+      }
+      if(categorie=="Wellness & Beauty") {
+        return this.budgets.filter(b=>b.description="Frisör")[0];
+      }
+      if(categorie=="Mobilität") {
+        if(subcategorie=="Tanken") {
+          return this.budgets.filter(b=>b.description="Benzin")[0];
+        } 
+        return this.budgets.filter(b=>b.description="Möbel Technik sonstige Anschaffungen")[0];
+      }
+      if(categorie=="Gesundheit") {
+        if(subcategorie=="Apotheke") {
+          return this.budgets.filter(b=>b.description="Apotheke")[0];
+        } 
+        return this.budgets.filter(b=>b.description="PKV")[0];
+      }
+      if(categorie=="DSL & Mobilfunk") {
+        return this.budgets.filter(b=>b.description="Telefon")[0];
+      }
+    }
+    return null;
   }
 
 

@@ -152,10 +152,8 @@ export class AccountanalysisService {
   }
 
   setCashflow2CompareContent(content: CsvRow[]) {
-    this.content = content;
+    this.content = content.sort((a, b) => a.transactionDate.getTime() - b.transactionDate.getTime());
     this.newFileSelectedSubject.next(true);
   }
-
-
 
 } 

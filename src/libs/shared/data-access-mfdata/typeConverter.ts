@@ -11,7 +11,7 @@ export class TypeConverter {
         const decimalSeparator = parts.find(part => part.type === 'decimal')?.value || ',';
 
         // Replace group separators with empty string and decimal separators with a dot
-        const normalizedValue = value.replace(new RegExp(`\\${groupSeparator}`, 'g'), '').replace(decimalSeparator, '.');
+        const normalizedValue = value.replace(new RegExp(`\\${groupSeparator}`, 'g'), '').replace(decimalSeparator, '.').replace(/[^0-9,.-]/g, '');
 
         const number = parseFloat(normalizedValue);
 

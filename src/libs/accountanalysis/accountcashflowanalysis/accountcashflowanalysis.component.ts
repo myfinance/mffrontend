@@ -4,10 +4,12 @@ import { TableModule } from 'primeng/table';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { InstrumentFullDetails } from '../../shared/data-access-mfdata/model/instrumentfulldetails';
 import { AccountanalysisService } from '../accountanalysis.service';
-import { TypeConverter } from '../../shared/data-access-mfdata/typeConverter';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import { ButtonModule } from 'primeng/button';
 
 interface CashflowCompareView { 
-
+  row: number;
   description: string;
   transactiondate: Date;
   value: number;  
@@ -17,7 +19,7 @@ interface CashflowCompareView {
 @Component({
   selector: 'mffrontend-accountcashflowanalysis',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule, ButtonModule],
   templateUrl: './accountcashflowanalysis.component.html',
   styleUrl: './accountcashflowanalysis.component.scss'
 })
@@ -31,16 +33,20 @@ export class AccountcashflowanalysisComponent  implements OnInit {
   sumOfIncome = 0.0;
   sumOfExpense = 0.0;
   avgExpensesOfLastYear = 0.0;
+  checkedValueTotal: number = 0;
+  checkedValue2CompareTotal: number = 0;
   
   cashflows: CashflowCompareView[] = [];
   cashflows2Compare: CashflowCompareView[] = [];
+  selectedRows: CashflowCompareView[] = [];
+  selectedRows2Compare: CashflowCompareView[] = [];
 
   data: any;
   options: any;
   documentStyle = getComputedStyle(document.documentElement);
 
   constructor(private service: AccountanalysisService) {
-
+    registerLocaleData(localeDe);
   }
 
 
@@ -137,22 +143,24 @@ export class AccountcashflowanalysisComponent  implements OnInit {
       if (valueProperty !== undefined) {
         this.avgExpensesOfLastYear = valueProperty;
       }
-
+      let rownumber = 0;
       this.cashflows = [
         ...details.incomeInPeriod.map(c => ({
+          row: rownumber++,
           description: c.description,
           transactiondate: c.transactiondate,
           value: c.value,
           approved: false
         })),
         ...details.expensesInPeriod.map(c => ({
+          row: rownumber++,
           description: c.description,
           transactiondate: c.transactiondate,
           value: c.value,
           approved: false
         }))
       ];
-      this.cashflows.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime());
+      //this.cashflows.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime());
       this.findMatches();
 
       const curve = details.valueCurve;
@@ -176,8 +184,10 @@ export class AccountcashflowanalysisComponent  implements OnInit {
 
   compareCashflows(){
     this.cashflows2Compare = [];
+    let rownumber = 0;
     this.service.getCashflow2CompareContent().forEach(row => {
       const cashflowCompareView : CashflowCompareView = {
+        row: rownumber++,
         description: row.description,
         value: row.value,
         transactiondate: row.transactionDate,
@@ -199,6 +209,20 @@ export class AccountcashflowanalysisComponent  implements OnInit {
         }
       }
     }
+  }
+
+  updateCheckedSum(): void {
+    this.checkedValueTotal = this.selectedRows.reduce((sum, entry) => sum + entry.value, 0);
+  }
+  updateCompareCheckedSum(): void {
+    this.checkedValue2CompareTotal = this.selectedRows2Compare.reduce((sum, entry) => sum + entry.value, 0);
+  }
+
+  approveTransactions(): void {
+    this.selectedRows.forEach(r=>this.cashflows.filter(c=>c.row==r.row).map(c=>c.approved=true));
+    this.selectedRows2Compare.forEach(r=>this.cashflows2Compare.filter(c=>c.row==r.row).map(c=>c.approved=true));
+    this.selectedRows=[];
+    this.selectedRows2Compare=[];
   }
 }
 
