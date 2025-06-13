@@ -4,6 +4,7 @@ import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Transaction, TransactionTypeEnum } from '../shared/data-access-mfdata/model/transaction';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { CsvRow } from '../shared/data-access-mfdata/csvimporter';
+import { InstrumentFullDetails } from '../shared/data-access-mfdata/model/instrumentfulldetails';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class TransactionService {
   public newFileSelectedSubject: Subject<unknown> = new Subject<unknown>()
 
   selectedGiro4MassUpload: Instrument | undefined
+  private selectedInstrumentFullDetails: InstrumentFullDetails | undefined;
+
+    //something changed that influences selcted Instrument or its values
+    selectedInstrumentEventSubject: Subject<unknown> = new Subject<unknown>();
 
   constructor(private mfDataService: MfdataService) {
   }
@@ -131,7 +136,9 @@ export class TransactionService {
       }
     })
     firstDate.setDate(firstDate.getDate() - 2);
-    this.mfDataService.getTransactions(firstDate, new Date(Date.now())).subscribe(
+    const lastDate = new Date(Date.now());
+    this.loadInstrumentDetails(firstDate,lastDate);
+    this.mfDataService.getTransactions(firstDate, lastDate).subscribe(
       (transactions) => {
         transactions.sort((a, b) => a.transactiondate.getTime() - b.transactiondate.getTime()).forEach(t=>{
           for(const c of this.content){
@@ -146,6 +153,20 @@ export class TransactionService {
     )
   }
 
+  loadInstrumentDetails(startDate: Date, endDate:Date){
+    if(this.selectedGiro4MassUpload!== null && this.selectedGiro4MassUpload?.businesskey!=undefined){
+      this.mfDataService.getInstrumenDetails(this.selectedGiro4MassUpload.businesskey, endDate, startDate, startDate, endDate, startDate, endDate).subscribe(
+        {
+          next: (instrumentFullDetails) => {
+            this.selectedInstrumentFullDetails = instrumentFullDetails;
+            this.selectedInstrumentEventSubject.next(true);
+          },
+          error: (e) => console.error(e)
+        }
+      )
+    }
+  }
+
   getSelectedGiro4MassUpload(): Instrument | undefined {
     return this.selectedGiro4MassUpload;
   }
@@ -156,5 +177,9 @@ export class TransactionService {
 
   saveTransactions(data: Transaction[]) {
     this.mfDataService.saveTransactions(data);
+  }
+
+  getSelectedInstrumentDetails(): InstrumentFullDetails|undefined {
+    return this.selectedInstrumentFullDetails;
   }
 }

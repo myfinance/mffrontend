@@ -118,3 +118,44 @@
     </p-table>
   </form>
 </div>
+<br>
+<b>Konto:{{selectedInstrumentDesc}}</b><br>
+<b>Kontostand:{{instrumentValue}}</b>
+<div class="view-container">
+  <div class="scrollable-container">
+    <p-table [value]="cashflows">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="transactiondate">
+            <div class="flex items-center">
+              transactiondate
+              <p-sortIcon field="transactiondate" />
+              <p-columnFilter type="text" field="transactiondate" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+          <th>
+            <div class="flex items-center">
+              description
+              <p-columnFilter type="text" field="description" display="menu" />
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr [pSelectableRow]="row">
+          <td>{{ row.transactiondate }}</td>
+          <td>{{ row.value }}</td>
+          <td>{{ row.description }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+  <div>

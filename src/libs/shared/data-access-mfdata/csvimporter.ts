@@ -62,7 +62,7 @@ export class CsvImporter {
                     TypeConverter.parseGermanNumber(row[3]+","+row[4]) ?? 0,
                     false,
                     row[12].toString(),
-                    row[12].toString()
+                    row[13].toString().replace('\r','')
                   );
                 }
                 rows.push(minrow);
