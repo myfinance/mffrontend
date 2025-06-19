@@ -1,4 +1,4 @@
-<p-sidebar [(visible)]="sidebarVisible">
+<p-sidebar [(visible)]="sidebarVisible" [style]="{width: '450px'}">
     <label>Konto:</label>
     <p-dropdown [options]="accounts" [(ngModel)]="selectedAccount" optionLabel="description"
       placeholder="select a Account" (onChange)="onInstrumentChange($event)" />
@@ -8,12 +8,15 @@
     <p-button (click)="setRange2LastMonth()">letzter Monat</p-button>
     <br>
     <label>Stichtag</label>
+    <br>
     <p-calendar [(ngModel)]="dateForAnalysis" (onSelect)="handleDateForAnalysisChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
-
+    <br>
     <label>Referenzstichtag</label>
+    <br>
     <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
-
+    <br>
     <label>Betrachtungszeitraum Cashflowanalysis</label>
+    <br>
     <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
 
 

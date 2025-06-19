@@ -1,14 +1,17 @@
 
 
-    <p-sidebar [(visible)]="sidebarVisible">
+    <p-sidebar [(visible)]="sidebarVisible" [style]="{width: '450px'}">
         <label>Stichtag</label>
+        <br>
         <p-calendar [(ngModel)]="dateForAnalysis" (onSelect)="handleDateForAnalysisChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
-
+        <br>
 
         <label>Referenzstichtag</label>
+        <br>
         <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
-
+        <br>
         <label>Betrachtungszeitraum für historische Zeitreihen</label>
+        <br>
         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" (onSelect)="handleRangeDateChanged(rangeDates)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
     </p-sidebar>
     <p-button (click)="sidebarVisible = true" icon="pi pi-calendar" [outlined]="true"></p-button>
