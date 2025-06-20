@@ -1,0 +1,79 @@
+<label>BudgetGruppe:</label>
+<p-dropdown [options]="incomebudgets" [(ngModel)]="selectedIncomeBudget" optionLabel="description"
+  placeholder="Filter an Instrument" (onChange)="onInstrumentChange($event)" />
+<p-divider />
+Verfügbar:{{income-expenses | currency:'EUR':'symbol':'1.2-2'}}
+<p-divider />
+Einnahmen:{{income | currency:'EUR':'symbol':'1.2-2'}}
+<p-table [value]="recurrentIncome" [tableStyle]="{ 'min-width': '8rem'}"
+    [styleClass]="'p-datatable-sm'"
+    [sortField]="'value'"
+    [sortOrder]="-1">
+
+    <ng-template pTemplate="header">
+
+        <tr class="scaled-header">
+            <th pSortableColumn="value" style="width:20%">
+                <div class="flex items-center">
+                    Value
+                    <p-sortIcon field="value" />
+                    <p-columnFilter type="numeric" field="value" display="menu" />
+                </div>
+            </th>
+            <th pSortableColumn="description" style="width:40%">
+                <div class="flex items-center">
+                    Description
+                    <p-sortIcon field="description" />
+                    <p-columnFilter type="text" field="description" display="menu" />
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+        <tr [pSelectableRow]="row" class="scaled-row">
+            <td>{{ row.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>{{ row.description }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-divider />
+Ausgaben: {{expenses | currency:'EUR':'symbol':'1.2-2'}}
+<p-table [value]="recurrentBudgetTransfers" [tableStyle]="{ 'min-width': '8rem'}"
+    [styleClass]="'p-datatable-sm'"
+    [sortField]="'value'"
+    [sortOrder]="-1">
+
+    <ng-template pTemplate="header">
+
+        <tr class="scaled-header">
+            <th pSortableColumn="value" style="width:20%">
+                <div class="flex items-center">
+                    Value
+                    <p-sortIcon field="value" />
+                    <p-columnFilter type="numeric" field="value" display="menu" />
+                </div>
+            </th>
+            <th pSortableColumn="description" style="width:40%">
+                <div class="flex items-center">
+                    Description
+                    <p-sortIcon field="description" />
+                    <p-columnFilter type="text" field="description" display="menu" />
+                </div>
+            </th>
+            <th pSortableColumn="trgBudget" style="width:40%">
+                <div class="flex items-center">
+                    Ziel-Budget
+                    <p-sortIcon field="trgBudget" />
+                    <p-columnFilter type="text" field="trgBudget" display="menu" />
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+        <tr [pSelectableRow]="row" class="scaled-row">
+            <td>{{ row.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+            <td>{{ row.description }}</td>
+            <td>{{ row.trgbudget }}</td>
+        </tr>
+    </ng-template>
+</p-table>

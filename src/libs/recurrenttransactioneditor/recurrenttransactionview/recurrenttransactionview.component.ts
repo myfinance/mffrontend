@@ -54,7 +54,7 @@ export class RecurrenttransactionviewComponent {
   loadInstruments() {
     this.service.getInstruments().subscribe(
       (instruments) => {
-        this.instruments = instruments;
+        this.instruments = instruments.sort((a, b) => a.description.localeCompare(b.description));
         this.loadTransactions();
       }
     )
@@ -65,6 +65,7 @@ export class RecurrenttransactionviewComponent {
     this.service.getRecurrentTransactions().subscribe(
       (transactions) => {
         this.recurrentTransactionViewObjects = transactions;
+        this.filter();
       }
     )
   }

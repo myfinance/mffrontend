@@ -14,6 +14,7 @@ import { SecurityAnalysisViewComponent } from '../libs/securityanalysisview/secu
 import { PriceEditorComponent } from '../libs/priceeditor/price-editor/price-editor.component';
 import { PortfolioAnalysisViewComponent } from '../libs/portfolioanalysisview/portfolio-analysis-view/portfolio-analysis-view.component';
 import { AccountanalysisComponent } from '../libs/accountanalysis/accountanalysis/accountanalysis.component';
+import { BudgetAllocationViewComponent } from '../libs/budgetallocationview/budget-allocation-view/budget-allocation-view.component';
 
 export const appRoutes: Route[] = [  
    /* {
@@ -60,7 +61,11 @@ export const appRoutes: Route[] = [
       {
         path: 'assetview',
         component: AssetviewComponent,
-      },      
+      },
+      {
+        path: 'budgetallocationview',
+        component: BudgetAllocationViewComponent,
+      },         
       {
         path: 'securityanalysisview',
         component: SecurityAnalysisViewComponent,

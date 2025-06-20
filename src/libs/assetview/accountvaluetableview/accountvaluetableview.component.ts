@@ -49,10 +49,6 @@ export class AccountvaluetableviewComponent {
   }
 
   onRowSelect(event: any) {
-    if (this.selectedInstrument != null) {
-      this.service.setSelectedInstrument(this.selectedInstrument.businesskey);
-    }
-
   }
 
 }

@@ -25,7 +25,7 @@ interface CashflowCompareView {
 })
 export class AccountcashflowanalysisComponent  implements OnInit {
 
-  selectedInstrumentFullDetails: InstrumentFullDetails = new InstrumentFullDetails("No Instrument Selected", "No Instrument Selected", InstrumentTypeEnum.BUDGET, [], [], new Map<string, number>());
+  selectedInstrumentFullDetails: InstrumentFullDetails = new InstrumentFullDetails("No Instrument Selected", "No Instrument Selected", InstrumentTypeEnum.BUDGET, [], [], new Map<string, number>(), new Map<string, number>());
   value = 0.0;
   referenceValue = 0.0;
   valueChangeAbs = 0.0;

@@ -1,22 +1,45 @@
-Instrumentkey: {{selectedInstrumentFullDetails.businesskey}}
-<br/>
-Instrumentbeschreibung: {{selectedInstrumentFullDetails.description}}
-<br/>
-InstrumentType: {{selectedInstrumentFullDetails.instrumentType.toString()}}
-<br/>
-Wert zum Stichtag: {{value}}
-<br/>
-Wert zum ReferenzStichtag: {{referenceValue}}
-<br/>
-Absolute Veräderung: {{valueChangeAbs}}
-<br/>
-Relative Veränderung: {{valueChangeRel}}
-<br/>
-Summe der Einnahmen: {{sumOfIncome}}
-<br/>
-Summe der Ausgaben: {{sumOfExpense}}
-<br/>
-Durchschnittliche monatl. Ausgaben des letzten Jahres : {{avgExpensesOfLastYear}}
+<p-divider/>
+
+<h3>Budget:<b>{{selectedInstrumentFullDetails.description}}</b></h3>
+<p-divider/>
+<p-table [value]="properties">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Kennzahl</th>
+        <th>Wert</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <td>{{ row.propertyname }}</td>
+        <td>
+            <div [ngClass]="{'increase': row.value > 0, 'decrease': row.value <= 0}">
+                {{ row.value | number: '1.2-2' }}
+            </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+<div *ngIf="linkedinstrumentValues.length>0">
+    <p-divider/>
+    Verlinkte Kontowerte(Budget ohne Konten={{valueWithoutLinkedInstruments| currency:'EUR':'symbol':'1.2-2'}})
+    <p-table [value]="linkedinstrumentValues">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Instrument</th>
+            <th>Wert</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.instrument }}</td>
+            <td>{{ row.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+</div>
+<p-divider/>
 <div class="card">
     <p-chart type="line" [data]="data" [options]="options" />
 </div>

@@ -174,9 +174,16 @@ export class NavigationComponent implements OnInit {
         },
         {
           label: 'Kontoanalyse',
-          icon: 'pi pi-chart-bar',
+          icon: 'pi pi-money-bill',
           command: () => {
             this.accountanalysisview();
+          }
+        },
+        {
+          label: 'Budgetverteilung',
+          icon: 'pi pi-sliders-h',
+          command: () => {
+            this.budgetallocationview();
           }
         }
         ]
@@ -272,6 +279,10 @@ export class NavigationComponent implements OnInit {
 
   accountanalysisview() {
     this.router.navigate(['/accountanalysisview']);
+  }
+
+  budgetallocationview() {
+    this.router.navigate(['/budgetallocationview']);
   }
 
 

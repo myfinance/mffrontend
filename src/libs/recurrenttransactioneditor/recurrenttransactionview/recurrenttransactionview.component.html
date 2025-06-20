@@ -15,7 +15,7 @@
 
   <br>
   <div class="scrollable-container">
-    <p-table [value]="recurrentTransactionViewObjects" 
+    <p-table [value]="filteredTransactionViewObjects" 
     dataKey="recurrentTransactionId" 
     selectionMode="single" 
     [(selection)]="selectedTransaction"         
@@ -25,7 +25,7 @@
       <tr>
         <th pSortableColumn="transactionType">
           <div class="flex items-center">
-            transactiondate
+            transactionType
             <p-sortIcon field="transactionType" />
             <p-columnFilter type="text" field="transactionType" display="menu" />
           </div>
