@@ -93,6 +93,7 @@ export class RecurrenttransactioninputformComponent  {
   loadInstruments() {
     this.service.getInstruments().subscribe(
       (instruments) => {
+        instruments = instruments.filter(i=>i.active);
         this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO
           || instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT
           || instrument.instrumentType === InstrumentTypeEnum.LOAN
