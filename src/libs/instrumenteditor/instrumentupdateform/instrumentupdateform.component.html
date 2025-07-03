@@ -28,7 +28,7 @@
   </div>  
   <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'EQUITY'">
     <p>Währung:</p>
-    <select class="btn btn-primary dropdown-toggle" formControlName="currency">
+    <select class="btn btn-primary dropdown-toggle" formControlName="currency" [compareWith]="compareCurrencies">
       <option class="mydropdown-item" [ngValue]="currency" *ngFor="let currency of currencies" >
         {{currency.description}}
       </option>

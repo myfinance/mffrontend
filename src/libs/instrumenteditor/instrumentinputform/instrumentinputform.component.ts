@@ -267,10 +267,13 @@ export class InstrumentinputformComponent {
       }
       
       maps.set(AdditionalMapsEnum.EQUITYSYMBOLS,symbolCurrencyMap);
-      properties.set(AdditionalPropertiesEnum.ISIN, this.instrumentForm.value.isin || "");
       
     } 
-    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.KRYPTO) {
+    if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.KRYPTO 
+        || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.BOND 
+        || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.EQUITY 
+        || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.ETF
+        || this.instrumentForm.value.instrumentType === InstrumentTypeEnum.FONDS) {
       properties.set(AdditionalPropertiesEnum.ISIN, this.instrumentForm.value.isin || "");
     }
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.CURRENCY) {

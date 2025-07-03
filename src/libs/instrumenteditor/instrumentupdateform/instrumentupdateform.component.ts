@@ -16,6 +16,11 @@ import { JsonConvertHelper } from '../../shared/data-access-mfdata/jsonconverthe
   styleUrls: ['./instrumentupdateform.component.scss'],
 })
 export class InstrumentupdateformComponent implements OnInit {
+
+  compareCurrencies(o1: Instrument, o2: Instrument): boolean {
+    return o1 && o2 ? o1.businesskey === o2.businesskey : o1 === o2;
+  }
+
   noInstrumentSelected = true;
   selectedInstrument: Instrument | undefined;
   currencies: Instrument[] = [];
@@ -243,7 +248,7 @@ export class InstrumentupdateformComponent implements OnInit {
         if (this.selectedInstrument.additionalMaps && this.selectedInstrument.additionalMaps.size > 0) {
           maps = this.selectedInstrument.additionalMaps;
         }
-        if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.EQUITY) {
+        if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.EQUITY && this.instrumentForm.value.currency!=null && this.instrumentForm.value.symbol!=null) {
           let symbolsmap = new Map<string, string>();
           const currency = this.instrumentForm.value.currency as Instrument;
           const currencyBK = currency.businesskey;
