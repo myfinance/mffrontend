@@ -112,7 +112,12 @@ export class TransactioninputformComponent {
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
         this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT).sort((a, b) => a.description.localeCompare(b.description));
         this.lifeinsurances = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE).sort((a, b) => a.description.localeCompare(b.description));
-        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY || instrument.instrumentType === InstrumentTypeEnum.BOND || instrument.instrumentType === InstrumentTypeEnum.ETF|| instrument.instrumentType === InstrumentTypeEnum.FONDS).sort((a, b) => a.description.localeCompare(b.description));
+        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY 
+            || instrument.instrumentType === InstrumentTypeEnum.BOND 
+            || instrument.instrumentType === InstrumentTypeEnum.ETF
+            || instrument.instrumentType === InstrumentTypeEnum.KRYPTO
+            || instrument.instrumentType === InstrumentTypeEnum.FONDS)
+          .sort((a, b) => a.description.localeCompare(b.description));
         this.accounts = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN|| instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT).sort((a, b) => a.description.localeCompare(b.description));
       }
     )
