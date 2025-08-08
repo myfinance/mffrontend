@@ -43,6 +43,14 @@ export class SecurityAnalysisControllerComponent {
     this.service.importPrice4Instrument();
   }
 
+  importSecurityMetrics(){
+    this.service.importSecurityMetrics();
+  }
+
+  importSecurityMetrics4SelectedInstrument(){
+    this.service.importSecurityMetrics4Instrument();
+  }
+
   getSelectedInstrumentDesc():string {
     const instr = this.service.getSelectedInstrument();
     if(instr) return instr.description

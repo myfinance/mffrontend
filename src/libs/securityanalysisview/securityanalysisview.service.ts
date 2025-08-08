@@ -56,7 +56,15 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
 
     importPrice4Instrument() {
       this.service.startMarketdataImport4Instrument(this.selectedInstrumentKey);
-  }
+    }
+
+    importSecurityMetrics() {
+        this.service.startSecurityMetricsImport();
+    }
+
+    importSecurityMetrics4Instrument() {
+      this.service.startSecurityMetricsImport4Instrument(this.selectedInstrumentKey);
+    }
 
     getDateForAnalysis(): Date {
       return this.dateForAnalysis;

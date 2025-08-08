@@ -383,6 +383,26 @@ export class MfdataService {
     });
   }
 
+  startSecurityMetricsImport() {
+    return this.mfClientservice.postRequest("", "loadSecurityMetrics").subscribe({
+      next:
+        () => {
+          console.info('import started');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
+  startSecurityMetricsImport4Instrument(businesskey:string) {
+    return this.mfClientservice.postRequest("", "loadNewSecurityMetrics4Instrument?businesskey="+businesskey).subscribe({
+      next:
+        () => {
+          console.info('import started');
+        },
+      error: (e) => console.error(e)
+    });
+  }
+
   getPositions(): Observable<Position[]> {
     if(this.currentTenant==null || this.currentTenant.businesskey==""){
       return new Observable<Position[]>(subscriber => subscriber.complete());
