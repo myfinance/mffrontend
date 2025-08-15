@@ -4,7 +4,6 @@ import { SecurityAnalysisViewService } from '../securityanalysisview.service';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
-import { SecurityDetails } from '../../shared/data-access-mfdata/model/securitydetails';
 
 @Component({
   selector: 'app-security-analysis-controller',

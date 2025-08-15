@@ -7,22 +7,22 @@ import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instru
 import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 
 @Component({
-  selector: 'app-securities-overview',
+  selector: 'app-equity-analysis-view',
   standalone: true,
   imports: [CommonModule, TableModule],
-  templateUrl: './securities-overview.component.html',
-  styleUrl: './securities-overview.component.scss'
+  templateUrl: './equity-analysis-view.component.html',
+  styleUrl: './equity-analysis-view.component.scss'
 })
-export class SecuritiesOverviewComponent {
+export class EquityAnalysisViewComponent {
   securityMetrics: SecurityMetrics[] = [];
   displayedColumns: string[] = ['businesskey', 'description', 'value', 'referenceValue','instrumentType'];
-  selectedInstrument: SecurityDetails | undefined;
+  selectedInstrument: SecurityMetrics | undefined;
   version = 'na';
 
   constructor(private service: SecurityAnalysisViewService) {
     this.service.securityValueEventSubject.subscribe({
       next:
-        () => this.securityMetrics=this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.CURRENCY && sec.description !== 'Euro'),
+        () => this.securityMetrics=this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.EQUITY),
       error:
         (e) => {
           console.error(e);
@@ -37,5 +37,4 @@ export class SecuritiesOverviewComponent {
       this.service.setSelectedInstrument(this.selectedInstrument.businesskey);
     }
    }
-
 }

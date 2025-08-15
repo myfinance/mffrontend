@@ -18,17 +18,17 @@
                         <p-columnFilter type="text" field="value" display="menu" />
                     </div>
                 </th>
-                <th pSortableColumn="instrumentType">
-                    <div class="flex items-center">
-                        instrumentType
-                        <p-sortIcon field="instrumentType" />
-                        <p-columnFilter type="text" field="instrumentType" display="menu" />
-                    </div>
-                </th>
                 <th pSortableColumn="priceLastUpdateTs">
                     <div class="flex items-center">
                         PreisTS
                         <p-sortIcon field="priceLastUpdateTs" />
+                        <p-columnFilter type="text" field="currency" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="currency">
+                    <div class="flex items-center">
+                        Währung
+                        <p-sortIcon field="currency" />
                         <p-columnFilter type="text" field="currency" display="menu" />
                     </div>
                 </th>
@@ -38,8 +38,9 @@
             <tr [pSelectableRow]="row">
                 <td>{{ row.description }}</td>
                 <td>{{ row.priceInEuro }}</td>
-                <td>{{ row.instrumentType }}</td>
                 <td>{{ row.priceLastUpdateTs }}</td>
+                <td>{{ row.currencyCode }}</td>
+                
             </tr>
         </ng-template>
     </p-table>

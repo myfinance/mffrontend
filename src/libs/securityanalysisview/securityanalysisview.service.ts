@@ -3,6 +3,7 @@ import { MfdataService } from "../shared/data-access-mfdata/mfdata.service";
 import { SecurityDetails } from "../shared/data-access-mfdata/model/securitydetails";
 import { Subject } from "rxjs/internal/Subject";
 import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
+import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
       new Date(new Date().getFullYear()-10, new Date().getMonth(), new Date().getDate()),
       new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
     ];
-    private securityDetails: SecurityDetails[] = [];
+    private securityMetrics: SecurityMetrics[] = [];
       //something changed that influences the securities and values
     securityValueEventSubject: Subject<unknown> = new Subject<unknown>();
     chartEventSubject: Subject<unknown> = new Subject<unknown>();
@@ -89,15 +90,15 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
       this.loadSecurities();
     }
 
-    getSecurities():SecurityDetails[] {
-      return this.securityDetails;
+    getSecurities():SecurityMetrics[] {
+      return this.securityMetrics;
     }
 
     private loadSecurities() {
-      this.service.getSecurityDetails(this.dateForAnalysis, this.referenceDate).subscribe(
+      this.service.getSecurityMetrics().subscribe(
         {
-          next: (instrumentDetails) => {
-            this.securityDetails = instrumentDetails;
+          next: (securityMetrics) => {
+            this.securityMetrics = securityMetrics;
             this.securityValueEventSubject.next(true);
           },
           error: (e) => console.error(e)
@@ -130,7 +131,7 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
       this.loadSecuritiyChart();
     }
 
-    getSelectedInstrument():SecurityDetails {
+    getSelectedInstrument():SecurityMetrics {
       return this.getSecurities().filter(i=>i.businesskey==this.selectedInstrumentKey)[0];
     }
     

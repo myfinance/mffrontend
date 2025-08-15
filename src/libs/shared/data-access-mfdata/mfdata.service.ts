@@ -14,6 +14,7 @@ import { SecurityDetails } from './model/securitydetails';
 import { EndOfDayPrices } from './model/endofdayprices';
 import { EndOfDayPrice } from './model/endofdayprice';
 import { Position } from './model/position';
+import { SecurityMetrics } from './model/securitymetrics';
 
 @Injectable({
   providedIn: 'root'
@@ -419,6 +420,11 @@ export class MfdataService {
   }
   triggerValueChangedEvent() {
     this.valueChangedEventSubject.next(true);
+  }
+
+
+  getSecurityMetrics() : Observable<SecurityMetrics[]> {
+    return this.mfClientservice.getResource("securityMetrics");
   }
 }
 
