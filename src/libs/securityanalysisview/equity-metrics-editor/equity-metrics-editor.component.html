@@ -1,7 +1,63 @@
 <p-sidebar [(visible)]="sidebarVisible">
-
-
-    <label>Betrachtungszeitraum für historische Zeitreihen</label>
-
+  <label>Fundametaldatenpflege für :</label>
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label>fiscalEndDate:</label>
+      <p-calendar formControlName="fiscalEndDate" dateFormat="dd.mm.yy" placeholder="Select a date"></p-calendar>
+      <div *ngIf="!form.controls.fiscalEndDate.valid && form.controls.fiscalEndDate.touched" class="p-error">
+        Date is required
+      </div>
+    </div>
+    <div class="form-group">
+        <label>Währung</label>
+        <select class="btn btn-primary dropdown-toggle" formControlName="currency">
+            <option class="mydropdown-item" [ngValue]="currency" *ngFor="let currency of currencies">
+                {{ currency.description }}
+            </option>
+        </select>
+  </div>    
+    <div class="form-group">
+        <label>expectedCashflowGrowth</label>
+        <p-inputNumber formControlName="expectedCashflowGrowth" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>
+    <div class="form-group">
+        <label>avgMarktcapFreeCashflowRatio</label>
+        <p-inputNumber formControlName="avgMarktcapFreeCashflowRatio" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>
+    <div class="form-group">
+        <label>sharesOutstanding</label>
+        <p-inputNumber formControlName="sharesOutstanding" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>
+    <div class="form-group">
+        <label>revenue</label>
+        <p-inputNumber formControlName="revenue" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>
+    <div class="form-group">
+        <label>capitalExpenditures</label>
+        <p-inputNumber formControlName="capitalExpenditures" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>        
+    <div class="form-group">
+        <label>operatingCashflow</label>
+        <p-inputNumber formControlName="operatingCashflow" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>     
+    <div class="form-group">
+        <label>netIncome</label>
+        <p-inputNumber formControlName="netIncome" mode="decimal" locale="de-DE" [useGrouping]="true" [minFractionDigits]="2"
+            [maxFractionDigits]="2" inputStyleClass="p-inputtext p-component p-element" placeholder="Enter a number" />
+    </div>   
+    <div class="button-row">
+        <button class="btn btn-primary" (click)="save()" type="button">save</button>
+    </div>                  
+  </form>
 </p-sidebar>
-<p-button (click)="sidebarVisible = true" icon="pi pi-calendar" [outlined]="true"></p-button>
+<p-button
+  (click)="sidebarVisible = true"
+  icon="pi pi-calendar"
+  [outlined]="true"
+></p-button>

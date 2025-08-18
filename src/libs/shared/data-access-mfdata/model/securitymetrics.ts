@@ -1,3 +1,4 @@
+import { JsonConvertHelper } from "../jsonconverthelper";
 import { InstrumentTypeEnum } from "./instrument";
 
 export class SecurityMetrics {
@@ -184,7 +185,7 @@ export class SecurityMetrics {
             description: this.description,
             currencyCode: this.currencyCode,
             currencyKey: this.currencyKey,
-            fiscalEndDate: this.fiscalEndDate,
+            fiscalEndDate: JsonConvertHelper.dateToIsoString(this.fiscalEndDate),
             securityLifecyclePhase: this.securityLifecyclePhase,
             riskProfile: this.riskProfile,
             sector: this.sector,

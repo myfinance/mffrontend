@@ -4,6 +4,7 @@ import { SecurityDetails } from "../shared/data-access-mfdata/model/securitydeta
 import { Subject } from "rxjs/internal/Subject";
 import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
 import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
+import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/model/instrument";
 
 @Injectable({
     providedIn: 'root'
@@ -21,11 +22,17 @@ import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetr
     chartEventSubject: Subject<unknown> = new Subject<unknown>();
     private selectedInstrumentKey="";
     private valueCurve:ValueCurve | undefined;
+    private currencies: Instrument[] = [];
+    instrumentEventSubject: Subject<unknown> = new Subject<unknown>();
+    selectInstrumentEventSubject: Subject<unknown> = new Subject<unknown>();
 
     constructor(private service: MfdataService) {
       this.service.getConfigLoadedSubject().subscribe({
         next:
-          () => this.loadSecurities(),
+          () => {
+            this.loadSecurities();
+            this.loadInstruments();
+          },
         error:
           (e) => {
             console.error(e);
@@ -34,8 +41,10 @@ import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetr
       })
       this.service.getInstrumentEventSubject().subscribe(
         {
-          next: () => {
+          next: 
+           () => {
             this.loadSecurities();
+            this.loadInstruments();
           },
           error: (e) => console.error(e)
         }
@@ -49,6 +58,7 @@ import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetr
         }
       )
       this.loadSecurities();
+      this.loadInstruments();
     }
 
     import() {
@@ -94,12 +104,28 @@ import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetr
       return this.securityMetrics;
     }
 
+    getCurrencies():Instrument[] {
+      return this.currencies;
+    }
+
     private loadSecurities() {
       this.service.getSecurityMetrics().subscribe(
         {
           next: (securityMetrics) => {
             this.securityMetrics = securityMetrics;
             this.securityValueEventSubject.next(true);
+          },
+          error: (e) => console.error(e)
+        }
+      )
+    }
+
+    private loadInstruments() {
+      this.service.getAllInstruments().subscribe(
+        {
+          next: (instruments) => {
+            this.currencies = instruments.filter(i => i.instrumentType == InstrumentTypeEnum.CURRENCY);
+            this.instrumentEventSubject.next(true);
           },
           error: (e) => console.error(e)
         }
@@ -129,10 +155,15 @@ import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetr
     setSelectedInstrument(busnesskey: string) {
       this.selectedInstrumentKey = busnesskey;
       this.loadSecuritiyChart();
+      this.selectInstrumentEventSubject.next(true);
     }
 
     getSelectedInstrument():SecurityMetrics {
       return this.getSecurities().filter(i=>i.businesskey==this.selectedInstrumentKey)[0];
     }
+
+  saveSecurityMetrics(securityMetrics: SecurityMetrics) {
+    return this.service.saveSecurityMetrics(securityMetrics);
+  }    
     
   }

@@ -424,8 +424,18 @@ export class MfdataService {
 
 
   getSecurityMetrics() : Observable<SecurityMetrics[]> {
-    return this.mfClientservice.getResource("securityMetrics");
+    return this.mfClientservice.getResource("securityMetrics").pipe(
+      map((data: any[]) => data.map(item => SecurityMetrics.fromJson(item)))  // Convert each item to Instrument
+    );
+  }
+
+  saveSecurityMetrics(securityMetrics: SecurityMetrics) {
+    return this.mfClientservice.postRequest(JSON.stringify(securityMetrics), "saveSecurityMetrics").subscribe({
+      next:
+        () => {
+          console.info('saved');
+        },
+      error: (e) => console.error(e)
+    });
   }
 }
-
-
