@@ -13,7 +13,7 @@
                 </th>
                 <th pSortableColumn="value">
                     <div class="flex items-center">
-                        Value
+                        Preis
                         <p-sortIcon field="value" />
                         <p-columnFilter type="text" field="value" display="menu" />
                     </div>
@@ -22,7 +22,14 @@
                     <div class="flex items-center">
                         PreisTS
                         <p-sortIcon field="priceLastUpdateTs" />
-                        <p-columnFilter type="text" field="currency" display="menu" />
+                        <p-columnFilter type="text" field="priceLastUpdateTs" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="lastUpdateTs">
+                    <div class="flex items-center">
+                        MetricsTS
+                        <p-sortIcon field="lastUpdateTs" />
+                        <p-columnFilter type="text" field="lastUpdateTs" display="menu" />
                     </div>
                 </th>
                 <th pSortableColumn="currency">
@@ -32,14 +39,23 @@
                         <p-columnFilter type="text" field="currency" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="intrinsicValueMargin">
+                    <div class="flex items-center">
+                        intrinsicValueMargin
+                        <p-sortIcon field="intrinsicValueMargin" />
+                        <p-columnFilter type="text" field="intrinsicValueMargin" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
             <tr [pSelectableRow]="row">
                 <td>{{ row.description }}</td>
                 <td>{{ row.priceInEuro }}</td>
-                <td>{{ row.priceLastUpdateTs }}</td>
+                <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
+                <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.currencyCode }}</td>
+                <td>{{ row.intrinsicValueMargin }}</td>
                 
             </tr>
         </ng-template>

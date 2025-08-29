@@ -5,6 +5,8 @@ import { SecurityAnalysisViewService } from '../securityanalysisview.service';
 import { SecurityDetails } from '../../shared/data-access-mfdata/model/securitydetails';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 
 @Component({
   selector: 'app-securities-overview',
@@ -20,22 +22,33 @@ export class SecuritiesOverviewComponent {
   version = 'na';
 
   constructor(private service: SecurityAnalysisViewService) {
+    registerLocaleData(localeDe);
     this.service.securityValueEventSubject.subscribe({
       next:
-        () => this.securityMetrics=this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.CURRENCY && sec.description !== 'Euro'),
+        () => this.loadSecurityMetrics(),
       error:
         (e) => {
           console.error(e);
           alert('Invalid Credentials');
         }
     })
-    this.securityMetrics=this.service.getSecurities()
+    this.loadSecurityMetrics();
   }
 
   onRowSelect(event: any) {
     if(this.selectedInstrument!=null){
       this.service.setSelectedInstrument(this.selectedInstrument.businesskey);
     }
+   }
+
+   loadSecurityMetrics(){ 
+    this.securityMetrics = this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.CURRENCY && sec.description !== 'Euro').map(sec => {
+      const date = new Date(sec.priceLastUpdateTs);
+      if(isNaN(date.getTime())) {
+        (sec as any).priceLastUpdateTs = null;
+      }
+      return sec;
+    });
    }
 
 }
