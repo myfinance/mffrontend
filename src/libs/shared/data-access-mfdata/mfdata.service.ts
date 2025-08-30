@@ -14,7 +14,7 @@ import { SecurityDetails } from './model/securitydetails';
 import { EndOfDayPrices } from './model/endofdayprices';
 import { EndOfDayPrice } from './model/endofdayprice';
 import { Position } from './model/position';
-import { SecurityMetrics } from './model/securitymetrics';
+import { MarketDataImportTypeEnum, SecurityMetrics } from './model/securitymetrics';
 
 @Injectable({
   providedIn: 'root'
@@ -365,7 +365,7 @@ export class MfdataService {
   }
 
   startMarketdataImport() {
-    return this.mfClientservice.postRequest("", "loadNewMarketData").subscribe({
+    return this.mfClientservice.postRequest("", "loadNewMarketData?marketDataImportType="+MarketDataImportTypeEnum.TIME_SERIES_WEEKLY).subscribe({
       next:
         () => {
           console.info('import started');
@@ -375,7 +375,7 @@ export class MfdataService {
   }
 
   startMarketdataImport4Instrument(businesskey:string) {
-    return this.mfClientservice.postRequest("", "loadNewMarketData4Instrument?businesskey="+businesskey).subscribe({
+    return this.mfClientservice.postRequest("", "loadNewMarketData4Instrument?marketDataImportType="+MarketDataImportTypeEnum.TIME_SERIES_WEEKLY+"&businesskey="+businesskey).subscribe({
       next:
         () => {
           console.info('import started');
@@ -385,7 +385,7 @@ export class MfdataService {
   }
 
   startSecurityMetricsImport() {
-    return this.mfClientservice.postRequest("", "loadSecurityMetrics").subscribe({
+    return this.mfClientservice.postRequest("", "loadSecurityMetrics?marketDataImportType="+MarketDataImportTypeEnum.SECURITYMETRICS).subscribe({
       next:
         () => {
           console.info('import started');
@@ -395,7 +395,7 @@ export class MfdataService {
   }
 
   startSecurityMetricsImport4Instrument(businesskey:string) {
-    return this.mfClientservice.postRequest("", "loadNewSecurityMetrics4Instrument?businesskey="+businesskey).subscribe({
+    return this.mfClientservice.postRequest("", "loadNewSecurityMetrics4Instrument?marketDataImportType="+MarketDataImportTypeEnum.SECURITYMETRICS+"&businesskey="+businesskey).subscribe({
       next:
         () => {
           console.info('import started');

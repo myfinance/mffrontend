@@ -295,3 +295,10 @@ export class SecurityMetrics {
         );
     }
 }
+
+export type MarketDataImportTypeEnum = 'TIME_SERIES_WEEKLY' | 'PREV_CLOSE' | 'SECURITYMETRICS';
+export const MarketDataImportTypeEnum = {
+    TIME_SERIES_WEEKLY: 'TIME_SERIES_WEEKLY' as MarketDataImportTypeEnum,
+    PREV_CLOSE: 'PREV_CLOSE' as MarketDataImportTypeEnum,
+    SECURITYMETRICS: 'SECURITYMETRICS' as MarketDataImportTypeEnum
+};
