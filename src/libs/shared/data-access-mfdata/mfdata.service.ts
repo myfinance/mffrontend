@@ -364,8 +364,8 @@ export class MfdataService {
       + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
   }
 
-  startMarketdataImport() {
-    return this.mfClientservice.postRequest("", "loadNewMarketData?marketDataImportType="+MarketDataImportTypeEnum.TIME_SERIES_WEEKLY).subscribe({
+  startMarketdataImport(marketDataImportType: MarketDataImportTypeEnum) {
+    return this.mfClientservice.postRequest("", "loadNewMarketData?marketDataImportType="+marketDataImportType).subscribe({
       next:
         () => {
           console.info('import started');
@@ -374,28 +374,8 @@ export class MfdataService {
     });
   }
 
-  startMarketdataImport4Instrument(businesskey:string) {
-    return this.mfClientservice.postRequest("", "loadNewMarketData4Instrument?marketDataImportType="+MarketDataImportTypeEnum.TIME_SERIES_WEEKLY+"&businesskey="+businesskey).subscribe({
-      next:
-        () => {
-          console.info('import started');
-        },
-      error: (e) => console.error(e)
-    });
-  }
-
-  startSecurityMetricsImport() {
-    return this.mfClientservice.postRequest("", "loadSecurityMetrics?marketDataImportType="+MarketDataImportTypeEnum.SECURITYMETRICS).subscribe({
-      next:
-        () => {
-          console.info('import started');
-        },
-      error: (e) => console.error(e)
-    });
-  }
-
-  startSecurityMetricsImport4Instrument(businesskey:string) {
-    return this.mfClientservice.postRequest("", "loadNewSecurityMetrics4Instrument?marketDataImportType="+MarketDataImportTypeEnum.SECURITYMETRICS+"&businesskey="+businesskey).subscribe({
+  startMarketdataImport4Instrument(marketDataImportType: MarketDataImportTypeEnum, businesskey:string) {
+    return this.mfClientservice.postRequest("", "loadNewMarketData4Instrument?marketDataImportType="+marketDataImportType+"&businesskey="+businesskey).subscribe({
       next:
         () => {
           console.info('import started');

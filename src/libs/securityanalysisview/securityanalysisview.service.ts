@@ -3,7 +3,7 @@ import { MfdataService } from "../shared/data-access-mfdata/mfdata.service";
 import { SecurityDetails } from "../shared/data-access-mfdata/model/securitydetails";
 import { Subject } from "rxjs/internal/Subject";
 import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
-import { SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
+import { MarketDataImportTypeEnum, SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
 import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/model/instrument";
 
 @Injectable({
@@ -62,19 +62,19 @@ import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/mod
     }
 
     import() {
-        this.service.startMarketdataImport();
+        this.service.startMarketdataImport(MarketDataImportTypeEnum.TIME_SERIES_WEEKLY);
     }
 
     importPrice4Instrument() {
-      this.service.startMarketdataImport4Instrument(this.selectedInstrumentKey);
+      this.service.startMarketdataImport4Instrument(MarketDataImportTypeEnum.TIME_SERIES_WEEKLY, this.selectedInstrumentKey);
     }
 
     importSecurityMetrics() {
-        this.service.startSecurityMetricsImport();
+        this.service.startMarketdataImport(MarketDataImportTypeEnum.SECURITYMETRICS);
     }
 
     importSecurityMetrics4Instrument() {
-      this.service.startSecurityMetricsImport4Instrument(this.selectedInstrumentKey);
+      this.service.startMarketdataImport4Instrument(MarketDataImportTypeEnum.SECURITYMETRICS, this.selectedInstrumentKey);
     }
 
     getDateForAnalysis(): Date {
