@@ -54,12 +54,13 @@ export class InstrumentService {
     this.mfDataService.saveInstrument(instrument);
   }
 
-  updateInstrument(active: boolean, desc: string, liquidityType: LiquidityTypeEnum, maps: Map<AdditionalMapsEnum, Map<string,string>>) {
+  updateInstrument(active: boolean, desc: string, liquidityType: LiquidityTypeEnum, maps: Map<AdditionalMapsEnum, Map<string,string>>, properties: Map<AdditionalPropertiesEnum, string>) {
     if(this.selectedInstrument) {
       this.selectedInstrument.active = active;
       this.selectedInstrument.description = desc;
       this.selectedInstrument.liquidityType = liquidityType;
       this.selectedInstrument.additionalMaps = maps;
+      this.selectedInstrument.additionalProperties = properties;
       this.mfDataService.saveInstrument(this.selectedInstrument);
     }
   }

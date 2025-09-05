@@ -20,6 +20,7 @@ export class InstrumentinputformComponent {
   instrumentTypes: InstrumentTypeEnum[] = [InstrumentTypeEnum.GIRO, InstrumentTypeEnum.BUDGET, InstrumentTypeEnum.EQUITY, InstrumentTypeEnum.CURRENCY, InstrumentTypeEnum.DEPOT, InstrumentTypeEnum.BOND, InstrumentTypeEnum.ETF, InstrumentTypeEnum.KRYPTO, InstrumentTypeEnum.FONDS, 
     InstrumentTypeEnum.REALESTATE, InstrumentTypeEnum.DEPRECATIONOBJECT, InstrumentTypeEnum.LIFEINSURANCE, InstrumentTypeEnum.LOAN, InstrumentTypeEnum.MONEYATCALL, InstrumentTypeEnum.TIMEDEPOSIT,InstrumentTypeEnum.BUILDINGSAVINGACCOUNT];
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
+  securityMetricsImporter: String[] = ['all', 'none', 'AlphaVantage', 'Polygon'];
   instruments: Instrument[] = [];
   budgetGroups: Instrument[] = [];
   currencies: Instrument[] = [];
@@ -55,6 +56,9 @@ export class InstrumentinputformComponent {
       nonNullable: false
     }),
     symbol: new FormControl<string>('', {
+      nonNullable: false
+    }),
+    sourceOfsecurityMetrics: new FormControl<string>('all', {
       nonNullable: false
     }),
     isin: new FormControl<string>('', {
@@ -267,6 +271,11 @@ export class InstrumentinputformComponent {
       }
       
       maps.set(AdditionalMapsEnum.EQUITYSYMBOLS,symbolCurrencyMap);
+
+      const sourceOfsecurityMetrics = this.instrumentForm.value.sourceOfsecurityMetrics;
+      if(sourceOfsecurityMetrics) {
+        properties.set(AdditionalPropertiesEnum.SOURCEOFSECURITYMETRICS, sourceOfsecurityMetrics);
+      }
       
     } 
     if (this.instrumentForm.value.instrumentType === InstrumentTypeEnum.KRYPTO 

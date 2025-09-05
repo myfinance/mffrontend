@@ -136,7 +136,7 @@ export const AdditionalMapsEnum = {
     EQUITYSYMBOLS: 'EQUITYSYMBOLS' as AdditionalMapsEnum,
     SURRENDERVALUES: 'SURRENDERVALUES' as AdditionalMapsEnum
 };
-export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'CURRENCYCODE' | 'ISIN' | 'IBAN' | 'VALUEBUDGETID';
+export type AdditionalPropertiesEnum = 'DEFAULTGIROID' | 'INCOMEBUDGETID' | 'REALESTATEBUDGETGROUPID' | 'MATURITYDATE' | 'ACQUISITIONDATE' | 'ACQUISITIONVALUE' | 'INTERESTRATE' | 'ANNUITYRATE' | 'REFERENCEGIRO' | 'CURRENCYCODE' | 'ISIN' | 'IBAN' | 'VALUEBUDGETID' | 'SOURCEOFSECURITYMETRICS';
 export const AdditionalPropertiesEnum = {
     DEFAULTGIROID: 'DEFAULTGIROID' as AdditionalPropertiesEnum,
     INCOMEBUDGETID: 'INCOMEBUDGETID' as AdditionalPropertiesEnum,
@@ -151,5 +151,6 @@ export const AdditionalPropertiesEnum = {
     ISIN: 'ISIN' as AdditionalPropertiesEnum,
     IBAN: 'IBAN' as AdditionalPropertiesEnum,
     VALUEBUDGETID: 'VALUEBUDGETID' as AdditionalPropertiesEnum,
+    SOURCEOFSECURITYMETRICS: 'SOURCEOFSECURITYMETRICS' as AdditionalPropertiesEnum
 };
 export type AdditionalListsEnum = 'CHILDS';

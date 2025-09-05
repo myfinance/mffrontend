@@ -23,6 +23,19 @@
     </select>
   </div>  
   <div class="form-group" *ngIf="this.selectedInstrument?.instrumentType === 'EQUITY'">
+    <p>sourceOfsecurityMetrics:</p>
+    <select
+      class="btn btn-primary dropdown-toggle"
+      formControlName="sourceOfsecurityMetrics"
+    >
+      <option
+        class="mydropdown-item"
+        [ngValue]="sourceOfsecurityMetrics"
+        *ngFor="let sourceOfsecurityMetrics of securityMetricsImporter"
+      >
+        {{ sourceOfsecurityMetrics }}
+      </option>
+    </select>
     <p>SYMBOL:</p>
     <input class="form-control" formControlName="symbol" />
   </div>  

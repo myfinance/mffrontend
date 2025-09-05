@@ -31,6 +31,7 @@ export class InstrumentupdateformComponent implements OnInit {
   surrendervalues: tableRowTuple[] = [];
   selectedSurrendervalue?: tableRowTuple;
   liquidityTypes: LiquidityTypeEnum[] = [LiquidityTypeEnum.LIQUIDE, LiquidityTypeEnum.SHORTTERM, LiquidityTypeEnum.MIDTERM, LiquidityTypeEnum.LONGTERM];
+  securityMetricsImporter: String[] = ['all', 'none', 'AlphaVantage', 'Polygon'];
 
   instrumentForm: FormGroup = new FormGroup({
     description: new FormControl('', Validators.required),
@@ -61,6 +62,9 @@ export class InstrumentupdateformComponent implements OnInit {
       nonNullable: false
     }),
     surrendervalueDate: new FormControl<Date>(new Date(), {
+      nonNullable: false
+    }),
+    sourceOfsecurityMetrics: new FormControl<string>('all', {
       nonNullable: false
     }),
   });
@@ -185,6 +189,12 @@ export class InstrumentupdateformComponent implements OnInit {
             }
           }
         }
+        if (this.selectedInstrument.additionalProperties) {
+          const importer = this.selectedInstrument.additionalProperties.get(AdditionalPropertiesEnum.SOURCEOFSECURITYMETRICS);
+          if (importer) {
+            this.instrumentForm.get('sourceOfsecurityMetrics')?.setValue(importer);
+          }
+        }
       }
       if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.CURRENCY) {
         if (this.selectedInstrument.additionalProperties) {
@@ -244,19 +254,26 @@ export class InstrumentupdateformComponent implements OnInit {
     if (this.instrumentForm.touched) {
       console.log('touched');
       let maps = new Map<AdditionalMapsEnum, Map<string, string>>();
+      const properties = new Map<AdditionalPropertiesEnum, string>();
       if (this.selectedInstrument) {
         if (this.selectedInstrument.additionalMaps && this.selectedInstrument.additionalMaps.size > 0) {
           maps = this.selectedInstrument.additionalMaps;
         }
-        if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.EQUITY && this.instrumentForm.value.currency!=null && this.instrumentForm.value.symbol!=null) {
-          let symbolsmap = new Map<string, string>();
-          const currency = this.instrumentForm.value.currency as Instrument;
-          const currencyBK = currency.businesskey;
-          if (currencyBK) {
-            symbolsmap.set(this.instrumentForm.value.symbol, currencyBK);
+        if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.EQUITY) {
+          if(this.instrumentForm.value.currency!=null && this.instrumentForm.value.symbol!=null){
+            let symbolsmap = new Map<string, string>();
+            const currency = this.instrumentForm.value.currency as Instrument;
+            const currencyBK = currency.businesskey;
+            if (currencyBK) {
+              symbolsmap.set(this.instrumentForm.value.symbol, currencyBK);
+            }
+            maps.set(AdditionalMapsEnum.EQUITYSYMBOLS, symbolsmap);
           }
-          maps.set(AdditionalMapsEnum.EQUITYSYMBOLS, symbolsmap);
-        }
+          const sourceOfsecurityMetrics = this.instrumentForm.value.sourceOfsecurityMetrics;
+          if(sourceOfsecurityMetrics) {
+            properties.set(AdditionalPropertiesEnum.SOURCEOFSECURITYMETRICS, sourceOfsecurityMetrics);
+          }
+        }      
         if (this.selectedInstrument.instrumentType === InstrumentTypeEnum.REALESTATE) {
           const yieldGoalMap: Map<string,string> = new Map<string,string>();
           this.yieldgoals.forEach((obj) => {
@@ -279,7 +296,7 @@ export class InstrumentupdateformComponent implements OnInit {
           maps.set(AdditionalMapsEnum.SURRENDERVALUES, surrendervalueMap);
         } 
       }
-      this.instrumentService.updateInstrument(this.instrumentForm.value.active, this.instrumentForm.value.description, this.instrumentForm.value.liquidityType, maps);
+      this.instrumentService.updateInstrument(this.instrumentForm.value.active, this.instrumentForm.value.description, this.instrumentForm.value.liquidityType, maps, properties);
     } else {
       console.log('untouched');
     }
