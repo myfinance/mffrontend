@@ -57,12 +57,12 @@ export class CsvImporter {
                 } else if(csvType==CSVTypeEnum.C24){
                   minrow = new CsvRow(
                     i.toString(), 
-                    TypeConverter.parseGermanDate(row[1].toString()), 
-                    row[5].toString()+row[8].toString(), 
-                    TypeConverter.parseGermanNumber(row[3]+","+row[4]) ?? 0,
+                    new Date(row[1]), 
+                    row[4].toString()+row[7].toString(), 
+                    Number(row[3]),
                     false,
-                    row[12].toString(),
-                    row[13].toString().replace('\r','')
+                    row[11].toString(),
+                    row[12].toString().replace('\r','')
                   );
                 }
                 rows.push(minrow);
