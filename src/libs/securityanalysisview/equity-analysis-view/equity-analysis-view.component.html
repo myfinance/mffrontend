@@ -39,6 +39,13 @@
                         <p-columnFilter type="text" field="currency" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="priceInCurrency">
+                    <div class="flex items-center">
+                        Preis in Währung
+                        <p-sortIcon field="priceInCurrency" />
+                        <p-columnFilter type="text" field="priceInCurrency" display="menu" />
+                    </div>
+                </th>
                 <th pSortableColumn="intrinsicValueMargin">
                     <div class="flex items-center">
                         intrinsicValueMargin
@@ -55,6 +62,7 @@
                 <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.currencyCode }}</td>
+                <td>{{ row.priceInCurrency }}</td>
                 <td>{{ row.intrinsicValueMargin }}</td>
                 
             </tr>

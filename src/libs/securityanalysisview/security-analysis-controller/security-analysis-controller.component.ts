@@ -34,20 +34,20 @@ export class SecurityAnalysisControllerComponent {
     this.service.setRangeDate(date); 
   }
 
-  import(){
-    this.service.import();
-  }
-
-  importPrice4SelectedInstrument(){
-    this.service.importPrice4Instrument();
-  }
-
-  importSecurityMetrics(){
-    this.service.importSecurityMetrics();
+  importTimeSeriesWeekly4SelectedInstrument(){
+    this.service.importTimeSeriesWeekly4SelectedInstrument();
   }
 
   importSecurityMetrics4SelectedInstrument(){
     this.service.importSecurityMetrics4Instrument();
+  }
+
+  importPrevClose(){
+    this.service.importPrevClose();
+  }
+
+  importPrevClose4SelectedInstrument(){
+    this.service.importPrevClose4SelectedInstrument();
   }
 
   getSelectedInstrumentDesc():string {

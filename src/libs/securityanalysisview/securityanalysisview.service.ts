@@ -61,11 +61,11 @@ import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/mod
       this.loadInstruments();
     }
 
-    import() {
+    importTimeSeriesWeekly() {
         this.service.startMarketdataImport(MarketDataImportTypeEnum.TIME_SERIES_WEEKLY);
     }
 
-    importPrice4Instrument() {
+    importTimeSeriesWeekly4SelectedInstrument() {
       this.service.startMarketdataImport4Instrument(MarketDataImportTypeEnum.TIME_SERIES_WEEKLY, this.selectedInstrumentKey);
     }
 
@@ -75,6 +75,14 @@ import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/mod
 
     importSecurityMetrics4Instrument() {
       this.service.startMarketdataImport4Instrument(MarketDataImportTypeEnum.SECURITYMETRICS, this.selectedInstrumentKey);
+    }
+
+    importPrevClose() {
+        this.service.startMarketdataImport(MarketDataImportTypeEnum.PREV_CLOSE);
+    }
+
+    importPrevClose4SelectedInstrument() {
+      this.service.startMarketdataImport4Instrument(MarketDataImportTypeEnum.PREV_CLOSE, this.selectedInstrumentKey);
     }
 
     getDateForAnalysis(): Date {

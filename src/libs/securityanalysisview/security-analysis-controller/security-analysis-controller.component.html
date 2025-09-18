@@ -2,10 +2,10 @@
 
 <p-sidebar [(visible)]="sidebarVisible">
 
-    <p-button (click)="import()">starte Preisimport</p-button>
-    <p-button (click)="importPrice4SelectedInstrument()">starte Preisimport für {{this.getSelectedInstrumentDesc()}}</p-button>
-    <p-button (click)="importSecurityMetrics()">starte Fundamentaldatenimport</p-button>
+    <p-button (click)="importTimeSeriesWeekly4SelectedInstrument()">starte Zeitreihen für {{this.getSelectedInstrumentDesc()}}</p-button>
     <p-button (click)="importSecurityMetrics4SelectedInstrument()">starte Fundamentaldatenimport für {{this.getSelectedInstrumentDesc()}}</p-button>
+    <p-button (click)="importPrevClose4SelectedInstrument()">starte Tagesendpreisimport für {{this.getSelectedInstrumentDesc()}}</p-button>
+    <p-button (click)="importPrevClose()">starte Tagesendpreisimport</p-button>
     <label>Referenzstichtag</label>
     <p-calendar [(ngModel)]="referenceDate" (onSelect)="handleReferenceDateChanged($event)" dateFormat="dd.mm.yy" [showIcon]="true"></p-calendar>
 
