@@ -60,7 +60,9 @@ export class InstrumentService {
       this.selectedInstrument.description = desc;
       this.selectedInstrument.liquidityType = liquidityType;
       this.selectedInstrument.additionalMaps = maps;
-      this.selectedInstrument.additionalProperties = properties;
+      properties.forEach((value, key) => {
+        this.selectedInstrument?.additionalProperties.set(key, value);
+      });
       this.mfDataService.saveInstrument(this.selectedInstrument);
     }
   }

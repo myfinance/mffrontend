@@ -18,7 +18,7 @@ export class DepotOverviewComponent {
   constructor(private service: PortfolioAnalysisViewService) {
     this.service.portfolioEventSubject.subscribe({
       next:
-        () => this.positions=this.service.getPositions(),
+        () => this.positions=this.service.getPositions().filter(p=> p.amount!==0),
       error:
         (e) => {
           console.error(e);
