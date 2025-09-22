@@ -44,4 +44,3 @@ each domain is a separate Lib. Everything els eis a standalone component
 
 neue komponte:
 ng g c componenetenname 
-
