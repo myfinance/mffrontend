@@ -40,6 +40,8 @@ export class SecurityMetrics {
 
     //calculated
     freeCashflow: number;
+    expectedFreeCashflow: number;
+    avgFreeCashflow5Y: number;
     pe: number;
     roa: number;
     debtToAssets: number;
@@ -47,6 +49,7 @@ export class SecurityMetrics {
     dividendPayoutRatio: number;
     intrinsicValue: number;
     intrinsicValueMargin: number;
+    intrinsicValueEVMargin: number;
     lynchScore: number;
     avgHistoricalFCFGrowthRate: number;
     revenueGrowthRate: number;
@@ -57,9 +60,10 @@ export class SecurityMetrics {
     expectedCashflowGrowth: number;
 
     //historical map<fiscalaenddate, value>. fiscalaenddate is a Date, the values are TTM(trailing twelve month) values
-    historicalRevenue: Map<Date, number>;
-    historicalNetIncome: Map<Date, number>;
-    historicalFreeCashflow: Map<Date, number>;
+    historicalRevenue: Map<number, number>;
+    historicalNetIncome: Map<number, number>;
+    historicalFreeCashflow: Map<number, number>;
+    expectedFreeCashflowGrowthPerYear: Map<number, number>;
 
     //ranks
     rankByPE: number;
@@ -100,6 +104,8 @@ export class SecurityMetrics {
         avgForwardFCF10YCAGR: number,
         maxForwardFCF10YCAGR: number,
         freeCashflow: number,
+        expectedFreeCashflow: number,
+        avgFreeCashflow5Y: number,
         pe: number,
         roa: number,
         debtToAssets: number,
@@ -107,15 +113,17 @@ export class SecurityMetrics {
         dividendPayoutRatio: number,
         intrinsicValue: number,
         intrinsicValueMargin: number,
+        intrinsicValueEVMargin: number,
         lynchScore: number,
         avgHistoricalFCFGrowthRate: number,
         revenueGrowthRate: number,
         eps: number,
         avgMarktcapFreeCashflowRatio: number,
         expectedCashflowGrowth: number,
-        historicalRevenue: Map<Date, number>,
-        historicalNetIncome: Map<Date, number>,
-        historicalFreeCashflow: Map<Date, number>,
+        historicalRevenue: Map<number, number>,
+        historicalNetIncome: Map<number, number>,
+        historicalFreeCashflow: Map<number, number>,
+        expectedFreeCashflowGrowthPerYear: Map<number, number>,
         rankByPE: number,
         rankByRoA: number,
         rankByRoAAndPE: number,
@@ -154,6 +162,8 @@ export class SecurityMetrics {
         this.avgForwardFCF10YCAGR = avgForwardFCF10YCAGR;
         this.maxForwardFCF10YCAGR = maxForwardFCF10YCAGR;
         this.freeCashflow = freeCashflow;
+        this.expectedFreeCashflow = expectedFreeCashflow;
+        this.avgFreeCashflow5Y = avgFreeCashflow5Y;
         this.pe = pe;
         this.roa = roa;
         this.debtToAssets = debtToAssets;
@@ -161,6 +171,7 @@ export class SecurityMetrics {
         this.dividendPayoutRatio = dividendPayoutRatio;
         this.intrinsicValue = intrinsicValue;
         this.intrinsicValueMargin = intrinsicValueMargin;
+        this.intrinsicValueEVMargin = intrinsicValueEVMargin;
         this.lynchScore = lynchScore;
         this.avgHistoricalFCFGrowthRate = avgHistoricalFCFGrowthRate;
         this.revenueGrowthRate = revenueGrowthRate;
@@ -170,6 +181,7 @@ export class SecurityMetrics {
         this.historicalRevenue = historicalRevenue;
         this.historicalNetIncome = historicalNetIncome;
         this.historicalFreeCashflow = historicalFreeCashflow;
+        this.expectedFreeCashflowGrowthPerYear = expectedFreeCashflowGrowthPerYear;
         this.rankByPE = rankByPE;
         this.rankByRoA = rankByRoA;
         this.rankByRoAAndPE = rankByRoAAndPE;
@@ -211,6 +223,8 @@ export class SecurityMetrics {
             avgForwardFCF10YCAGR: this.avgForwardFCF10YCAGR,
             maxForwardFCF10YCAGR: this.maxForwardFCF10YCAGR,
             freeCashflow: this.freeCashflow,
+            expectedFreeCashflow: this.expectedFreeCashflow,
+            avgFreeCashflow5Y: this.avgFreeCashflow5Y,
             pe: this.pe,
             roa: this.roa,
             debtToAssets: this.debtToAssets,
@@ -218,6 +232,7 @@ export class SecurityMetrics {
             dividendPayoutRatio: this.dividendPayoutRatio,
             intrinsicValue: this.intrinsicValue,
             intrinsicValueMargin: this.intrinsicValueMargin,
+            intrinsicValueEVMargin: this.intrinsicValueEVMargin,
             lynchScore: this.lynchScore,
             avgHistoricalFCFGrowthRate: this.avgHistoricalFCFGrowthRate,
             revenueGrowthRate: this.revenueGrowthRate,
@@ -269,6 +284,8 @@ export class SecurityMetrics {
             data.avgForwardFCF10YCAGR,
             data.maxForwardFCF10YCAGR,
             data.freeCashflow,
+            data.expectedFreeCashflow,
+            data.avgFreeCashflow5Y,
             data.pe,
             data.roa,
             data.debtToAssets,
@@ -276,15 +293,17 @@ export class SecurityMetrics {
             data.dividendPayoutRatio,
             data.intrinsicValue,
             data.intrinsicValueMargin,
+            data.intrinsicValueEVMargin,
             data.lynchScore,
             data.avgHistoricalFCFGrowthRate,
             data.revenueGrowthRate,
             data.eps,
             data.avgMarktcapFreeCashflowRatio,
             data.expectedCashflowGrowth,
-            data.historicalRevenue,
-            data.historicalNetIncome,
-            data.historicalFreeCashflow,
+            data.historicalRevenue ? new Map(Object.entries(data.historicalRevenue)) : new Map(),
+            data.historicalNetIncome ? new Map(Object.entries(data.historicalNetIncome)) : new Map(),
+            data.historicalFreeCashflow ? new Map(Object.entries(data.historicalFreeCashflow)) : new Map(),
+            data.expectedFreeCashflowGrowthPerYear ? new Map(Object.entries(data.expectedFreeCashflowGrowthPerYear)) : new Map(),
             data.rankByPE,
             data.rankByRoA,
             data.rankByRoAAndPE,

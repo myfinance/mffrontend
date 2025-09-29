@@ -6,6 +6,11 @@ import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
 import { MarketDataImportTypeEnum, SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
 import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/model/instrument";
 
+
+export interface tableRowTuple{
+	year: number;
+	value: number;
+}
 @Injectable({
     providedIn: 'root'
   })

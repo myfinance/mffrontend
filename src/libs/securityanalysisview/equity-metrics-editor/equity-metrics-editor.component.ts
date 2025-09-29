@@ -4,15 +4,17 @@ import { Button } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { SidebarModule } from 'primeng/sidebar';
 import { Instrument } from '../../shared/data-access-mfdata/model/instrument';
-import { SecurityAnalysisViewService } from '../securityanalysisview.service';
+import { SecurityAnalysisViewService, tableRowTuple } from '../securityanalysisview.service';
 import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-equity-metrics-editor',
   standalone: true,
-  imports: [CommonModule, Button, CalendarModule, ReactiveFormsModule, SidebarModule, InputNumberModule],
+  imports: [CommonModule, Button, CalendarModule, ReactiveFormsModule, SidebarModule, InputNumberModule,TableModule,DividerModule],
   templateUrl: './equity-metrics-editor.component.html',
   styleUrl: './equity-metrics-editor.component.scss'
 })
@@ -20,6 +22,9 @@ export class EquityMetricsEditorComponent {
   sidebarVisible = false;
   currencies: Instrument[] = [];
   private securityMetrics: SecurityMetrics | undefined;
+  histFCFs: tableRowTuple[]= [];
+  selectedHistFCF?: tableRowTuple;
+
   form = new FormGroup({
     fiscalEndDate: new FormControl<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), {
       nonNullable: true,
@@ -55,7 +60,13 @@ export class EquityMetricsEditorComponent {
     netIncome: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
-    })
+    }),
+    FCFYear: new FormControl<number>(2020, {
+      nonNullable: false
+    }),
+    FCFhistory: new FormControl<number>(0.0, {
+      nonNullable: false
+    }),
 
   });
 
@@ -100,6 +111,28 @@ export class EquityMetricsEditorComponent {
 
   }
 
+    addFCFHist() {
+      const year = this.form.value.FCFYear;
+      const value = this.form.value.FCFhistory;
+      if(year && value!==undefined && value!==null) {
+        const newTuple : tableRowTuple={
+          year: year, 
+          value: value
+        }
+        this.histFCFs.push(newTuple);
+      }
+      
+    }
+  
+    removeFCFHist() {
+      if(this.selectedHistFCF!==undefined) {
+        const selectedYear = this.selectedHistFCF.year;
+        this.histFCFs = this.histFCFs.filter(( obj ) => {
+          return obj.year !== selectedYear;
+        });
+      }
+    }
+
   save() {
     if (this.securityMetrics!=undefined && this.form.value.fiscalEndDate != null && this.form.value.currency != null) {
       let metrics = this.securityMetrics;
@@ -112,6 +145,7 @@ export class EquityMetricsEditorComponent {
       if( this.form.value.capitalExpenditures != null) metrics.capitalExpenditures = this.form.value.capitalExpenditures;
       if( this.form.value.operatingCashflow != null) metrics.operatingCashflow = this.form.value.operatingCashflow;
       if( this.form.value.netIncome != null) metrics.netIncome = this.form.value.netIncome;
+      metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       this.service.saveSecurityMetrics(metrics);
     }
   }
