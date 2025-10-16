@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Button } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { SidebarModule } from 'primeng/sidebar';
-import { Instrument } from '../../shared/data-access-mfdata/model/instrument';
+import { AdditionalPropertiesEnum, Instrument } from '../../shared/data-access-mfdata/model/instrument';
 import { SecurityAnalysisViewService, tableRowTuple } from '../securityanalysisview.service';
 import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -137,7 +137,14 @@ export class EquityMetricsEditorComponent {
     if (this.securityMetrics!=undefined && this.form.value.fiscalEndDate != null && this.form.value.currency != null) {
       let metrics = this.securityMetrics;
       metrics.fiscalEndDate = this.form.value.fiscalEndDate;
-      metrics.currencyKey = this.form.value.currency?.businesskey;
+      if(this.form.value.currency!=null){
+        const currencyCode = this.form.value.currency.additionalProperties.get(AdditionalPropertiesEnum.CURRENCYCODE);
+        if (currencyCode !== undefined) {
+          metrics.currencyKey = this.form.value.currency.businesskey;
+          metrics.currencyCode = currencyCode;
+        }
+      }
+
       if( this.form.value.expectedCashflowGrowth != null) metrics.expectedCashflowGrowth = this.form.value.expectedCashflowGrowth;
       if( this.form.value.avgMarktcapFreeCashflowRatio != null) metrics.avgMarktcapFreeCashflowRatio = this.form.value.avgMarktcapFreeCashflowRatio;
       if( this.form.value.sharesOutstanding != null) metrics.sharesOutstanding = this.form.value.sharesOutstanding;

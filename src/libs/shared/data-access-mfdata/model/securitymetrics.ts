@@ -192,6 +192,12 @@ export class SecurityMetrics {
     }
 
     toJSON() {
+        let histFCFObj: { [key: number]: number } = {};
+        if(this.historicalFreeCashflow instanceof Map){
+          histFCFObj =Object.fromEntries(this.historicalFreeCashflow);
+        } else {// it is already an object and not a map because it is loaded from the backend and there aonly parsed from json to object
+          histFCFObj = this.historicalFreeCashflow
+        }
         return {
             businesskey: this.businesskey,
             description: this.description,
@@ -241,7 +247,7 @@ export class SecurityMetrics {
             expectedCashflowGrowth: this.expectedCashflowGrowth,
             historicalRevenue: this.historicalRevenue,
             historicalNetIncome: this.historicalNetIncome,
-            historicalFreeCashflow: this.historicalFreeCashflow,
+            historicalFreeCashflow: histFCFObj,
             rankByPE: this.rankByPE,
             rankByRoA: this.rankByRoA,
             rankByRoAAndPE: this.rankByRoAAndPE,

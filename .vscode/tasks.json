@@ -37,6 +37,16 @@
           }
         }
       }
+    },
+    {
+      "label": "ngserve",
+      "type": "shell",
+      "command": "ng serve",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": "$tsc"
     }
   ]
 }
