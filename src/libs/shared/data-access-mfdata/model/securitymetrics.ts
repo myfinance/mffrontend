@@ -35,14 +35,12 @@ export class SecurityMetrics {
     beta: number;
     tam: number;
     forwardPE: number;
-    minForwardFCF10YCAGR: number;
-    avgForwardFCF10YCAGR: number;
-    maxForwardFCF10YCAGR: number;
 
     //calculated
     freeCashflow: number;
     expectedFreeCashflow: number;
     avgFreeCashflow5Y: number;
+    avgFreeCashflowGrowth5Y: number;
     pe: number;
     roa: number;
     debtToAssets: number;
@@ -52,7 +50,6 @@ export class SecurityMetrics {
     intrinsicValueMargin: number;
     intrinsicValueEVMargin: number;
     lynchScore: number;
-    avgHistoricalFCFGrowthRate: number;
     revenueGrowthRate: number;
     eps: number;
 
@@ -102,12 +99,10 @@ export class SecurityMetrics {
         beta: number,
         tam: number,
         forwardPE: number,
-        minForwardFCF10YCAGR: number,
-        avgForwardFCF10YCAGR: number,
-        maxForwardFCF10YCAGR: number,
         freeCashflow: number,
         expectedFreeCashflow: number,
         avgFreeCashflow5Y: number,
+        avgFreeCashflowGrowth5Y: number,
         pe: number,
         roa: number,
         debtToAssets: number,
@@ -117,7 +112,6 @@ export class SecurityMetrics {
         intrinsicValueMargin: number,
         intrinsicValueEVMargin: number,
         lynchScore: number,
-        avgHistoricalFCFGrowthRate: number,
         revenueGrowthRate: number,
         eps: number,
         avgMarktcapFreeCashflowRatio: number,
@@ -161,12 +155,10 @@ export class SecurityMetrics {
         this.beta = beta;
         this.tam = tam;
         this.forwardPE = forwardPE;
-        this.minForwardFCF10YCAGR = minForwardFCF10YCAGR;
-        this.avgForwardFCF10YCAGR = avgForwardFCF10YCAGR;
-        this.maxForwardFCF10YCAGR = maxForwardFCF10YCAGR;
         this.freeCashflow = freeCashflow;
         this.expectedFreeCashflow = expectedFreeCashflow;
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
+        this.avgFreeCashflowGrowth5Y = avgFreeCashflowGrowth5Y;
         this.pe = pe;
         this.roa = roa;
         this.debtToAssets = debtToAssets;
@@ -176,7 +168,6 @@ export class SecurityMetrics {
         this.intrinsicValueMargin = intrinsicValueMargin;
         this.intrinsicValueEVMargin = intrinsicValueEVMargin;
         this.lynchScore = lynchScore;
-        this.avgHistoricalFCFGrowthRate = avgHistoricalFCFGrowthRate;
         this.revenueGrowthRate = revenueGrowthRate;
         this.eps = eps;
         this.avgMarktcapFreeCashflowRatio = avgMarktcapFreeCashflowRatio;
@@ -200,6 +191,12 @@ export class SecurityMetrics {
           histFCFObj =Object.fromEntries(this.historicalFreeCashflow);
         } else {// it is already an object and not a map because it is loaded from the backend and there aonly parsed from json to object
           histFCFObj = this.historicalFreeCashflow
+        }
+        let expectedFreeCashflowGrowthPerYearObj: { [key: number]: number } = {};
+        if(this.expectedFreeCashflowGrowthPerYear instanceof Map){
+          expectedFreeCashflowGrowthPerYearObj =Object.fromEntries(this.expectedFreeCashflowGrowthPerYear);
+        } else {// it is already an object and not a map because it is loaded from the backend and there aonly parsed from json to object
+          expectedFreeCashflowGrowthPerYearObj = this.expectedFreeCashflowGrowthPerYear
         }
         return {
             businesskey: this.businesskey,
@@ -229,12 +226,10 @@ export class SecurityMetrics {
             beta: this.beta,
             tam: this.tam,
             forwardPE: this.forwardPE,
-            minForwardFCF10YCAGR: this.minForwardFCF10YCAGR,
-            avgForwardFCF10YCAGR: this.avgForwardFCF10YCAGR,
-            maxForwardFCF10YCAGR: this.maxForwardFCF10YCAGR,
             freeCashflow: this.freeCashflow,
             expectedFreeCashflow: this.expectedFreeCashflow,
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
+            avgFreeCashflowGrowth5Y: this.avgFreeCashflowGrowth5Y,
             pe: this.pe,
             roa: this.roa,
             debtToAssets: this.debtToAssets,
@@ -244,7 +239,6 @@ export class SecurityMetrics {
             intrinsicValueMargin: this.intrinsicValueMargin,
             intrinsicValueEVMargin: this.intrinsicValueEVMargin,
             lynchScore: this.lynchScore,
-            avgHistoricalFCFGrowthRate: this.avgHistoricalFCFGrowthRate,
             revenueGrowthRate: this.revenueGrowthRate,
             eps: this.eps,
             avgMarktcapFreeCashflowRatio: this.avgMarktcapFreeCashflowRatio,
@@ -252,6 +246,7 @@ export class SecurityMetrics {
             historicalRevenue: this.historicalRevenue,
             historicalNetIncome: this.historicalNetIncome,
             historicalFreeCashflow: histFCFObj,
+            expectedFreeCashflowGrowthPerYear: expectedFreeCashflowGrowthPerYearObj,
             rankByPE: this.rankByPE,
             rankByRoA: this.rankByRoA,
             rankByRoAAndPE: this.rankByRoAAndPE,
@@ -291,12 +286,10 @@ export class SecurityMetrics {
             data.beta,
             data.tam,
             data.forwardPE,
-            data.minForwardFCF10YCAGR,
-            data.avgForwardFCF10YCAGR,
-            data.maxForwardFCF10YCAGR,
             data.freeCashflow,
             data.expectedFreeCashflow,
             data.avgFreeCashflow5Y,
+            data.avgFreeCashflowGrowth5Y,
             data.pe,
             data.roa,
             data.debtToAssets,
@@ -306,7 +299,6 @@ export class SecurityMetrics {
             data.intrinsicValueMargin,
             data.intrinsicValueEVMargin,
             data.lynchScore,
-            data.avgHistoricalFCFGrowthRate,
             data.revenueGrowthRate,
             data.eps,
             data.avgMarktcapFreeCashflowRatio,

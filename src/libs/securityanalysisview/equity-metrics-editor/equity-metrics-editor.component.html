@@ -1,5 +1,8 @@
 <p-sidebar [(visible)]="sidebarVisible">
-  <label>Fundametaldatenpflege für :</label>
+  <label>Fundametaldatenpflege für :</label><br>
+  {{securityMetrics?.description}}
+  <label>businesskey:</label><br>
+  {{securityMetrics?.businesskey}}
   <form [formGroup]="form">
     <div class="button-row">
       <button class="btn btn-primary" (click)="save()" type="button">
@@ -38,32 +41,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
-      <label>expectedCashflowGrowth</label>
-      <p-inputNumber
-        formControlName="expectedCashflowGrowth"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>avgMarktcapFreeCashflowRatio</label>
-      <p-inputNumber
-        formControlName="avgMarktcapFreeCashflowRatio"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
+    <p-divider />
     <div class="form-group">
       <label>sharesOutstanding</label>
       <p-inputNumber
@@ -142,7 +120,7 @@
         placeholder="Enter a number"
       />
     </div>
-        <div class="form-group">
+    <div class="form-group">
       <label>totalCash</label>
       <p-inputNumber
         formControlName="totalCash"
@@ -206,6 +184,173 @@
           </ng-template>
         </p-table>
       </div>
+    </div>
+    <p-divider />
+    <div class="form-group">
+      <label>expectedCashflowGrowth
+        <br>(AvgFCFGrowth5Y={{securityMetrics?.avgFreeCashflowGrowth5Y}})</label>
+      <p-inputNumber
+        formControlName="expectedCashflowGrowth"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <button class="btn btn-primary" (click)="initExpectedFCFPerYear()" type="button">
+        set Growth per year
+    </button>
+    <div class="form-group">
+      <label>FCFGrowthY1</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY1"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>FCFGrowthY2</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY2"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY3</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY3"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY4</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY4"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY5</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY5"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY6</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY6"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY7</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY7"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY8</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY8"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY9</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY9"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>FCFGrowthY10</label>
+      <p-inputNumber
+        formControlName="FCFGrowthY10"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>avgMarktcapFreeCashflowRatio</label>
+      <p-inputNumber
+        formControlName="avgMarktcapFreeCashflowRatio"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <p-divider />
+    <div class="button-row">
+      <button class="btn btn-primary" (click)="save()" type="button">
+        save
+      </button>
     </div>
   </form>
 </p-sidebar>
