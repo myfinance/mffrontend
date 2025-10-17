@@ -61,6 +61,14 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    totalLiabilities: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    totalCash: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     FCFYear: new FormControl<number>(2020, {
       nonNullable: false
     }),
@@ -104,6 +112,9 @@ export class EquityMetricsEditorComponent {
       this.form.controls['capitalExpenditures'].setValue(instrumentMetrics.capitalExpenditures);
       this.form.controls['operatingCashflow'].setValue(instrumentMetrics.operatingCashflow);
       this.form.controls['netIncome'].setValue(instrumentMetrics.netIncome);
+      this.form.controls['totalLiabilities'].setValue(instrumentMetrics.totalLiabilities);
+      this.form.controls['totalCash'].setValue(instrumentMetrics.totalCash);
+      this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
     } else {
       this.form.reset();
     }
@@ -152,6 +163,8 @@ export class EquityMetricsEditorComponent {
       if( this.form.value.capitalExpenditures != null) metrics.capitalExpenditures = this.form.value.capitalExpenditures;
       if( this.form.value.operatingCashflow != null) metrics.operatingCashflow = this.form.value.operatingCashflow;
       if( this.form.value.netIncome != null) metrics.netIncome = this.form.value.netIncome;
+      if( this.form.value.totalLiabilities != null) metrics.totalLiabilities = this.form.value.totalLiabilities;
+      if( this.form.value.totalCash != null) metrics.totalCash = this.form.value.totalCash;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       this.service.saveSecurityMetrics(metrics);
     }

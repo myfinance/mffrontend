@@ -27,6 +27,7 @@ export class SecurityMetrics {
     //optional
     totalAssets: number;
     totalLiabilities: number;
+    totalCash: number;
     dilutedEPS5Y: number;
     dividendPerShare: number;
     forwardFreeCashflow5YCAGR: number;
@@ -93,6 +94,7 @@ export class SecurityMetrics {
         netIncome: number,
         totalAssets: number,
         totalLiabilities: number,
+        totalCash: number,
         dilutedEPS5Y: number,
         dividendPerShare: number,
         forwardFreeCashflow5YCAGR: number,
@@ -151,6 +153,7 @@ export class SecurityMetrics {
         this.netIncome = netIncome;
         this.totalAssets = totalAssets;
         this.totalLiabilities = totalLiabilities;
+        this.totalCash = totalCash;
         this.dilutedEPS5Y = dilutedEPS5Y;
         this.dividendPerShare = dividendPerShare;
         this.forwardFreeCashflow5YCAGR = forwardFreeCashflow5YCAGR;
@@ -218,6 +221,7 @@ export class SecurityMetrics {
             netIncome: this.netIncome,
             totalAssets: this.totalAssets,
             totalLiabilities: this.totalLiabilities,
+            totalCash: this.totalCash,
             dilutedEPS5Y: this.dilutedEPS5Y,
             dividendPerShare: this.dividendPerShare,
             forwardFreeCashflow5YCAGR: this.forwardFreeCashflow5YCAGR,
@@ -279,6 +283,7 @@ export class SecurityMetrics {
             data.netIncome,
             data.totalAssets,
             data.totalLiabilities,
+            data.totalCash,
             data.dilutedEPS5Y,
             data.dividendPerShare,
             data.forwardFreeCashflow5YCAGR,

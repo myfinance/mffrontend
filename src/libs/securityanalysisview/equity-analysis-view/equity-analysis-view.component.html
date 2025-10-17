@@ -53,6 +53,13 @@
                         <p-columnFilter type="text" field="intrinsicValueMargin" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="intrinsicValueEVMargin">
+                    <div class="flex items-center">
+                        intrinsicValueEVMargin
+                        <p-sortIcon field="intrinsicValueEVMargin" />
+                        <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
@@ -64,6 +71,7 @@
                 <td>{{ row.currencyCode }}</td>
                 <td>{{ row.price }}</td>
                 <td>{{ row.intrinsicValueMargin }}</td>
+                <td>{{ row.intrinsicValueEVMargin }}</td>
                 
             </tr>
         </ng-template>
