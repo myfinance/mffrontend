@@ -1,6 +1,6 @@
 <div class="scrollable-container">
     <div class="card flex justify-content-center">
-        <p-chart type="pie" [data]="data" [options]="options" />
+        <p-chart type="doughnut" [data]="data" [options]="options" [plugins]="plugins"></p-chart>
     </div>
 
     <p-table [value]="positions" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
