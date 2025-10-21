@@ -66,7 +66,19 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    shortLongTermDebtTotal: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     totalCash: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    dilutedEPS5Y: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    dividendPerShare: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
     }),
@@ -144,7 +156,10 @@ export class EquityMetricsEditorComponent {
       this.form.controls['operatingCashflow'].setValue(instrumentMetrics.operatingCashflow);
       this.form.controls['netIncome'].setValue(instrumentMetrics.netIncome);
       this.form.controls['totalLiabilities'].setValue(instrumentMetrics.totalLiabilities);
+      this.form.controls['shortLongTermDebtTotal'].setValue(instrumentMetrics.shortLongTermDebtTotal);
       this.form.controls['totalCash'].setValue(instrumentMetrics.totalCash);
+      this.form.controls['dilutedEPS5Y'].setValue(instrumentMetrics.dilutedEPS5Y);
+      this.form.controls['dividendPerShare'].setValue(instrumentMetrics.dividendPerShare);
       this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
       let expectedFreeCashflowGrowthPerYear: tableRowTuple[] = [];
       expectedFreeCashflowGrowthPerYear = Array.from(instrumentMetrics.expectedFreeCashflowGrowthPerYear.entries()).map(([year, value]) => ({ year, value }));
@@ -226,7 +241,10 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.operatingCashflow != null) metrics.operatingCashflow = this.form.value.operatingCashflow;
       if (this.form.value.netIncome != null) metrics.netIncome = this.form.value.netIncome;
       if (this.form.value.totalLiabilities != null) metrics.totalLiabilities = this.form.value.totalLiabilities;
+      if (this.form.value.shortLongTermDebtTotal != null) metrics.shortLongTermDebtTotal = this.form.value.shortLongTermDebtTotal;
       if (this.form.value.totalCash != null) metrics.totalCash = this.form.value.totalCash;
+      if (this.form.value.dilutedEPS5Y != null) metrics.dilutedEPS5Y = this.form.value.dilutedEPS5Y;
+      if (this.form.value.dividendPerShare != null) metrics.dividendPerShare = this.form.value.dividendPerShare;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       metrics.expectedFreeCashflowGrowthPerYear = new Map<number, number>();
       if (this.form.value.FCFGrowthY1 != null) metrics.expectedFreeCashflowGrowthPerYear.set(1, this.form.value.FCFGrowthY1);

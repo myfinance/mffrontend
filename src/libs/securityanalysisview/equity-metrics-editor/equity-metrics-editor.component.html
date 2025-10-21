@@ -121,9 +121,35 @@
       />
     </div>
     <div class="form-group">
+      <label>shortLongTermDebtTotal</label>
+      <p-inputNumber
+        formControlName="shortLongTermDebtTotal"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
       <label>totalCash</label>
       <p-inputNumber
         formControlName="totalCash"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>dividendPerShare</label>
+      <p-inputNumber
+        formControlName="dividendPerShare"
         mode="decimal"
         locale="de-DE"
         [useGrouping]="true"
@@ -337,6 +363,19 @@
       <label>avgMarktcapFreeCashflowRatio</label>
       <p-inputNumber
         formControlName="avgMarktcapFreeCashflowRatio"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+        <div class="form-group">
+      <label>dilutedEPS5Y</label>
+      <p-inputNumber
+        formControlName="dilutedEPS5Y"
         mode="decimal"
         locale="de-DE"
         [useGrouping]="true"

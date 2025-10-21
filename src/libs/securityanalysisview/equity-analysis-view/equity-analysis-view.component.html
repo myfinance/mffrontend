@@ -60,6 +60,13 @@
                         <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="lynchScore">
+                    <div class="flex items-center">
+                        intrinsicValueEVMargin
+                        <p-sortIcon field="lynchScore" />
+                        <p-columnFilter type="text" field="lynchScore" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
@@ -72,6 +79,7 @@
                 <td>{{ row.price }}</td>
                 <td>{{ row.intrinsicValueMargin }}</td>
                 <td>{{ row.intrinsicValueEVMargin }}</td>
+                <td>{{ row.lynchScore }}</td>
                 
             </tr>
         </ng-template>
