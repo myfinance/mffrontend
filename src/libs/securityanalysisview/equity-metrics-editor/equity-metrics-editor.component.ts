@@ -34,6 +34,14 @@ export class EquityMetricsEditorComponent {
     currency: new FormControl<Instrument | undefined>(undefined, {
       nonNullable: false
     }),
+    sector: new FormControl<string>('', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    country: new FormControl<string>('', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     expectedCashflowGrowth: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
@@ -58,7 +66,7 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
-    netIncome: new FormControl<number>(0, {
+    eps: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
     }),
@@ -79,6 +87,30 @@ export class EquityMetricsEditorComponent {
       validators: Validators.required
     }),
     dividendPerShare: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    goodwill: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    ebitda: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    ebit: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    grossProfit: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    totalEquity: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    currentLiabilities: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
     }),
@@ -154,12 +186,21 @@ export class EquityMetricsEditorComponent {
       this.form.controls['revenue'].setValue(instrumentMetrics.revenue);
       this.form.controls['capitalExpenditures'].setValue(instrumentMetrics.capitalExpenditures);
       this.form.controls['operatingCashflow'].setValue(instrumentMetrics.operatingCashflow);
-      this.form.controls['netIncome'].setValue(instrumentMetrics.netIncome);
+      this.form.controls['eps'].setValue(instrumentMetrics.eps);
       this.form.controls['totalLiabilities'].setValue(instrumentMetrics.totalLiabilities);
       this.form.controls['shortLongTermDebtTotal'].setValue(instrumentMetrics.shortLongTermDebtTotal);
       this.form.controls['totalCash'].setValue(instrumentMetrics.totalCash);
       this.form.controls['dilutedEPS5Y'].setValue(instrumentMetrics.dilutedEPS5Y);
       this.form.controls['dividendPerShare'].setValue(instrumentMetrics.dividendPerShare);
+      this.form.controls['sector'].setValue(instrumentMetrics.sector);
+      this.form.controls['country'].setValue(instrumentMetrics.country);
+      this.form.controls['goodwill'].setValue(instrumentMetrics.goodwill);
+      this.form.controls['ebitda'].setValue(instrumentMetrics.ebitda);
+      this.form.controls['ebit'].setValue(instrumentMetrics.ebit);
+      this.form.controls['grossProfit'].setValue(instrumentMetrics.grossProfit);
+      this.form.controls['totalEquity'].setValue(instrumentMetrics.totalEquity);
+      this.form.controls['currentLiabilities'].setValue(instrumentMetrics.currentLiabilities);
+      this.initExpectedFCFPerYear();
       this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
       let expectedFreeCashflowGrowthPerYear: tableRowTuple[] = [];
       expectedFreeCashflowGrowthPerYear = Array.from(instrumentMetrics.expectedFreeCashflowGrowthPerYear.entries()).map(([year, value]) => ({ year, value }));
@@ -239,12 +280,20 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.revenue != null) metrics.revenue = this.form.value.revenue;
       if (this.form.value.capitalExpenditures != null) metrics.capitalExpenditures = this.form.value.capitalExpenditures;
       if (this.form.value.operatingCashflow != null) metrics.operatingCashflow = this.form.value.operatingCashflow;
-      if (this.form.value.netIncome != null) metrics.netIncome = this.form.value.netIncome;
+      if (this.form.value.eps != null) metrics.netIncome = this.form.value.eps;
       if (this.form.value.totalLiabilities != null) metrics.totalLiabilities = this.form.value.totalLiabilities;
       if (this.form.value.shortLongTermDebtTotal != null) metrics.shortLongTermDebtTotal = this.form.value.shortLongTermDebtTotal;
       if (this.form.value.totalCash != null) metrics.totalCash = this.form.value.totalCash;
       if (this.form.value.dilutedEPS5Y != null) metrics.dilutedEPS5Y = this.form.value.dilutedEPS5Y;
       if (this.form.value.dividendPerShare != null) metrics.dividendPerShare = this.form.value.dividendPerShare;
+      if (this.form.value.sector != null) metrics.sector = this.form.value.sector;
+      if (this.form.value.country != null) metrics.country = this.form.value.country;
+      if (this.form.value.goodwill != null) metrics.goodwill = this.form.value.goodwill;
+      if (this.form.value.ebitda != null) metrics.ebitda = this.form.value.ebitda;
+      if (this.form.value.ebit != null) metrics.ebit = this.form.value.ebit;
+      if (this.form.value.grossProfit != null) metrics.grossProfit = this.form.value.grossProfit;
+      if (this.form.value.totalEquity != null) metrics.totalEquity = this.form.value.totalEquity;
+      if (this.form.value.currentLiabilities != null) metrics.currentLiabilities = this.form.value.currentLiabilities;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       metrics.expectedFreeCashflowGrowthPerYear = new Map<number, number>();
       if (this.form.value.FCFGrowthY1 != null) metrics.expectedFreeCashflowGrowthPerYear.set(1, this.form.value.FCFGrowthY1);

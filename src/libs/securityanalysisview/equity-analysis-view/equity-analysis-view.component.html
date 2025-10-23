@@ -67,6 +67,48 @@
                         <p-columnFilter type="text" field="lynchScore" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="ruleOfFourty">
+                    <div class="flex items-center">
+                        ruleOfFourty
+                        <p-sortIcon field="ruleOfFourty" />
+                        <p-columnFilter type="text" field="ruleOfFourty" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="pricePerSales">
+                    <div class="flex items-center">
+                        pricePerSales
+                        <p-sortIcon field="pricePerSales" />
+                        <p-columnFilter type="text" field="pricePerSales" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="debtToAssets">
+                    <div class="flex items-center">
+                        debtToAssets
+                        <p-sortIcon field="debtToAssets" />
+                        <p-columnFilter type="text" field="debtToAssets" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="roa">
+                    <div class="flex items-center">
+                        roa
+                        <p-sortIcon field="roa" />
+                        <p-columnFilter type="text" field="roa" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="roe">
+                    <div class="flex items-center">
+                        roe
+                        <p-sortIcon field="roe" />
+                        <p-columnFilter type="text" field="roe" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="roce">
+                    <div class="flex items-center">
+                        roce
+                        <p-sortIcon field="roce" />
+                        <p-columnFilter type="text" field="roce" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
@@ -80,6 +122,12 @@
                 <td>{{ row.intrinsicValueMargin }}</td>
                 <td>{{ row.intrinsicValueEVMargin }}</td>
                 <td>{{ row.lynchScore }}</td>
+                <td>{{ row.ruleOfFourty }}</td>
+                <td>{{ row.pricePerSales }}</td>
+                <td>{{ row.debtToAssets }}</td>
+                <td>{{ row.roa }}</td>
+                <td>{{ row.roe }}</td>
+                <td>{{ row.roce }}</td>
                 
             </tr>
         </ng-template>

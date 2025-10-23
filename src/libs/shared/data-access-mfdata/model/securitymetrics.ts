@@ -10,6 +10,7 @@ export class SecurityMetrics {
     securityLifecyclePhase: string;
     riskProfile: string;
     sector: string;
+    country: string;
     lastUpdateTs: Date;
     priceLastUpdateTs: Date;
     instrumentType: InstrumentTypeEnum;
@@ -36,6 +37,12 @@ export class SecurityMetrics {
     beta: number;
     tam: number;
     forwardPE: number;
+    goodwill: number;
+    ebitda: number;
+    ebit: number;
+    grossProfit: number;
+    totalEquity: number;
+    currentLiabilities: number;
 
     //calculated
     freeCashflow: number;
@@ -44,6 +51,8 @@ export class SecurityMetrics {
     avgFreeCashflowGrowth5Y: number;
     pe: number;
     roa: number;
+    roe: number;
+    roce: number;
     debtToAssets: number;
     dividendYield: number;
     dividendPayoutRatio: number;
@@ -53,7 +62,10 @@ export class SecurityMetrics {
     lynchScore: number;
     revenueGrowthRate: number;
     eps: number;
-
+    ruleOfFourty: number;
+    grossMargin: number;
+    pricePerSales: number;
+    fcfMargin: number;
     //config
     avgMarktcapFreeCashflowRatio: number;
     expectedCashflowGrowth: number;
@@ -81,6 +93,7 @@ export class SecurityMetrics {
         securityLifecyclePhase: string,
         riskProfile: string,
         sector: string,
+        country: string,
         lastUpdateTs: Date,
         priceLastUpdateTs: Date,
         price: number,
@@ -101,12 +114,20 @@ export class SecurityMetrics {
         beta: number,
         tam: number,
         forwardPE: number,
+        goodwill: number,
+        ebitda: number,
+        ebit: number,
+        grossProfit: number,
+        totalEquity: number,
+        currentLiabilities: number,
         freeCashflow: number,
         expectedFreeCashflow: number,
         avgFreeCashflow5Y: number,
         avgFreeCashflowGrowth5Y: number,
         pe: number,
         roa: number,
+        roe: number,
+        roce: number,
         debtToAssets: number,
         dividendYield: number,
         dividendPayoutRatio: number,
@@ -116,6 +137,10 @@ export class SecurityMetrics {
         lynchScore: number,
         revenueGrowthRate: number,
         eps: number,
+        ruleOfFourty: number,
+        grossMargin: number,
+        pricePerSales: number,
+        fcfMargin: number,
         avgMarktcapFreeCashflowRatio: number,
         expectedCashflowGrowth: number,
         historicalRevenue: Map<number, number>,
@@ -138,6 +163,7 @@ export class SecurityMetrics {
         this.securityLifecyclePhase = securityLifecyclePhase;
         this.riskProfile = riskProfile;
         this.sector = sector;
+        this.country = country;
         this.lastUpdateTs = lastUpdateTs;
         this.priceLastUpdateTs = priceLastUpdateTs;
         this.price = price;
@@ -158,12 +184,20 @@ export class SecurityMetrics {
         this.beta = beta;
         this.tam = tam;
         this.forwardPE = forwardPE;
+        this.goodwill = goodwill;
+        this.ebitda = ebitda;
+        this.ebit = ebit;
+        this.grossProfit = grossProfit;
+        this.totalEquity = totalEquity;
+        this.currentLiabilities = currentLiabilities;
         this.freeCashflow = freeCashflow;
         this.expectedFreeCashflow = expectedFreeCashflow;
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
         this.avgFreeCashflowGrowth5Y = avgFreeCashflowGrowth5Y;
         this.pe = pe;
         this.roa = roa;
+        this.roe = roe;
+        this.roce = roce;
         this.debtToAssets = debtToAssets;
         this.dividendYield = dividendYield;
         this.dividendPayoutRatio = dividendPayoutRatio;
@@ -173,6 +207,10 @@ export class SecurityMetrics {
         this.lynchScore = lynchScore;
         this.revenueGrowthRate = revenueGrowthRate;
         this.eps = eps;
+        this.ruleOfFourty = ruleOfFourty;
+        this.grossMargin = grossMargin;
+        this.pricePerSales = pricePerSales;
+        this.fcfMargin = fcfMargin;
         this.avgMarktcapFreeCashflowRatio = avgMarktcapFreeCashflowRatio;
         this.expectedCashflowGrowth = expectedCashflowGrowth;
         this.historicalRevenue = historicalRevenue;
@@ -210,6 +248,7 @@ export class SecurityMetrics {
             securityLifecyclePhase: this.securityLifecyclePhase,
             riskProfile: this.riskProfile,
             sector: this.sector,
+            country: this.country,
             lastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.lastUpdateTs),
             priceLastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.priceLastUpdateTs),
             price: this.price,
@@ -230,12 +269,20 @@ export class SecurityMetrics {
             beta: this.beta,
             tam: this.tam,
             forwardPE: this.forwardPE,
+            goodwill: this.goodwill,
+            ebitda: this.ebitda,
+            ebit: this.ebit,
+            grossProfit: this.grossProfit,
+            totalEquity: this.totalEquity,
+            currentLiabilities: this.currentLiabilities,
             freeCashflow: this.freeCashflow,
             expectedFreeCashflow: this.expectedFreeCashflow,
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
             avgFreeCashflowGrowth5Y: this.avgFreeCashflowGrowth5Y,
             pe: this.pe,
             roa: this.roa,
+            roe: this.roe,
+            roce: this.roce,
             debtToAssets: this.debtToAssets,
             dividendYield: this.dividendYield === Infinity ? null : this.dividendYield,
             dividendPayoutRatio: this.dividendPayoutRatio,
@@ -245,6 +292,10 @@ export class SecurityMetrics {
             lynchScore: this.lynchScore,
             revenueGrowthRate: this.revenueGrowthRate,
             eps: this.eps,
+            ruleOfFourty: this.ruleOfFourty,
+            grossMargin: this.grossMargin,
+            pricePerSales: this.pricePerSales,
+            fcfMargin: this.fcfMargin,
             avgMarktcapFreeCashflowRatio: this.avgMarktcapFreeCashflowRatio,
             expectedCashflowGrowth: this.expectedCashflowGrowth,
             historicalRevenue: this.historicalRevenue,
@@ -271,6 +322,7 @@ export class SecurityMetrics {
             data.securityLifecyclePhase,
             data.riskProfile,
             data.sector,
+            data.country,
             new Date(data.lastUpdateTs),
             new Date(data.priceLastUpdateTs),
             data.price,
@@ -291,12 +343,20 @@ export class SecurityMetrics {
             data.beta,
             data.tam,
             data.forwardPE,
+            data.goodwill,
+            data.ebitda,
+            data.ebit,
+            data.grossProfit,
+            data.totalEquity,
+            data.currentLiabilities,
             data.freeCashflow,
             data.expectedFreeCashflow,
             data.avgFreeCashflow5Y,
             data.avgFreeCashflowGrowth5Y,
             data.pe,
             data.roa,
+            data.roe,
+            data.roce,
             data.debtToAssets,
             data.dividendYield,
             data.dividendPayoutRatio,
@@ -306,6 +366,10 @@ export class SecurityMetrics {
             data.lynchScore,
             data.revenueGrowthRate,
             data.eps,
+            data.ruleOfFourty,
+            data.grossMargin,
+            data.pricePerSales,
+            data.fcfMargin,
             data.avgMarktcapFreeCashflowRatio,
             data.expectedCashflowGrowth,
             data.historicalRevenue ? new Map(Object.entries(data.historicalRevenue)) : new Map(),
