@@ -285,7 +285,7 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.revenue != null) metrics.revenue = this.form.value.revenue;
       if (this.form.value.capitalExpenditures != null) metrics.capitalExpenditures = this.form.value.capitalExpenditures;
       if (this.form.value.operatingCashflow != null) metrics.operatingCashflow = this.form.value.operatingCashflow;
-      if (this.form.value.eps != null) metrics.netIncome = this.form.value.eps;
+      if (this.form.value.eps != null) metrics.eps = this.form.value.eps;
       if (this.form.value.totalLiabilities != null) metrics.totalLiabilities = this.form.value.totalLiabilities;
       if (this.form.value.shortLongTermDebtTotal != null) metrics.shortLongTermDebtTotal = this.form.value.shortLongTermDebtTotal;
       if (this.form.value.totalCash != null) metrics.totalCash = this.form.value.totalCash;
