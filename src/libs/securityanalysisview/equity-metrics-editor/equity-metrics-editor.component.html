@@ -50,6 +50,7 @@
       <input formControlName="country"/>
     </div>
     <p-divider />
+    <b>Intrinsic Value</b>
     <div class="form-group">
       <label>sharesOutstanding</label>
       <p-inputNumber
@@ -103,139 +104,9 @@
       />
     </div>
     <div class="form-group">
-      <label>eps</label>
+      <label>avgMarktcapFreeCashflowRatio</label>
       <p-inputNumber
-        formControlName="eps"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>totalLiabilities</label>
-      <p-inputNumber
-        formControlName="totalLiabilities"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>shortLongTermDebtTotal</label>
-      <p-inputNumber
-        formControlName="shortLongTermDebtTotal"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>totalCash</label>
-      <p-inputNumber
-        formControlName="totalCash"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>dividendPerShare</label>
-      <p-inputNumber
-        formControlName="dividendPerShare"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>goodwill</label>
-      <p-inputNumber
-        formControlName="goodwill"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>ebitda</label>
-      <p-inputNumber
-        formControlName="ebitda"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>ebit</label>
-      <p-inputNumber
-        formControlName="ebit"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>grossProfit</label>
-      <p-inputNumber
-        formControlName="grossProfit"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>totalEquity</label>
-      <p-inputNumber
-        formControlName="totalEquity"
-        mode="decimal"
-        locale="de-DE"
-        [useGrouping]="true"
-        [minFractionDigits]="2"
-        [maxFractionDigits]="2"
-        inputStyleClass="p-inputtext p-component p-element"
-        placeholder="Enter a number"
-      />
-    </div>
-    <div class="form-group">
-      <label>currentLiabilities</label>
-      <p-inputNumber
-        formControlName="currentLiabilities"
+        formControlName="avgMarktcapFreeCashflowRatio"
         mode="decimal"
         locale="de-DE"
         [useGrouping]="true"
@@ -445,10 +316,12 @@
         placeholder="Enter a number"
       />
     </div>
+    <p-divider />
+    <b>EnterpriceValue</b>
     <div class="form-group">
-      <label>avgMarktcapFreeCashflowRatio</label>
+      <label>shortLongTermDebtTotal</label>
       <p-inputNumber
-        formControlName="avgMarktcapFreeCashflowRatio"
+        formControlName="shortLongTermDebtTotal"
         mode="decimal"
         locale="de-DE"
         [useGrouping]="true"
@@ -458,10 +331,158 @@
         placeholder="Enter a number"
       />
     </div>
-        <div class="form-group">
+    <div class="form-group">
+      <label>totalCash</label>
+      <p-inputNumber
+        formControlName="totalCash"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <b>DebtRatio</b>
+    <div class="form-group">
+      <label>totalLiabilities</label>
+      <p-inputNumber
+        formControlName="totalLiabilities"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>totalAssets</label>
+      <p-inputNumber
+        formControlName="totalAssets"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>goodwill</label>
+      <p-inputNumber
+        formControlName="goodwill"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <b>RuleOfFourty</b>
+    <div class="form-group">
+      <label>ebitda</label>
+      <p-inputNumber
+        formControlName="ebitda"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <p-divider />
+    <b>Lynch</b>
+    <div class="form-group">
       <label>dilutedEPS5Y</label>
       <p-inputNumber
         formControlName="dilutedEPS5Y"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>eps</label>
+      <p-inputNumber
+        formControlName="eps"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>dividendPerShare</label>
+      <p-inputNumber
+        formControlName="dividendPerShare"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <b>RoA,RoE,RoCE</b>
+    <div class="form-group">
+      <label>ebit</label>
+      <p-inputNumber
+        formControlName="ebit"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>grossProfit</label>
+      <p-inputNumber
+        formControlName="grossProfit"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>totalEquity</label>
+      <p-inputNumber
+        formControlName="totalEquity"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>currentLiabilities</label>
+      <p-inputNumber
+        formControlName="currentLiabilities"
         mode="decimal"
         locale="de-DE"
         [useGrouping]="true"

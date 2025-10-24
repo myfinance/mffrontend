@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { SecurityAnalysisViewService } from '../securityanalysisview.service';
+import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 
 @Component({
   selector: 'app-security-chart',
@@ -15,6 +16,7 @@ export class SecurityChartComponent  implements OnInit {
   data: any;
 
   options: any;
+  securityMetrics: SecurityMetrics | undefined;
 
   documentStyle = getComputedStyle(document.documentElement);
 
@@ -31,6 +33,7 @@ export class SecurityChartComponent  implements OnInit {
       {
           next: () => {
               this.setData();
+              this.securityMetrics = this.service.getSelectedInstrument();
           },
           error: (e) => console.error(e)
       }

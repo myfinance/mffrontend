@@ -1,3 +1,13 @@
-<div class="card">
+<div class="chart-container">
+  <div class="properties">
+    <div>Lynch:{{securityMetrics?.lynchScore}}</div>
+    <div>RuleOfFourty:{{securityMetrics?.lynchScore}}</div>
+    <div>debtToAssets:{{securityMetrics?.debtToAssets}}</div>
+    <div>roa:{{securityMetrics?.roa}}</div>
+    <div>roe:{{securityMetrics?.roe}}</div>
+    <div>roce:{{securityMetrics?.roce}}</div>
+  </div>
+  <div class="card">
     <p-chart type="line" [data]="data" [options]="options" />
+  </div>
 </div>
