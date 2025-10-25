@@ -1,8 +1,15 @@
+.charts-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; /* Distribute space evenly */
+  flex-wrap: wrap; /* Allow charts to wrap on smaller screens */
+}
+
 .card {
     background: var(--surface-card);
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 1rem;
-    width: 30%;
-    margin: auto;
+    width: 48%; /* Adjust width to fit two cards with some space */
+    margin: 1%; /* Add some margin between cards */
 }
