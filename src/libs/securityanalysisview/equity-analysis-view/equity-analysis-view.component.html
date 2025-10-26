@@ -34,7 +34,7 @@
                 </th>
                 <th pSortableColumn="lastManualReviewTs">
                     <div class="flex items-center">
-                        lastManualReviewTs
+                        ReviewTs
                         <p-sortIcon field="lastManualReviewTs" />
                         <p-columnFilter type="text" field="lastManualReviewTs" display="menu" />
                     </div>
@@ -48,21 +48,21 @@
                 </th>
                 <th pSortableColumn="priceInCurrency">
                     <div class="flex items-center">
-                        Preis in Währung
+                        Preis-Währung
                         <p-sortIcon field="priceInCurrency" />
                         <p-columnFilter type="text" field="priceInCurrency" display="menu" />
                     </div>
                 </th>
                 <th pSortableColumn="intrinsicValueMargin">
                     <div class="flex items-center">
-                        intrinsicValueMargin
+                        IVMargin
                         <p-sortIcon field="intrinsicValueMargin" />
                         <p-columnFilter type="text" field="intrinsicValueMargin" display="menu" />
                     </div>
                 </th>
                 <th pSortableColumn="intrinsicValueEVMargin">
                     <div class="flex items-center">
-                        intrinsicValueEVMargin
+                        IVEVMargin
                         <p-sortIcon field="intrinsicValueEVMargin" />
                         <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
                     </div>
@@ -79,15 +79,15 @@
         <ng-template pTemplate="body" let-row>
             <tr [pSelectableRow]="row">
                 <td>{{ row.description }}</td>
-                <td>{{ row.priceInEuro }}</td>
+                <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
                 <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.lastManualReviewTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.currencyCode }}</td>
-                <td>{{ row.price }}</td>
-                <td>{{ row.intrinsicValueMargin }}</td>
-                <td>{{ row.intrinsicValueEVMargin }}</td>
-                <td>{{ row.pricePerSales }}</td>
+                <td>{{ row.price | number:'1.2-2' }}</td>
+                <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>
+                <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
+                <td>{{ row.pricePerSales | number:'1.2-2' }}</td>
                 
             </tr>
         </ng-template>
