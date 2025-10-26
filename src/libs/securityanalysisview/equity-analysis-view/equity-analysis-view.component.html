@@ -32,6 +32,13 @@
                         <p-columnFilter type="text" field="lastUpdateTs" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="lastManualReviewTs">
+                    <div class="flex items-center">
+                        lastManualReviewTs
+                        <p-sortIcon field="lastManualReviewTs" />
+                        <p-columnFilter type="text" field="lastManualReviewTs" display="menu" />
+                    </div>
+                </th>
                 <th pSortableColumn="currency">
                     <div class="flex items-center">
                         Währung
@@ -75,6 +82,7 @@
                 <td>{{ row.priceInEuro }}</td>
                 <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
+                <td>{{ row.lastManualReviewTs | date:'yyyy-MM-dd hh:mm'  }}</td>
                 <td>{{ row.currencyCode }}</td>
                 <td>{{ row.price }}</td>
                 <td>{{ row.intrinsicValueMargin }}</td>

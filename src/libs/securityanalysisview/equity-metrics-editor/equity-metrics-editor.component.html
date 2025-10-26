@@ -170,6 +170,22 @@
     </div>
     <p-divider />
     <div class="form-group">
+      <label>expectedFreeCashflowOverride
+        <br>(AvgFCF5Y={{securityMetrics?.avgFreeCashflow5Y}})
+        <br>(FCF={{securityMetrics?.freeCashflow}})
+      </label>
+      <p-inputNumber
+        formControlName="expectedFreeCashflowOverride"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
       <label>expectedCashflowGrowth
         <br>(AvgFCFGrowth5Y={{securityMetrics?.avgFreeCashflowGrowth5Y}})</label>
       <p-inputNumber

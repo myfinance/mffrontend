@@ -13,6 +13,7 @@ export class SecurityMetrics {
     country: string;
     lastUpdateTs: Date;
     priceLastUpdateTs: Date;
+    lastManualReviewTs: Date;
     instrumentType: InstrumentTypeEnum;
 
     // all values are yearly TTM values
@@ -69,6 +70,8 @@ export class SecurityMetrics {
     //config
     avgMarktcapFreeCashflowRatio: number;
     expectedCashflowGrowth: number;
+    expectedFreeCashflowOverride: number;
+
 
     //historical map<fiscalaenddate, value>. fiscalaenddate is a Date, the values are TTM(trailing twelve month) values
     historicalRevenue: Map<number, number>;
@@ -96,6 +99,7 @@ export class SecurityMetrics {
         country: string,
         lastUpdateTs: Date,
         priceLastUpdateTs: Date,
+        lastManualReviewTs: Date,
         price: number,
         priceInEuro: number,
         sharesOutstanding: number,
@@ -143,6 +147,7 @@ export class SecurityMetrics {
         fcfMargin: number,
         avgMarktcapFreeCashflowRatio: number,
         expectedCashflowGrowth: number,
+        expectedFreeCashflowOverride: number,
         historicalRevenue: Map<number, number>,
         historicalNetIncome: Map<number, number>,
         historicalFreeCashflow: Map<number, number>,
@@ -166,6 +171,7 @@ export class SecurityMetrics {
         this.country = country;
         this.lastUpdateTs = lastUpdateTs;
         this.priceLastUpdateTs = priceLastUpdateTs;
+        this.lastManualReviewTs = lastManualReviewTs;
         this.price = price;
         this.priceInEuro = priceInEuro;
         this.sharesOutstanding = sharesOutstanding;
@@ -213,6 +219,7 @@ export class SecurityMetrics {
         this.fcfMargin = fcfMargin;
         this.avgMarktcapFreeCashflowRatio = avgMarktcapFreeCashflowRatio;
         this.expectedCashflowGrowth = expectedCashflowGrowth;
+        this.expectedFreeCashflowOverride = expectedFreeCashflowOverride;
         this.historicalRevenue = historicalRevenue;
         this.historicalNetIncome = historicalNetIncome;
         this.historicalFreeCashflow = historicalFreeCashflow;
@@ -251,6 +258,7 @@ export class SecurityMetrics {
             country: this.country,
             lastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.lastUpdateTs),
             priceLastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.priceLastUpdateTs),
+            lastManualReviewTs: JsonConvertHelper.dateTimeToIsoString(this.lastManualReviewTs),
             price: this.price,
             priceInEuro: this.priceInEuro,
             sharesOutstanding: this.sharesOutstanding,
@@ -298,6 +306,7 @@ export class SecurityMetrics {
             fcfMargin: this.fcfMargin,
             avgMarktcapFreeCashflowRatio: this.avgMarktcapFreeCashflowRatio,
             expectedCashflowGrowth: this.expectedCashflowGrowth,
+            expectedFreeCashflowOverride: this.expectedFreeCashflowOverride,
             historicalRevenue: this.historicalRevenue,
             historicalNetIncome: this.historicalNetIncome,
             historicalFreeCashflow: histFCFObj,
@@ -325,6 +334,7 @@ export class SecurityMetrics {
             data.country,
             new Date(data.lastUpdateTs),
             new Date(data.priceLastUpdateTs),
+            new Date(data.lastManualReviewTs),
             data.price,
             data.priceInEuro,
             data.sharesOutstanding,
@@ -372,6 +382,7 @@ export class SecurityMetrics {
             data.fcfMargin,
             data.avgMarktcapFreeCashflowRatio,
             data.expectedCashflowGrowth,
+            data.expectedFreeCashflowOverride,
             data.historicalRevenue ? new Map(Object.entries(data.historicalRevenue)) : new Map(),
             data.historicalNetIncome ? new Map(Object.entries(data.historicalNetIncome)) : new Map(),
             data.historicalFreeCashflow ? new Map(Object.entries(data.historicalFreeCashflow)) : new Map(),

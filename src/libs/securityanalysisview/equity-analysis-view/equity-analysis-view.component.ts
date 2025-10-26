@@ -44,6 +44,10 @@ export class EquityAnalysisViewComponent {
       if(isNaN(lastUpdateTs.getTime())) {
         (sec as any).lastUpdateTs = null;
       }
+      const lastManualReviewTs = new Date(sec.lastManualReviewTs);
+      if(isNaN(lastManualReviewTs.getTime())) {
+        (sec as any).lastManualReviewTs = null;
+      }
       return sec;
     });
   }

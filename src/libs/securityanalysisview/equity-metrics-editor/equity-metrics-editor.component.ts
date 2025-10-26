@@ -50,6 +50,10 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    expectedFreeCashflowOverride: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     sharesOutstanding: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
@@ -186,6 +190,7 @@ export class EquityMetricsEditorComponent {
       this.form.controls['currency'].setValue(this.currencies.filter(instrument => instrument.businesskey === instrumentMetrics.currencyKey)[0]);
       this.form.controls['expectedCashflowGrowth'].setValue(instrumentMetrics.expectedCashflowGrowth);
       this.form.controls['avgMarktcapFreeCashflowRatio'].setValue(instrumentMetrics.avgMarktcapFreeCashflowRatio);
+      this.form.controls['expectedFreeCashflowOverride'].setValue(instrumentMetrics.expectedFreeCashflowOverride);
       this.form.controls['sharesOutstanding'].setValue(instrumentMetrics.sharesOutstanding);
       this.form.controls['revenue'].setValue(instrumentMetrics.revenue);
       this.form.controls['capitalExpenditures'].setValue(instrumentMetrics.capitalExpenditures);
@@ -281,6 +286,7 @@ export class EquityMetricsEditorComponent {
 
       if (this.form.value.expectedCashflowGrowth != null) metrics.expectedCashflowGrowth = this.form.value.expectedCashflowGrowth;
       if (this.form.value.avgMarktcapFreeCashflowRatio != null) metrics.avgMarktcapFreeCashflowRatio = this.form.value.avgMarktcapFreeCashflowRatio;
+      if (this.form.value.expectedFreeCashflowOverride != null) metrics.expectedFreeCashflowOverride = this.form.value.expectedFreeCashflowOverride;
       if (this.form.value.sharesOutstanding != null) metrics.sharesOutstanding = this.form.value.sharesOutstanding;
       if (this.form.value.revenue != null) metrics.revenue = this.form.value.revenue;
       if (this.form.value.capitalExpenditures != null) metrics.capitalExpenditures = this.form.value.capitalExpenditures;
@@ -312,6 +318,7 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.FCFGrowthY8 != null) metrics.expectedFreeCashflowGrowthPerYear.set(8, this.form.value.FCFGrowthY8);
       if (this.form.value.FCFGrowthY9 != null) metrics.expectedFreeCashflowGrowthPerYear.set(9, this.form.value.FCFGrowthY9);
       if (this.form.value.FCFGrowthY10 != null) metrics.expectedFreeCashflowGrowthPerYear.set(10, this.form.value.FCFGrowthY10);
+      metrics.lastManualReviewTs = new Date(Date.now());
       this.service.saveSecurityMetrics(metrics);
     }
   }
