@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Position } from '../shared/data-access-mfdata/model/position';
+import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class PortfolioAnalysisViewService {
     new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   ];
   private positions: Position[] = [];
+  private giros: Instrument[] = [];
+  private sumOfCash: number = 0;
 
   portfolioEventSubject: Subject<unknown> = new Subject<unknown>();
   
@@ -51,7 +54,50 @@ export class PortfolioAnalysisViewService {
         error: (e) => console.error(e)
       }
     )
+    this.service.getInstrumentEventSubject().subscribe(
+      {
+        next: () => {
+          this.loadInstruments();
+        },
+        error: (e) => console.error(e)
+      }
+    )
     this.loadPositions();
+    this.loadInstruments();
+  }
+
+  private loadInstruments() {
+    this.service.getAccounts().subscribe(
+      {
+        next: (instruments) => {
+          this.giros = instruments.filter(i=>i.instrumentType=='GIRO');
+          this.loadCashValues();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  private loadCashValues() {
+    this.sumOfCash = 0;
+    if (this.giros.length > 0) {
+      forkJoin(
+        this.giros.map(giro =>
+          this.service.getInstrumentValue(giro.businesskey, this.dateForAnalysis)
+        )
+      ).subscribe({
+        next: (values: number[]) => {
+          this.sumOfCash = values.reduce((acc, curr) => acc + curr, 0);
+          this.portfolioEventSubject.next(true); // Notify subscribers that data has changed
+        },
+        error: (e) => {
+          console.error(e);
+          alert('Error loading cash values');
+        }
+      });
+    } else {
+      this.portfolioEventSubject.next(true); // Notify subscribers even if no giros
+    }
   }
 
   private loadPositions() {
@@ -91,5 +137,8 @@ export class PortfolioAnalysisViewService {
     this.rangeDates[0] = rangeDate[0];
     this.rangeDates[1] = rangeDate[1];
     //this.loadSecurities();
+  }
+  getSumOfCash(): number {
+    return this.sumOfCash;
   }
 }

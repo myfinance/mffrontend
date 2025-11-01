@@ -72,6 +72,7 @@ export class DepotOverviewComponent {
       const value = aggregation.get(p.securityType) || 0;
       aggregation.set(p.securityType, value + p.value);
     });
+    aggregation.set('Cash', this.service.getSumOfCash());
 
     const total = Array.from(aggregation.values()).reduce((a, b) => a + b, 0);
 
