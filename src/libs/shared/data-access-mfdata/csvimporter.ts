@@ -54,7 +54,7 @@ export class CsvImporter {
                 } else if(csvType==CSVTypeEnum.C24){
                   minrow = new CsvRow(
                     i.toString(), 
-                    new Date(row[1]), 
+                    TypeConverter.parseGermanDate(row[1].toString()), 
                     row[4].toString()+row[7].toString(), 
                     TypeConverter.parseGermanNumber(row[3]) ?? 0,
                     false,
