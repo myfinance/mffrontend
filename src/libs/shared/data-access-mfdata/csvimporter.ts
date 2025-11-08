@@ -25,10 +25,7 @@ export class CsvImporter {
             const allTextLines = csv.split("\n");
     
             //Table Headings
-            let splitCharacter = ',';
-            if(csvType==CSVTypeEnum.COBA) {
-              splitCharacter = ';';
-            }
+            let splitCharacter = ';';
             const headers = allTextLines[0].split(splitCharacter);
             const data = headers;
             const tarr = [];
@@ -59,7 +56,7 @@ export class CsvImporter {
                     i.toString(), 
                     new Date(row[1]), 
                     row[4].toString()+row[7].toString(), 
-                    Number(row[3]),
+                    TypeConverter.parseGermanNumber(row[3]) ?? 0,
                     false,
                     row[11].toString(),
                     row[12].toString().replace('\r','')
