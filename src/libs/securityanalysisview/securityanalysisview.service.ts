@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { MfdataService } from "../shared/data-access-mfdata/mfdata.service";
 import { SecurityDetails } from "../shared/data-access-mfdata/model/securitydetails";
 import { Subject } from "rxjs/internal/Subject";
-import { ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
+import { ValuationTypeEnum, ValueCurve } from "../shared/data-access-mfdata/model/valuecurve";
 import { MarketDataImportTypeEnum, SecurityMetrics } from "../shared/data-access-mfdata/model/securitymetrics";
 import { Instrument, InstrumentTypeEnum } from "../shared/data-access-mfdata/model/instrument";
 
@@ -147,7 +147,7 @@ export interface tableRowTuple{
 
     private loadSecuritiyChart() {
       if(this.selectedInstrumentKey!=""){
-        this.service.getInstrumentValueCurve(this.selectedInstrumentKey,this.rangeDates[0], this.rangeDates[1]).subscribe(
+        this.service.getInstrumentValueCurve(this.selectedInstrumentKey,this.rangeDates[0], this.rangeDates[1], ValuationTypeEnum.MARKETVALUE).subscribe(
           {
             next: (values) => {
               this.valueCurve = values;

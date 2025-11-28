@@ -22,3 +22,10 @@ export class ValueCurve {
         }
     }   
 }
+
+export type ValuationTypeEnum = 'MARKETVALUE' | 'PRUDENT' | 'STATIC';
+export const ValuationTypeEnum = {
+    MARKETVALUE: 'MARKETVALUE' as ValuationTypeEnum,
+    PRUDENT: 'PRUDENT' as ValuationTypeEnum,
+    STATIC: 'STATIC' as ValuationTypeEnum
+};

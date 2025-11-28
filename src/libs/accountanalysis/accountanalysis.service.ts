@@ -5,6 +5,7 @@ import { InstrumentFullDetails } from '../shared/data-access-mfdata/model/instru
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { InstrumentTypeEnum } from '../shared/data-access-mfdata/model/instrument';
 import { CsvRow } from '../shared/data-access-mfdata/csvimporter';
+import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
 
 @Injectable({
   providedIn: 'root'
@@ -132,7 +133,7 @@ export class AccountanalysisService {
 
   private loadInstrumentDetails() {
     if(this.selectedInstrumentKey!== null && this.selectedInstrumentKey!==""){
-      this.mfDataService.getInstrumenDetails(this.selectedInstrumentKey, this.dateaforAnalysis, this.referenceDate, this.rangeDates[0], this.rangeDates[1], this.rangeDates[0], this.rangeDates[1]).subscribe(
+      this.mfDataService.getInstrumenDetails(this.selectedInstrumentKey, this.dateaforAnalysis, this.referenceDate, this.rangeDates[0], this.rangeDates[1], this.rangeDates[0], this.rangeDates[1], ValuationTypeEnum.MARKETVALUE).subscribe(
         {
           next: (instrumentFullDetails) => {
             this.selectedInstrumentFullDetails = instrumentFullDetails;

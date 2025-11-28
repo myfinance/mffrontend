@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { InstrumentDetails } from '../shared/data-access-mfdata/model/instrumentdetails';
 import { InstrumentFullDetails } from '../shared/data-access-mfdata/model/instrumentfulldetails';
+import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AssetviewService {
   private budgetDetails: InstrumentDetails[] = [];
   private selectedInstrumentKey="";
   private selectedInstrumentFullDetails: InstrumentFullDetails | undefined;
+  private valuationType: ValuationTypeEnum = ValuationTypeEnum.MARKETVALUE;
 
   private tenantValueCurve: Map<Date, number> = new Map<Date, number>();
 
@@ -128,7 +130,7 @@ export class AssetviewService {
   }
 
   private loadTenantValueCurve(){
-    this.mfDataService.getInstrumentValueCurve(this.mfDataService.currentTenant.businesskey, this.rangeDates[0], this.rangeDates[1]).subscribe(
+    this.mfDataService.getInstrumentValueCurve(this.mfDataService.currentTenant.businesskey, this.rangeDates[0], this.rangeDates[1], this.valuationType).subscribe(
       {
         next: (valueCurve) => {
           this.tenantValueCurve = valueCurve.valueCurve;
@@ -140,7 +142,7 @@ export class AssetviewService {
   }
 
   private loadAccountDetails() {
-    this.mfDataService.getDetailedAccounts(this.dateaforAnalysis, this.referenceDate).subscribe(
+    this.mfDataService.getDetailedAccounts(this.dateaforAnalysis, this.referenceDate, this.valuationType).subscribe(
       {
         next: (instrumentDetails) => {
           this.accountDetails = instrumentDetails;
@@ -152,7 +154,7 @@ export class AssetviewService {
   }
 
   private loadBudgetDetails() {
-    this.mfDataService.getDetailedBudgets(this.dateaforAnalysis, this.referenceDate).subscribe(
+    this.mfDataService.getDetailedBudgets(this.dateaforAnalysis, this.referenceDate, this.valuationType).subscribe(
       {
         next: (instrumentDetails) => {
           this.budgetDetails = instrumentDetails;
@@ -165,7 +167,7 @@ export class AssetviewService {
 
   private loadInstrumentDetails() {
     if(this.selectedInstrumentKey!== null && this.selectedInstrumentKey!==""){
-      this.mfDataService.getInstrumenDetails(this.selectedInstrumentKey, this.dateaforAnalysis, this.referenceDate, this.rangeDates[0], this.rangeDates[1], this.referenceDate, this.dateaforAnalysis).subscribe(
+      this.mfDataService.getInstrumenDetails(this.selectedInstrumentKey, this.dateaforAnalysis, this.referenceDate, this.rangeDates[0], this.rangeDates[1], this.referenceDate, this.dateaforAnalysis, this.valuationType).subscribe(
         {
           next: (instrumentFullDetails) => {
             this.selectedInstrumentFullDetails = instrumentFullDetails;

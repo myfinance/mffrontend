@@ -329,34 +329,37 @@ export class MfdataService {
     return this.auth.credentials.username;
   }
 
-  getInstrumentValue(businesskey:string, valueDate: Date): Observable<number> {
-    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+JsonConvertHelper.dateToIsoString(valueDate));
+  getInstrumentValue(businesskey:string, valueDate: Date, valuationType: string): Observable<number> {
+    return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+JsonConvertHelper.dateToIsoString(valueDate) + "&valuationType="+valuationType);
   }
 
-  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date): Observable<ValueCurve> {
-    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate));
+  getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date, valuationType: string): Observable<ValueCurve> {
+    return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate) + "&valuationType="+valuationType);
   }
 
-  getDetailedAccounts(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+  getDetailedAccounts(duedate: Date, referenceDate:Date, valuationType: string) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedaccounts?tenantbusinesskey="+this.currentTenant.businesskey 
       + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
-      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
+      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate)
+      + "&valuationType="+valuationType);
   }
 
-  getDetailedBudgets(duedate: Date, referenceDate:Date) : Observable<InstrumentDetails[]> {
+  getDetailedBudgets(duedate: Date, referenceDate:Date, valuationType: string) : Observable<InstrumentDetails[]> {
     return this.mfClientservice.getResource("listdetailedbudgets?tenantbusinesskey="+this.currentTenant.businesskey 
       + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
-      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate));
+      + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate)
+      + "&valuationType="+valuationType);
   }
 
-  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date, startTimeSeries:Date, endTimeSeries:Date, firstCashflowDate:Date, lastCashflowDate:Date) : Observable<InstrumentFullDetails> {
+  getInstrumenDetails(businesskey:string, duedate: Date, referenceDate:Date, startTimeSeries:Date, endTimeSeries:Date, firstCashflowDate:Date, lastCashflowDate:Date, valuationType: string) : Observable<InstrumentFullDetails> {
     return this.mfClientservice.getResource("instrumentdetails?businesskey="+businesskey
     + "&duedate="+JsonConvertHelper.dateToIsoString(duedate)
     + "&referencedate="+JsonConvertHelper.dateToIsoString(referenceDate)
     + "&starttimeseries="+JsonConvertHelper.dateToIsoString(startTimeSeries)
     + "&endtimeseries="+JsonConvertHelper.dateToIsoString(endTimeSeries)
     + "&firstcashflowdate="+JsonConvertHelper.dateToIsoString(firstCashflowDate)
-    + "&lastcashflowdate="+JsonConvertHelper.dateToIsoString(lastCashflowDate));
+    + "&lastcashflowdate="+JsonConvertHelper.dateToIsoString(lastCashflowDate)
+    + "&valuationType="+valuationType);
   }
 
   getSecurityDetails(duedate: Date, referenceDate:Date) : Observable<SecurityDetails[]> {

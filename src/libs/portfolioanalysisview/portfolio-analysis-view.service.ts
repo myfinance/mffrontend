@@ -3,6 +3,7 @@ import { Subject, forkJoin } from 'rxjs';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Position } from '../shared/data-access-mfdata/model/position';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
+import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +84,7 @@ export class PortfolioAnalysisViewService {
     if (this.giros.length > 0) {
       forkJoin(
         this.giros.map(giro =>
-          this.service.getInstrumentValue(giro.businesskey, this.dateForAnalysis)
+          this.service.getInstrumentValue(giro.businesskey, this.dateForAnalysis, ValuationTypeEnum.MARKETVALUE)
         )
       ).subscribe({
         next: (values: number[]) => {

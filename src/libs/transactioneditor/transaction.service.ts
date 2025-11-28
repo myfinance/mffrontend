@@ -5,6 +5,7 @@ import { Transaction, TransactionTypeEnum } from '../shared/data-access-mfdata/m
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { CsvRow } from '../shared/data-access-mfdata/csvimporter';
 import { InstrumentFullDetails } from '../shared/data-access-mfdata/model/instrumentfulldetails';
+import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +156,7 @@ export class TransactionService {
 
   loadInstrumentDetails(startDate: Date, endDate:Date){
     if(this.selectedGiro4MassUpload!== null && this.selectedGiro4MassUpload?.businesskey!=undefined){
-      this.mfDataService.getInstrumenDetails(this.selectedGiro4MassUpload.businesskey, endDate, startDate, startDate, endDate, startDate, endDate).subscribe(
+      this.mfDataService.getInstrumenDetails(this.selectedGiro4MassUpload.businesskey, endDate, startDate, startDate, endDate, startDate, endDate, ValuationTypeEnum.MARKETVALUE).subscribe(
         {
           next: (instrumentFullDetails) => {
             this.selectedInstrumentFullDetails = instrumentFullDetails;
