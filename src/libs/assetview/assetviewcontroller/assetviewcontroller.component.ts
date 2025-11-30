@@ -4,11 +4,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { AssetviewService } from '../assetview.service';
 import { FormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
+import { ValuationTypeEnum } from '../../shared/data-access-mfdata/model/valuecurve';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'mffrontend-assetviewcontroller',
   standalone: true,
-  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule],
+  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule, DropdownModule],
   templateUrl: './assetviewcontroller.component.html',
   styleUrls: ['./assetviewcontroller.component.scss'],
 })
@@ -16,6 +18,8 @@ export class AssetviewcontrollerComponent {
   dateForAnalysis: Date | undefined;
   referenceDate: Date;
   rangeDates: Date[] | undefined;
+  valuationTypes: String[] = ['MARKETVALUE', 'PRUDENT', 'STATIC'];
+  selectedValuationType='STATIC';
 
   sidebarVisible = false;
 
@@ -23,6 +27,7 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = this.service.getDateForAnalysis();
     this.referenceDate = this.service.getReferenceDate();
     this.rangeDates = this.service.getRangeDates();
+    this.selectedValuationType = this.service.getValuationType();
   }
 
   handleDateForAnalysisChanged(date: Date) {
@@ -35,5 +40,9 @@ export class AssetviewcontrollerComponent {
 
   handleRangeDateChanged(date: Date[]|any) {
     this.service.setRangeDate(date); 
+  }
+
+  handleValuationTypeChanged(event: any) {
+    this.service.setValuationType(event.value);
   }
 }

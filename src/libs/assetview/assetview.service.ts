@@ -116,6 +116,15 @@ export class AssetviewService {
     return this.tenantValueCurve;
   }
 
+  getValuationType(): ValuationTypeEnum {
+    return this.valuationType;
+  }
+
+  setValuationType(valuationType: ValuationTypeEnum) {
+    this.valuationType = valuationType;
+    this.loadData();
+  }
+
   loadData(){
     this.loadTenantValueCurve();
     this.loadDetails();
