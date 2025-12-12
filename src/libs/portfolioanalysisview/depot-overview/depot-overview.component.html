@@ -8,6 +8,21 @@
         </div>
     </div>
 
+    <p-table [value]="portfolioMetrics" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Portfolio</th>
+                <th>Total CAGR</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-metric>
+            <tr>
+                <td>{{ metric.portfolio }}</td>
+                <td>{{ metric.totalCagr | percent:'1.2-2' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
     <p-table [value]="positions" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>

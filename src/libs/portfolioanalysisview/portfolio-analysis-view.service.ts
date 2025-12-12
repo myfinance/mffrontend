@@ -4,6 +4,7 @@ import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Position } from '../shared/data-access-mfdata/model/position';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
+import { PortfolioMetrics } from '../shared/data-access-mfdata/model/portfoliometrics';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class PortfolioAnalysisViewService {
   private positions: Position[] = [];
   private giros: Instrument[] = [];
   private sumOfCash: number = 0;
+  private portfolioMetrics: PortfolioMetrics[] = [];
 
   portfolioEventSubject: Subject<unknown> = new Subject<unknown>();
   
@@ -65,6 +67,7 @@ export class PortfolioAnalysisViewService {
     )
     this.loadPositions();
     this.loadInstruments();
+    this.loadPortfolioMetrics();
   }
 
   private loadInstruments() {
@@ -73,6 +76,18 @@ export class PortfolioAnalysisViewService {
         next: (instruments) => {
           this.giros = instruments.filter(i=>i.instrumentType=='GIRO');
           this.loadCashValues();
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  private loadPortfolioMetrics() {
+    this.service.getPortfolioMetrics().subscribe(
+      {
+        next: (portfolioMetric) => {
+          this.portfolioMetrics = portfolioMetric;
+          this.portfolioEventSubject.next(true);
         },
         error: (e) => console.error(e)
       }
@@ -142,4 +157,9 @@ export class PortfolioAnalysisViewService {
   getSumOfCash(): number {
     return this.sumOfCash;
   }
+
+  getPortfolioMetrics(): PortfolioMetrics[] {
+    return this.portfolioMetrics;
+  }
+
 }

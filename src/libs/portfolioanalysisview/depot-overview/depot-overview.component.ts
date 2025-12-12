@@ -4,6 +4,10 @@ import { TableModule } from 'primeng/table';
 import { PortfolioAnalysisViewService } from '../portfolio-analysis-view.service';
 import { Position } from '../../shared/data-access-mfdata/model/position';
 import { ChartModule } from 'primeng/chart';
+import { PortfolioMetrics } from '../../shared/data-access-mfdata/model/portfoliometrics';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+
 
 @Component({
   selector: 'app-depot-overview',
@@ -22,10 +26,16 @@ export class DepotOverviewComponent {
   equityOptions: any;
   equityPlugins: any[] = [];
 
+  portfolioMetrics: PortfolioMetrics[] = [];
+
   constructor(private service: PortfolioAnalysisViewService) {
+    registerLocaleData(localeDe);
     this.service.portfolioEventSubject.subscribe({
       next:
-        () => this.loadPositions(),
+        () => {
+          this.loadPositions();
+          this.loadPortfolioMetrics();
+        },
       error:
         (e) => {
           console.error(e);
@@ -33,10 +43,22 @@ export class DepotOverviewComponent {
         }
     })
     this.loadPositions();
+    this.loadPortfolioMetrics();
+  }
+
+  loadPortfolioMetrics() {
+    this.portfolioMetrics = this.service.getPortfolioMetrics();
   }
 
   loadPositions() {
-    this.positions = this.service.getPositions().filter(p => p.amount !== 0);
+    const result = this.service.getPositions();
+    if(result!=null && result.length>0){
+      this.positions = result.filter(p => p.amount !== 0);
+      this.prepareCharts();
+    }
+  }
+
+  private prepareCharts() {
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
 
@@ -96,7 +118,7 @@ export class DepotOverviewComponent {
         },
         tooltip: {
           callbacks: {
-            label: function(context: any) {
+            label: function (context: any) {
               let label = context.label || '';
               if (label) {
                 label += ': ';
@@ -117,7 +139,7 @@ export class DepotOverviewComponent {
         const ctx = chart.ctx;
         const txt = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(total);
         const sidePadding = 60;
-        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
@@ -173,7 +195,7 @@ export class DepotOverviewComponent {
         },
         tooltip: {
           callbacks: {
-            label: function(context: any) {
+            label: function (context: any) {
               let label = context.label || '';
               if (label) {
                 label += ': ';
@@ -194,7 +216,7 @@ export class DepotOverviewComponent {
         const ctx = chart.ctx;
         const txt = numberOfEquities.toString(); // Display number of equities
         const sidePadding = 60;
-        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);

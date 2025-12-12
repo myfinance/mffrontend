@@ -15,6 +15,7 @@ import { EndOfDayPrices } from './model/endofdayprices';
 import { EndOfDayPrice } from './model/endofdayprice';
 import { Position } from './model/position';
 import { MarketDataImportTypeEnum, SecurityMetrics } from './model/securitymetrics';
+import { PortfolioMetrics } from './model/portfoliometrics';
 
 @Injectable({
   providedIn: 'root'
@@ -420,5 +421,9 @@ export class MfdataService {
         },
       error: (e) => console.error(e)
     });
+  }
+
+  getPortfolioMetrics(): Observable<PortfolioMetrics[]> {
+    return this.mfClientservice.getResource("portfoliometrics");
   }
 }
