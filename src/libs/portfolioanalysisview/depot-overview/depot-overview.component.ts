@@ -24,7 +24,7 @@ export class DepotOverviewComponent {
 
   equityData: any;
   equityOptions: any;
-  equityPlugins: any[] = [];
+  numberOfEquities = 0;
 
   portfolioMetrics: PortfolioMetrics[] = [];
 
@@ -56,6 +56,35 @@ export class DepotOverviewComponent {
       this.positions = result.filter(p => p.amount !== 0);
       this.prepareCharts();
     }
+  }
+
+  getEquityPlugins() {
+    return [{
+      beforeDraw: (chart: any) => {
+        const ctx = chart.ctx;
+        const txt = this.numberOfEquities.toString(); // Display number of equities
+        const sidePadding = 60;
+        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+
+        const stringWidth = ctx.measureText(txt).width;
+        const elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+        const widthRatio = elementWidth / stringWidth;
+        const newFontSize = Math.floor(30 * widthRatio);
+        const elementHeight = (chart.innerRadius * 2);
+
+        const fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+        ctx.font = fontSizeToUse + 'px Arial';
+        ctx.fillStyle = 'black';
+
+        ctx.fillText(txt, centerX, centerY);
+      }
+    }];
   }
 
   private prepareCharts() {
@@ -173,7 +202,7 @@ export class DepotOverviewComponent {
     const sortedEquityAggregation = new Map([...equityAggregation.entries()].sort((a, b) => b[1] - a[1]));
 
     const equityTotal = Array.from(sortedEquityAggregation.values()).reduce((a, b) => a + b, 0);
-    const numberOfEquities = sortedEquityAggregation.size;
+    this.numberOfEquities = sortedEquityAggregation.size;
 
     this.equityData = {
       labels: Array.from(sortedEquityAggregation.keys()),
@@ -210,32 +239,5 @@ export class DepotOverviewComponent {
         }
       }
     };
-
-    this.equityPlugins = [{
-      beforeDraw: (chart: any) => {
-        const ctx = chart.ctx;
-        const txt = numberOfEquities.toString(); // Display number of equities
-        const sidePadding = 60;
-        const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-        const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-
-        const stringWidth = ctx.measureText(txt).width;
-        const elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
-
-        const widthRatio = elementWidth / stringWidth;
-        const newFontSize = Math.floor(30 * widthRatio);
-        const elementHeight = (chart.innerRadius * 2);
-
-        const fontSizeToUse = Math.min(newFontSize, elementHeight);
-
-        ctx.font = fontSizeToUse + 'px Arial';
-        ctx.fillStyle = 'black';
-
-        ctx.fillText(txt, centerX, centerY);
-      }
-    }];
   }
 }

@@ -4,7 +4,7 @@
             <p-chart type="doughnut" [data]="data" [options]="options" [plugins]="plugins"></p-chart>
         </div>
         <div class="card flex justify-content-center">
-            <p-chart type="doughnut" [data]="equityData" [options]="equityOptions" [plugins]="equityPlugins"></p-chart>
+            <p-chart type="doughnut" [data]="equityData" [options]="equityOptions" [plugins]="getEquityPlugins()"></p-chart>
         </div>
     </div>
 
