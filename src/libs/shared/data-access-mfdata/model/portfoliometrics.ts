@@ -12,16 +12,13 @@ export class PortfolioMetrics {
         cashflows: number[], cashflowsWithStartAndEndValues: Map<number, number[]>) {
         this.portfolio = portfolio;
         this.totalCagr = totalCagr;
-        this.cagrPerYear = new Map<number, number>();
+        this.cagrPerYear = cagrPerYear;
         this.totalYield = totalYield;
-        this.yieldPerYear = new Map<number, number>();
+        this.yieldPerYear = yieldPerYear;
         this.cashflows = cashflows;
-        this.cashflowsWithStartAndEndValues = new Map<number, number[]>();
-        
-        this.cagrPerYear = new Map(Object.entries(cagrPerYear).map(([k, v]) => [Number(k), v]));
-        this.yieldPerYear = new Map(Object.entries(yieldPerYear).map(([k, v]) => [Number(k), v]));
-        this.cashflowsWithStartAndEndValues = new Map(Object.entries(cashflowsWithStartAndEndValues).map(([k, v]) => [Number(k), v]));
+        this.cashflowsWithStartAndEndValues = cashflowsWithStartAndEndValues;
     }
+
     toJSON() {
         return {
             portfolio: this.portfolio,
@@ -35,21 +32,27 @@ export class PortfolioMetrics {
     } 
     
     static fromJson(data: any): PortfolioMetrics {
-        const cagrPerYear = new Map<number, number>(
-            Object.entries(data.cagrPerYear).map(([key, value]) => [Number(key), value as number])
-        );
+        let cagrPerYear = new Map<number, number>();
+        if (data.cagrPerYear) {
+            cagrPerYear = new Map<number, number>(
+                Object.entries(data.cagrPerYear).map(([key, value]) => [Number(key), value as number])
+            );
+        }
+        
         let yieldPerYear = new Map<number, number>();
-        if(data.yieldPerYear!=null && data.yieldPerYear!=undefined){
+        if(data.yieldPerYear){
             yieldPerYear = new Map<number, number>(
                 Object.entries(data.yieldPerYear).map(([key, value]) => [Number(key), value as number])
             );
         }
-         let cashflowsWithStartAndEndValues = new Map<number, number[]>();
-        if(data.cashflowsWithStartAndEndValues!=null && data.cashflowsWithStartAndEndValues!=undefined){
+
+        let cashflowsWithStartAndEndValues = new Map<number, number[]>();
+        if(data.cashflowsWithStartAndEndValues){
             cashflowsWithStartAndEndValues = new Map<number, number[]>(
                 Object.entries(data.cashflowsWithStartAndEndValues).map(([key, value]) => [Number(key), value as number[]])
             );
         }
+
         return new PortfolioMetrics(
             data.portfolio,
             data.totalCagr,
