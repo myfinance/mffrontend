@@ -424,6 +424,8 @@ export class MfdataService {
   }
 
   getPortfolioMetrics(): Observable<PortfolioMetrics[]> {
-    return this.mfClientservice.getResource("portfoliometrics");
+    return this.mfClientservice.getResource("portfoliometrics").pipe(
+      map((data: any[]) => data.map(item => PortfolioMetrics.fromJson(item))) 
+    );
   }
 }

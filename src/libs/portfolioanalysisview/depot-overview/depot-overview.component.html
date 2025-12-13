@@ -13,12 +13,18 @@
             <tr>
                 <th>Portfolio</th>
                 <th>Total CAGR</th>
+                <th>{{currentYear}}</th>
+                <th>{{lastYear}}</th>
+                <th>{{yearBeforeLast}}</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-metric>
             <tr>
                 <td>{{ metric.portfolio }}</td>
                 <td>{{ metric.totalCagr | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, currentYear) | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, lastYear) | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, yearBeforeLast) | percent:'1.2-2' }}</td>
             </tr>
         </ng-template>
     </p-table>

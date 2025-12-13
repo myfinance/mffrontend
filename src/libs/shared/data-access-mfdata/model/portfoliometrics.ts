@@ -32,5 +32,32 @@ export class PortfolioMetrics {
             cashflows: this.cashflows,
             cashflowsWithStartAndEndValues: Object.fromEntries(this.cashflowsWithStartAndEndValues)
         }
-    }   
+    } 
+    
+    static fromJson(data: any): PortfolioMetrics {
+        const cagrPerYear = new Map<number, number>(
+            Object.entries(data.cagrPerYear).map(([key, value]) => [Number(key), value as number])
+        );
+        let yieldPerYear = new Map<number, number>();
+        if(data.yieldPerYear!=null && data.yieldPerYear!=undefined){
+            yieldPerYear = new Map<number, number>(
+                Object.entries(data.yieldPerYear).map(([key, value]) => [Number(key), value as number])
+            );
+        }
+         let cashflowsWithStartAndEndValues = new Map<number, number[]>();
+        if(data.cashflowsWithStartAndEndValues!=null && data.cashflowsWithStartAndEndValues!=undefined){
+            cashflowsWithStartAndEndValues = new Map<number, number[]>(
+                Object.entries(data.cashflowsWithStartAndEndValues).map(([key, value]) => [Number(key), value as number[]])
+            );
+        }
+        return new PortfolioMetrics(
+            data.portfolio,
+            data.totalCagr,
+            cagrPerYear,
+            data.totalYield,
+            yieldPerYear,
+            data.cashflows,
+            cashflowsWithStartAndEndValues
+        );
+    }
 }

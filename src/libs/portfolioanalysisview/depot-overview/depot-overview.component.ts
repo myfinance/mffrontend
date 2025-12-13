@@ -27,9 +27,16 @@ export class DepotOverviewComponent {
   numberOfEquities = 0;
 
   portfolioMetrics: PortfolioMetrics[] = [];
+  currentYear: number;
+  lastYear: number;
+  yearBeforeLast: number;
 
   constructor(private service: PortfolioAnalysisViewService) {
     registerLocaleData(localeDe);
+    const today = new Date();
+    this.currentYear = today.getFullYear();
+    this.lastYear = this.currentYear - 1;
+    this.yearBeforeLast = this.currentYear - 2;
     this.service.portfolioEventSubject.subscribe({
       next:
         () => {
@@ -241,5 +248,12 @@ export class DepotOverviewComponent {
         }
       }
     };
+  }
+
+  getCagrForYear(metric: PortfolioMetrics, year: number): number {
+    if (metric.cagrPerYear && metric.cagrPerYear.get(year)) {
+      return metric.cagrPerYear.get(year)!;
+    }
+    return 0;
   }
 }
