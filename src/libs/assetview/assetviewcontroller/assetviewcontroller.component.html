@@ -31,6 +31,8 @@
   <label>Bewertungstyp</label>
   <br />
   <p-dropdown [options]="valuationTypes" [(ngModel)]="selectedValuationType" (onChange)="handleValuationTypeChanged($event)"/>
+  <br />
+  <p-button (click)="setPeriodToLastMonth()" label="Last Month"></p-button>
 
 </p-sidebar>
 <p-button

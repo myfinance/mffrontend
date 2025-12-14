@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
 import { ValuationTypeEnum } from '../../shared/data-access-mfdata/model/valuecurve';
 import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'mffrontend-assetviewcontroller',
   standalone: true,
-  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule, DropdownModule],
+  imports: [CommonModule, CalendarModule, FormsModule, SidebarModule, DropdownModule, ButtonModule],
   templateUrl: './assetviewcontroller.component.html',
   styleUrls: ['./assetviewcontroller.component.scss'],
 })
@@ -44,5 +45,17 @@ export class AssetviewcontrollerComponent {
 
   handleValuationTypeChanged(event: any) {
     this.service.setValuationType(event.value);
+  }
+
+  setPeriodToLastMonth() {
+    const today = new Date();
+    const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    const lastDayOfMonthBeforeLast = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+    
+    this.dateForAnalysis = lastDayOfLastMonth;
+    this.referenceDate = lastDayOfMonthBeforeLast;
+
+    this.service.setDateForAnalysis(this.dateForAnalysis); 
+    this.service.setReferenceDate(this.referenceDate); 
   }
 }
