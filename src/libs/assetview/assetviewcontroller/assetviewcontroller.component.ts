@@ -28,7 +28,9 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = this.service.getDateForAnalysis();
     this.referenceDate = this.service.getReferenceDate();
     this.rangeDates = this.service.getRangeDates();
+    this.service.setValuationType('STATIC');
     this.selectedValuationType = this.service.getValuationType();
+    this.setPeriodToLastMonth();
   }
 
   handleDateForAnalysisChanged(date: Date) {
@@ -54,6 +56,42 @@ export class AssetviewcontrollerComponent {
     
     this.dateForAnalysis = lastDayOfLastMonth;
     this.referenceDate = lastDayOfMonthBeforeLast;
+
+    this.service.setDateForAnalysis(this.dateForAnalysis); 
+    this.service.setReferenceDate(this.referenceDate); 
+  }
+
+  setPeriodToLastYear() {
+    const today = new Date();
+    const lastDay = new Date(today.getFullYear()-1, 11, 31);
+    const firstDay = new Date(today.getFullYear()-2, 11, 31);
+    
+    this.dateForAnalysis = lastDay;
+    this.referenceDate = firstDay;
+
+    this.service.setDateForAnalysis(this.dateForAnalysis); 
+    this.service.setReferenceDate(this.referenceDate); 
+  }
+
+  setPeriodToCurrentYear() {
+    const lastDay = new Date();
+    const firstDay = new Date(lastDay.getFullYear()-1, 11, 31);
+    
+    this.dateForAnalysis = lastDay;
+    this.referenceDate = firstDay;
+
+    this.service.setDateForAnalysis(this.dateForAnalysis); 
+    this.service.setReferenceDate(this.referenceDate); 
+  }
+
+
+  setPeriodToTTM() {
+    const today = new Date();
+    const lastDay = new Date(today.getFullYear(), today.getMonth(), 0);
+    const firstDay = new Date(lastDay.getFullYear()-1, today.getMonth(), 0);
+    
+    this.dateForAnalysis = lastDay;
+    this.referenceDate = firstDay;
 
     this.service.setDateForAnalysis(this.dateForAnalysis); 
     this.service.setReferenceDate(this.referenceDate); 
