@@ -7,9 +7,10 @@ export class PortfolioMetrics {
     yieldPerYear: Map<number, number>;
     cashflows: number[];
     cashflowsWithStartAndEndValues: Map<number, number[]>;
+    isSingleSecurity: boolean;
 
     constructor(portfolio: string, totalCagr: number, cagrPerYear: Map<number, number>, totalYield: number, yieldPerYear: Map<number, number>,
-        cashflows: number[], cashflowsWithStartAndEndValues: Map<number, number[]>) {
+        cashflows: number[], cashflowsWithStartAndEndValues: Map<number, number[]>, isSingleSecurity: boolean) {
         this.portfolio = portfolio;
         this.totalCagr = totalCagr;
         this.cagrPerYear = cagrPerYear;
@@ -17,6 +18,7 @@ export class PortfolioMetrics {
         this.yieldPerYear = yieldPerYear;
         this.cashflows = cashflows;
         this.cashflowsWithStartAndEndValues = cashflowsWithStartAndEndValues;
+        this.isSingleSecurity = isSingleSecurity;
     }
 
     toJSON() {
@@ -27,7 +29,8 @@ export class PortfolioMetrics {
             totalYield: this.totalYield,
             yieldPerYear: Object.fromEntries(this.yieldPerYear),
             cashflows: this.cashflows,
-            cashflowsWithStartAndEndValues: Object.fromEntries(this.cashflowsWithStartAndEndValues)
+            cashflowsWithStartAndEndValues: Object.fromEntries(this.cashflowsWithStartAndEndValues),
+            isSingleSecurity: this.isSingleSecurity
         }
     } 
     
@@ -60,7 +63,8 @@ export class PortfolioMetrics {
             data.totalYield,
             yieldPerYear,
             data.cashflows,
-            cashflowsWithStartAndEndValues
+            cashflowsWithStartAndEndValues,
+            data.isSingleSecurity
         );
     }
 }

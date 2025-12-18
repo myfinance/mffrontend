@@ -8,6 +8,14 @@ import { PortfolioMetrics } from '../../shared/data-access-mfdata/model/portfoli
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 
+interface SecurityMetricView {
+  businesskey: string;
+  description: string;
+  totalCagr: number;
+  cagrPerYear: Map<number, number>;
+  amount: number;
+  value: number;
+}
 
 @Component({
   selector: 'app-depot-overview',
@@ -27,6 +35,7 @@ export class DepotOverviewComponent {
   numberOfEquities = 0;
 
   portfolioMetrics: PortfolioMetrics[] = [];
+  securityMetricViews: SecurityMetricView[] = [];
   currentYear: number;
   lastYear: number;
   yearBeforeLast: number;
@@ -40,8 +49,7 @@ export class DepotOverviewComponent {
     this.service.portfolioEventSubject.subscribe({
       next:
         () => {
-          this.loadPositions();
-          this.loadPortfolioMetrics();
+          this.loadData();
         },
       error:
         (e) => {
@@ -49,20 +57,56 @@ export class DepotOverviewComponent {
           alert('Invalid Credentials');
         }
     })
-    this.loadPositions();
-    this.loadPortfolioMetrics();
+    this.loadData();
   }
 
-  loadPortfolioMetrics() {
-    this.portfolioMetrics = this.service.getPortfolioMetrics();
-  }
-
-  loadPositions() {
-    const result = this.service.getPositions();
-    if(result!=null && result.length>0){
-      this.positions = result.filter(p => p.amount !== 0);
+  loadData() {
+    const positionResult = this.service.getPositions();
+    if(positionResult!=null && positionResult.length>0){
+      this.positions = positionResult.filter(p => p.amount !== 0);
       this.prepareCharts();
     }
+
+    const metricsResult = this.service.getPortfolioMetrics();
+    this.portfolioMetrics = metricsResult.filter(pm => !pm.isSingleSecurity);
+    const securityMetrics = metricsResult.filter(pm => pm.isSingleSecurity);
+
+    this.buildSecurityMetricViews(securityMetrics);
+  }
+
+  buildSecurityMetricViews(securityMetrics: PortfolioMetrics[]) {
+    const aggregatedPositions = new Map<string, { amount: number, value: number, description: string }>();
+
+    this.positions.forEach(pos => {
+      const existing = aggregatedPositions.get(pos.securityId);
+      if (existing) {
+        existing.amount += pos.amount;
+        existing.value += pos.value;
+      } else {
+        aggregatedPositions.set(pos.securityId, {
+          amount: pos.amount,
+          value: pos.value,
+          description: pos.securityDescription
+        });
+      }
+    });
+
+    this.securityMetricViews = securityMetrics.map(metric => {
+      const positionData = aggregatedPositions.get(metric.portfolio);
+      return {
+        businesskey: metric.portfolio,
+        description: positionData ? positionData.description : metric.portfolio,
+        totalCagr: metric.totalCagr,
+        cagrPerYear: metric.cagrPerYear,
+        amount: positionData ? positionData.amount : 0,
+        value: positionData ? positionData.value : 0
+      };
+    });
+  }
+
+  getSecurityDescription(businesskey: string): string {
+    const position = this.positions.find(p => p.securityId === businesskey);
+    return position ? position.securityDescription : businesskey;
   }
 
   getTotalValuesPlugins() {
@@ -257,3 +301,4 @@ export class DepotOverviewComponent {
     return 0;
   }
 }
+

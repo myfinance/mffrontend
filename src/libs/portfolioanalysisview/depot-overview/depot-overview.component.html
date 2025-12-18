@@ -29,6 +29,47 @@
         </ng-template>
     </p-table>
 
+    <p-table [value]="securityMetricViews" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="description">
+                    <div class="flex items-center">
+                        Security
+                        <p-sortIcon field="description" />
+                        <p-columnFilter type="text" field="description" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="value">
+                    <div class="flex items-center">
+                        Value
+                        <p-sortIcon field="value" />
+                        <p-columnFilter type="text" field="value" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="totalCagr">
+                    <div class="flex items-center">
+                        Total CAGR
+                        <p-sortIcon field="totalCagr" />
+                        <p-columnFilter type="text" field="totalCagr" display="menu" />
+                    </div>
+                </th>
+                <th>{{currentYear}}</th>
+                <th>{{lastYear}}</th>
+                <th>{{yearBeforeLast}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-metric>
+            <tr>
+                <td>{{ metric.description }}</td>
+                <td>{{ metric.value | currency:'EUR':'symbol':'1.2-2' }}</td>
+                <td>{{ metric.totalCagr | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, currentYear) | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, lastYear) | percent:'1.2-2' }}</td>
+                <td>{{ getCagrForYear(metric, yearBeforeLast) | percent:'1.2-2' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
     <p-table [value]="positions" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
