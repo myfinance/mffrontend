@@ -41,11 +41,23 @@
   </form>
 
   <div *ngIf="eodPrices && eodPrices.prices">
-    <p-table [value]="eodPrices.prices | keyvalue" [tableStyle]="{ 'min-width': '30rem' }">
+    <p-table [value]="eodPrices.prices | keyvalue" [tableStyle]="{ 'min-width': '30rem' }" sortField="day" [sortOrder]="-1">
         <ng-template pTemplate="header">
             <tr>
-                <th>Date</th>
-                <th>Value</th>
+                <th pSortableColumn="key">
+                    <div class="flex items-center">
+                        Date
+                        <p-sortIcon field="key" />
+                        <p-columnFilter type="date" field="key" display="menu" />
+                    </div>
+                </th>
+                <th pSortableColumn="value">
+                    <div class="flex items-center">
+                        Value
+                        <p-sortIcon field="value" />
+                        <p-columnFilter type="numeric" field="value" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-price>

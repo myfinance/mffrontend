@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Instrument } from '../../shared/data-access-mfdata/model/instrument';
 import { PriceEditorService } from '../price-editor.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { EndOfDayPrices } from '../../shared/data-access-mfdata/model/endofdayprices';
 import { TableModule } from 'primeng/table';
+import localeDe from '@angular/common/locales/de';
 
 @Component({
   selector: 'app-price-editor',
@@ -38,7 +39,7 @@ export class PriceEditorComponent {
   });
 
   constructor(private service: PriceEditorService) {
-
+    registerLocaleData(localeDe);
     this.service.securityEventSubject.subscribe(
       {
         next: () => {
