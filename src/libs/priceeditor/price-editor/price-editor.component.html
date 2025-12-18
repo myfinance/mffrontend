@@ -39,3 +39,20 @@
     <button class="btn btn-primary" type="submit">Insert</button>
   
   </form>
+
+  <div *ngIf="eodPrices && eodPrices.prices">
+    <p-table [value]="eodPrices.prices | keyvalue" [tableStyle]="{ 'min-width': '30rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Date</th>
+                <th>Value</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-price>
+            <tr>
+                <td>{{ price.key | date:'dd.MM.yyyy' }}</td>
+                <td>{{ price.value.value | currency:'EUR' }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -7,17 +7,20 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { EndOfDayPrices } from '../../shared/data-access-mfdata/model/endofdayprices';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-price-editor',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DropdownModule, ButtonModule, CalendarModule, InputNumberModule],
+  imports: [CommonModule, ReactiveFormsModule, DropdownModule, ButtonModule, CalendarModule, InputNumberModule, TableModule],
   templateUrl: './price-editor.component.html',
   styleUrl: './price-editor.component.scss'
 })
 export class PriceEditorComponent {
 
   securities: Instrument[] = [];
+  eodPrices: EndOfDayPrices | undefined;
 
   inputForm= new FormGroup({
 
@@ -45,6 +48,20 @@ export class PriceEditorComponent {
       }
     )
     this.loadSecurities();
+
+    this.inputForm.controls.security.valueChanges.subscribe(
+      (security) => {
+        if(security) {
+          this.service.loadPrices(security.businesskey).subscribe(
+            (prices) => {
+              this.eodPrices = prices;
+            }
+          )
+        } else {
+          this.eodPrices = undefined;
+        }
+      }
+    )
   }
 
   private loadSecurities() {

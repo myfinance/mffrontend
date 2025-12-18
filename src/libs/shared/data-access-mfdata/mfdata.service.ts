@@ -334,6 +334,10 @@ export class MfdataService {
     return this.mfClientservice.getResource("getvalue?businesskey="+businesskey + "&date="+JsonConvertHelper.dateToIsoString(valueDate) + "&valuationType="+valuationType);
   }
 
+  getEndOfDayPrices(businesskey:string): Observable<EndOfDayPrices> {
+    return this.mfClientservice.getResource("endOfDayPrices?businesskey="+businesskey );
+  }
+
   getInstrumentValueCurve(businesskey:string, startDate: Date, endDate: Date, valuationType: string): Observable<ValueCurve> {
     return this.mfClientservice.getResource("getvaluecurve?businesskey="+businesskey + "&startDate="+JsonConvertHelper.dateToIsoString(startDate) + "&endDate="+JsonConvertHelper.dateToIsoString(endDate) + "&valuationType="+valuationType);
   }

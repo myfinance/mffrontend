@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MfdataService } from '../shared/data-access-mfdata/mfdata.service';
 import { Instrument, InstrumentTypeEnum } from '../shared/data-access-mfdata/model/instrument';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { EndOfDayPrices } from '../shared/data-access-mfdata/model/endofdayprices';
 
 
 @Injectable({
@@ -56,6 +57,10 @@ export class PriceEditorService {
         error: (e) => console.error(e)
       }
     )
+  }
+
+  loadPrices(businesskey:string): Observable<EndOfDayPrices> {
+    return this.service.getEndOfDayPrices(businesskey);
   }
 
   savePrice(securityBusinesskey: string | undefined, priceDate: Date | undefined, value: number | undefined) {
