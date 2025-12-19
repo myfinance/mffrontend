@@ -57,8 +57,7 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = lastDayOfLastMonth;
     this.referenceDate = lastDayOfMonthBeforeLast;
 
-    this.service.setDateForAnalysis(this.dateForAnalysis); 
-    this.service.setReferenceDate(this.referenceDate); 
+    this.service.setDateAndReferenceDateForAnalysis(this.dateForAnalysis, this.referenceDate);
   }
 
   setPeriodToLastYear() {
@@ -69,8 +68,7 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = lastDay;
     this.referenceDate = firstDay;
 
-    this.service.setDateForAnalysis(this.dateForAnalysis); 
-    this.service.setReferenceDate(this.referenceDate); 
+    this.service.setDateAndReferenceDateForAnalysis(this.dateForAnalysis, this.referenceDate); 
   }
 
   setPeriodToCurrentYear() {
@@ -80,8 +78,7 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = lastDay;
     this.referenceDate = firstDay;
 
-    this.service.setDateForAnalysis(this.dateForAnalysis); 
-    this.service.setReferenceDate(this.referenceDate); 
+    this.service.setDateAndReferenceDateForAnalysis(this.dateForAnalysis, this.referenceDate);
   }
 
 
@@ -93,7 +90,6 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = lastDay;
     this.referenceDate = firstDay;
 
-    this.service.setDateForAnalysis(this.dateForAnalysis); 
-    this.service.setReferenceDate(this.referenceDate); 
+    this.service.setDateAndReferenceDateForAnalysis(this.dateForAnalysis, this.referenceDate); 
   }
 }

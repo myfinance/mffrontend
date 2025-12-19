@@ -85,6 +85,14 @@ export class AssetviewService {
     return this.dateaforAnalysis;
   }
 
+  // Sets both dates and triggers data reload. 
+  setDateAndReferenceDateForAnalysis(dateaforAnalysis:Date, referenceDate:Date) {
+    this.dateaforAnalysis = dateaforAnalysis;
+    this.referenceDate = referenceDate;
+    this.loadDetails();
+    this.loadInstrumentDetails();
+  }
+
   setDateForAnalysis(dateaforAnalysis:Date) {
     this.dateaforAnalysis = dateaforAnalysis;
     this.loadDetails();
