@@ -28,9 +28,7 @@ export class AssetviewcontrollerComponent {
     this.dateForAnalysis = this.service.getDateForAnalysis();
     this.referenceDate = this.service.getReferenceDate();
     this.rangeDates = this.service.getRangeDates();
-    this.service.setValuationType('STATIC');
     this.selectedValuationType = this.service.getValuationType();
-    this.setPeriodToLastMonth();
   }
 
   handleDateForAnalysisChanged(date: Date) {

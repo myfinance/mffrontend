@@ -14,7 +14,7 @@ export class AssetviewService {
   private budgetDetails: InstrumentDetails[] = [];
   private selectedInstrumentKey="";
   private selectedInstrumentFullDetails: InstrumentFullDetails | undefined;
-  private valuationType: ValuationTypeEnum = ValuationTypeEnum.MARKETVALUE;
+  private valuationType: ValuationTypeEnum = ValuationTypeEnum.STATIC;
 
   private tenantValueCurve: Map<Date, number> = new Map<Date, number>();
 
@@ -35,6 +35,12 @@ export class AssetviewService {
   selectedInstrumentEventSubject: Subject<unknown> = new Subject<unknown>();
 
   constructor(private mfDataService: MfdataService) {
+    const today = new Date();
+    const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    const lastDayOfMonthBeforeLast = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+    this.dateaforAnalysis = lastDayOfLastMonth;
+    this.referenceDate = lastDayOfMonthBeforeLast;
+    
     this.mfDataService.tenantChangedSubject.subscribe(
       {
         next: () => {
