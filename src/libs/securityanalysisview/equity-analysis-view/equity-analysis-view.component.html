@@ -74,6 +74,13 @@
                         <p-columnFilter type="text" field="pricePerSales" display="menu" />
                     </div>
                 </th>
+                <th pSortableColumn="securityLifecyclePhase">
+                    <div class="flex items-center">
+                        securityLifecyclePhase
+                        <p-sortIcon field="securityLifecyclePhase" />
+                        <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
@@ -88,7 +95,7 @@
                 <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>
                 <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
                 <td>{{ row.pricePerSales | number:'1.2-2' }}</td>
-                
+                <td>{{ row.securityLifecyclePhase }}</td>
             </tr>
         </ng-template>
     </p-table>
