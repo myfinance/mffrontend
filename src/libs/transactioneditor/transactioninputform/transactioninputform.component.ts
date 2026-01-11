@@ -108,7 +108,7 @@ export class TransactioninputformComponent {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
         instruments = instruments.filter(i=>i.active);
-        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO).sort((a, b) => a.description.localeCompare(b.description));
+        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO || instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT).sort((a, b) => a.description.localeCompare(b.description));
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
         this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT).sort((a, b) => a.description.localeCompare(b.description));
         this.lifeinsurances = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE).sort((a, b) => a.description.localeCompare(b.description));
