@@ -36,9 +36,7 @@ export class AssetviewService {
 
   constructor(private mfDataService: MfdataService) {
     const today = new Date();
-    const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
     const lastDayOfMonthBeforeLast = new Date(today.getFullYear(), today.getMonth() - 1, 0);
-    this.dateaforAnalysis = lastDayOfLastMonth;
     this.referenceDate = lastDayOfMonthBeforeLast;
     
     this.mfDataService.tenantChangedSubject.subscribe(
