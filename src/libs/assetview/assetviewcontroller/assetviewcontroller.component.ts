@@ -47,6 +47,16 @@ export class AssetviewcontrollerComponent {
     this.service.setValuationType(event.value);
   }
 
+  setPeriodToCurrentMonth() {
+    const today = new Date();
+    const firtstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    
+    this.dateForAnalysis = today;
+    this.referenceDate = firtstDayOfMonth;
+
+    this.service.setDateAndReferenceDateForAnalysis(this.dateForAnalysis, this.referenceDate);
+  }
+
   setPeriodToLastMonth() {
     const today = new Date();
     const lastDayOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);

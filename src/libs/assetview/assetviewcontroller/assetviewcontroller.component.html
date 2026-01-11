@@ -32,6 +32,7 @@
   <br />
   <p-dropdown [options]="valuationTypes" [(ngModel)]="selectedValuationType" (onChange)="handleValuationTypeChanged($event)"/>
   <br />
+  <p-button (click)="setPeriodToCurrentMonth()" label="current Month"></p-button>
   <p-button (click)="setPeriodToLastMonth()" label="Last Month"></p-button>
   <p-button (click)="setPeriodToLastYear()" label="Last Year"></p-button>
   <p-button (click)="setPeriodToCurrentYear()" label="Current Year"></p-button>
