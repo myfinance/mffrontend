@@ -5,16 +5,18 @@ import { CalendarModule } from 'primeng/calendar';
 import { SidebarModule } from 'primeng/sidebar';
 import { AdditionalPropertiesEnum, Instrument } from '../../shared/data-access-mfdata/model/instrument';
 import { SecurityAnalysisViewService, tableRowTuple } from '../securityanalysisview.service';
-import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
+import { SecurityLifecyclePhaseEnum, SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-equity-metrics-editor',
   standalone: true,
-  imports: [CommonModule, Button, CalendarModule, ReactiveFormsModule, SidebarModule, InputNumberModule, TableModule, DividerModule],
+  imports: [CommonModule, Button, CalendarModule, ReactiveFormsModule, SidebarModule, InputNumberModule, TableModule, DividerModule, CheckboxModule, DropdownModule],
   templateUrl: './equity-metrics-editor.component.html',
   styleUrl: './equity-metrics-editor.component.scss'
 })
@@ -24,6 +26,7 @@ export class EquityMetricsEditorComponent {
   securityMetrics: SecurityMetrics | undefined;
   histFCFs: tableRowTuple[] = [];
   selectedHistFCF?: tableRowTuple;
+  securityLifecyclePhaseEnumValues = Object.values(SecurityLifecyclePhaseEnum);
 
 
   form = new FormGroup({
@@ -122,6 +125,30 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    hasDividendsOrBuyBacks: new FormControl<boolean>(false, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    operatingIncome: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    operatingIncomeLastYear: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),      
+    securityLifecyclePhaseOverride: new FormControl<SecurityLifecyclePhaseEnum>(SecurityLifecyclePhaseEnum.STARTUP, {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    forwardSales: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),  
+    forwardFCF: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }),  
     FCFYear: new FormControl<number>(2020, {
       nonNullable: false
     }),
@@ -210,6 +237,12 @@ export class EquityMetricsEditorComponent {
       this.form.controls['totalEquity'].setValue(instrumentMetrics.totalEquity);
       this.form.controls['totalAssets'].setValue(instrumentMetrics.totalAssets);
       this.form.controls['currentLiabilities'].setValue(instrumentMetrics.currentLiabilities);
+      this.form.controls['hasDividendsOrBuyBacks'].setValue(instrumentMetrics.hasDividendsOrBuyBacks);
+      this.form.controls['operatingIncome'].setValue(instrumentMetrics.operatingIncome);
+      this.form.controls['operatingIncomeLastYear'].setValue(instrumentMetrics.operatingIncomeLastYear);
+      this.form.controls['securityLifecyclePhaseOverride'].setValue(instrumentMetrics.securityLifecyclePhaseOverride);
+      this.form.controls['forwardSales'].setValue(instrumentMetrics.forwardSales);
+      this.form.controls['forwardFCF'].setValue(instrumentMetrics.forwardFCF);
       this.initExpectedFCFPerYear();
       this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
       let expectedFreeCashflowGrowthPerYear: tableRowTuple[] = [];
@@ -306,6 +339,12 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.totalEquity != null) metrics.totalEquity = this.form.value.totalEquity;
       if (this.form.value.totalAssets != null) metrics.totalAssets = this.form.value.totalAssets;
       if (this.form.value.currentLiabilities != null) metrics.currentLiabilities = this.form.value.currentLiabilities;
+      if (this.form.value.hasDividendsOrBuyBacks != null) metrics.hasDividendsOrBuyBacks = this.form.value.hasDividendsOrBuyBacks;
+      if (this.form.value.operatingIncome != null) metrics.operatingIncome = this.form.value.operatingIncome;
+      if (this.form.value.operatingIncomeLastYear != null) metrics.operatingIncomeLastYear = this.form.value.operatingIncomeLastYear;
+      if (this.form.value.securityLifecyclePhaseOverride != null) metrics.securityLifecyclePhaseOverride = this.form.value.securityLifecyclePhaseOverride;
+      if (this.form.value.forwardSales != null) metrics.forwardSales = this.form.value.forwardSales;
+      if (this.form.value.forwardFCF != null) metrics.forwardFCF = this.form.value.forwardFCF;  
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       metrics.expectedFreeCashflowGrowthPerYear = new Map<number, number>();
       if (this.form.value.FCFGrowthY1 != null) metrics.expectedFreeCashflowGrowthPerYear.set(1, this.form.value.FCFGrowthY1);

@@ -509,6 +509,70 @@
       />
     </div>
     <p-divider />
+    <b>SecurityLifecyclePhase</b>
+    <div class="form-group">
+      <label>hasDividendsOrBuyBacks</label>
+      <p-checkbox formControlName="hasDividendsOrBuyBacks" [binary]="true"></p-checkbox>
+    </div>
+    <div class="form-group">
+      <label>securityLifecyclePhaseOverride</label>
+      <p-dropdown formControlName="securityLifecyclePhaseOverride" [options]="securityLifecyclePhaseEnumValues"></p-dropdown>
+    </div>
+    <div class="form-group">
+      <label>operatingIncome</label>
+      <p-inputNumber
+        formControlName="operatingIncome"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>operatingIncomeLastYear</label>
+      <p-inputNumber
+        formControlName="operatingIncomeLastYear"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <p-divider />
+    <b>Valuation</b>
+    <div class="form-group">
+      <label>forwardSales</label>
+      <p-inputNumber
+        formControlName="forwardSales"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <div class="form-group">
+      <label>forwardFCF</label>
+      <p-inputNumber
+        formControlName="forwardFCF"
+        mode="decimal"
+        locale="de-DE"
+        [useGrouping]="true"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="2"
+        inputStyleClass="p-inputtext p-component p-element"
+        placeholder="Enter a number"
+      />
+    </div>
+    <p-divider />   
     <div class="button-row">
       <button class="btn btn-primary" (click)="save()" type="button">
         save

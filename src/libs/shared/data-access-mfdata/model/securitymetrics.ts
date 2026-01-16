@@ -7,7 +7,9 @@ export class SecurityMetrics {
     currencyCode: string;
     currencyKey: string;
     fiscalEndDate: Date;
-    securityLifecyclePhase: string;
+    securityLifecyclePhase: SecurityLifecyclePhaseEnum;
+    securityLifecyclePhaseOverride: SecurityLifecyclePhaseEnum;
+    securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum;
     riskProfile: string;
     sector: string;
     country: string;
@@ -25,6 +27,9 @@ export class SecurityMetrics {
     capitalExpenditures: number;
     operatingCashflow: number;
     netIncome: number;
+    operatingIncome: number;
+    operatingIncomeLastYear: number;
+    hasDividendsOrBuyBacks: boolean;
 
     //optional
     totalAssets: number;
@@ -44,6 +49,8 @@ export class SecurityMetrics {
     grossProfit: number;
     totalEquity: number;
     currentLiabilities: number;
+    forwardSales: number;
+    forwardFCF: number;
 
     //calculated
     freeCashflow: number;
@@ -71,6 +78,11 @@ export class SecurityMetrics {
     avgMarktcapFreeCashflowRatio: number;
     expectedCashflowGrowth: number;
     expectedFreeCashflowOverride: number;
+    pricePerGrossProfit: number;
+    priceToFCF: number;
+    evToFCF: number;
+    forwardPriceToFCF: number;
+    forwardEvToFCF: number;
 
 
     //historical map<fiscalaenddate, value>. fiscalaenddate is a Date, the values are TTM(trailing twelve month) values
@@ -93,7 +105,9 @@ export class SecurityMetrics {
         currencyCode: string,
         currencyKey: string,
         fiscalEndDate: Date,
-        securityLifecyclePhase: string,
+        securityLifecyclePhase: SecurityLifecyclePhaseEnum,
+        securityLifecyclePhaseOverride: SecurityLifecyclePhaseEnum,
+        securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum,
         riskProfile: string,
         sector: string,
         country: string,
@@ -107,6 +121,9 @@ export class SecurityMetrics {
         capitalExpenditures: number,
         operatingCashflow: number,
         netIncome: number,
+        operatingIncome: number,
+        operatingIncomeLastYear: number,
+        hasDividendsOrBuyBacks: boolean,
         totalAssets: number,
         totalLiabilities: number,
         shortLongTermDebtTotal: number,
@@ -124,6 +141,8 @@ export class SecurityMetrics {
         grossProfit: number,
         totalEquity: number,
         currentLiabilities: number,
+        forwardSales: number,
+        forwardFCF: number,
         freeCashflow: number,
         expectedFreeCashflow: number,
         avgFreeCashflow5Y: number,
@@ -148,6 +167,11 @@ export class SecurityMetrics {
         avgMarktcapFreeCashflowRatio: number,
         expectedCashflowGrowth: number,
         expectedFreeCashflowOverride: number,
+        pricePerGrossProfit: number,
+        priceToFCF: number,
+        evToFCF: number,
+        forwardPriceToFCF: number,
+        forwardEvToFCF: number,
         historicalRevenue: Map<number, number>,
         historicalNetIncome: Map<number, number>,
         historicalFreeCashflow: Map<number, number>,
@@ -166,6 +190,8 @@ export class SecurityMetrics {
         this.currencyKey = currencyKey;
         this.fiscalEndDate = fiscalEndDate;
         this.securityLifecyclePhase = securityLifecyclePhase;
+        this.securityLifecyclePhaseOverride = securityLifecyclePhaseOverride;
+        this.securityLifecyclePhaseAutoCalculated = securityLifecyclePhaseAutoCalculated;
         this.riskProfile = riskProfile;
         this.sector = sector;
         this.country = country;
@@ -179,6 +205,9 @@ export class SecurityMetrics {
         this.capitalExpenditures = capitalExpenditures;
         this.operatingCashflow = operatingCashflow;
         this.netIncome = netIncome;
+        this.operatingIncome = operatingIncome;
+        this.operatingIncomeLastYear = operatingIncomeLastYear;
+        this.hasDividendsOrBuyBacks = hasDividendsOrBuyBacks;
         this.totalAssets = totalAssets;
         this.totalLiabilities = totalLiabilities;
         this.shortLongTermDebtTotal = shortLongTermDebtTotal;
@@ -196,6 +225,8 @@ export class SecurityMetrics {
         this.grossProfit = grossProfit;
         this.totalEquity = totalEquity;
         this.currentLiabilities = currentLiabilities;
+        this.forwardSales = forwardSales;
+        this.forwardFCF = forwardFCF;
         this.freeCashflow = freeCashflow;
         this.expectedFreeCashflow = expectedFreeCashflow;
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
@@ -220,6 +251,11 @@ export class SecurityMetrics {
         this.avgMarktcapFreeCashflowRatio = avgMarktcapFreeCashflowRatio;
         this.expectedCashflowGrowth = expectedCashflowGrowth;
         this.expectedFreeCashflowOverride = expectedFreeCashflowOverride;
+        this.pricePerGrossProfit = pricePerGrossProfit;
+        this.priceToFCF = priceToFCF;
+        this.evToFCF = evToFCF;
+        this.forwardPriceToFCF = forwardPriceToFCF;
+        this.forwardEvToFCF = forwardEvToFCF;
         this.historicalRevenue = historicalRevenue;
         this.historicalNetIncome = historicalNetIncome;
         this.historicalFreeCashflow = historicalFreeCashflow;
@@ -253,6 +289,8 @@ export class SecurityMetrics {
             currencyKey: this.currencyKey,
             fiscalEndDate: JsonConvertHelper.dateToIsoString(this.fiscalEndDate),
             securityLifecyclePhase: this.securityLifecyclePhase,
+            securityLifecyclePhaseOverride: this.securityLifecyclePhaseOverride,
+            securityLifecyclePhaseAutoCalculated: this.securityLifecyclePhaseAutoCalculated,
             riskProfile: this.riskProfile,
             sector: this.sector,
             country: this.country,
@@ -266,6 +304,9 @@ export class SecurityMetrics {
             capitalExpenditures: this.capitalExpenditures,
             operatingCashflow: this.operatingCashflow,
             netIncome: this.netIncome,
+            operatingIncome: this.operatingIncome,
+            operatingIncomeLastYear: this.operatingIncomeLastYear,
+            hasDividendsOrBuyBacks: this.hasDividendsOrBuyBacks,
             totalAssets: this.totalAssets,
             totalLiabilities: this.totalLiabilities,
             shortLongTermDebtTotal: this.shortLongTermDebtTotal,
@@ -283,6 +324,8 @@ export class SecurityMetrics {
             grossProfit: this.grossProfit,
             totalEquity: this.totalEquity,
             currentLiabilities: this.currentLiabilities,
+            forwardSales: this.forwardSales,
+            forwardFCF: this.forwardFCF,
             freeCashflow: this.freeCashflow,
             expectedFreeCashflow: this.expectedFreeCashflow,
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
@@ -307,6 +350,11 @@ export class SecurityMetrics {
             avgMarktcapFreeCashflowRatio: this.avgMarktcapFreeCashflowRatio,
             expectedCashflowGrowth: this.expectedCashflowGrowth,
             expectedFreeCashflowOverride: this.expectedFreeCashflowOverride,
+            pricePerGrossProfit: this.pricePerGrossProfit,
+            priceToFCF: this.priceToFCF,
+            evToFCF: this.evToFCF,
+            forwardPriceToFCF: this.forwardPriceToFCF,
+            forwardEvToFCF: this.forwardEvToFCF,
             historicalRevenue: this.historicalRevenue,
             historicalNetIncome: this.historicalNetIncome,
             historicalFreeCashflow: histFCFObj,
@@ -329,6 +377,8 @@ export class SecurityMetrics {
             data.currencyKey,
             new Date(data.fiscalEndDate),
             data.securityLifecyclePhase,
+            data.securityLifecyclePhaseOverride,
+            data.securityLifecyclePhaseAutoCalculated,
             data.riskProfile,
             data.sector,
             data.country,
@@ -342,6 +392,9 @@ export class SecurityMetrics {
             data.capitalExpenditures,
             data.operatingCashflow,
             data.netIncome,
+            data.operatingIncome,
+            data.operatingIncomeLastYear,
+            data.hasDividendsOrBuyBacks,
             data.totalAssets,
             data.totalLiabilities,
             data.shortLongTermDebtTotal,
@@ -359,6 +412,8 @@ export class SecurityMetrics {
             data.grossProfit,
             data.totalEquity,
             data.currentLiabilities,
+            data.forwardSales,
+            data.forwardFCF,
             data.freeCashflow,
             data.expectedFreeCashflow,
             data.avgFreeCashflow5Y,
@@ -383,6 +438,11 @@ export class SecurityMetrics {
             data.avgMarktcapFreeCashflowRatio,
             data.expectedCashflowGrowth,
             data.expectedFreeCashflowOverride,
+            data.pricePerGrossProfit,
+            data.priceToFCF,
+            data.evToFCF,
+            data.forwardPriceToFCF,
+            data.forwardEvToFCF,
             data.historicalRevenue ? new Map(Object.entries(data.historicalRevenue)) : new Map(),
             data.historicalNetIncome ? new Map(Object.entries(data.historicalNetIncome)) : new Map(),
             data.historicalFreeCashflow ? new Map(Object.entries(data.historicalFreeCashflow)) : new Map(),
@@ -403,4 +463,14 @@ export const MarketDataImportTypeEnum = {
     TIME_SERIES_WEEKLY: 'TIME_SERIES_WEEKLY' as MarketDataImportTypeEnum,
     PREV_CLOSE: 'PREV_CLOSE' as MarketDataImportTypeEnum,
     SECURITYMETRICS: 'SECURITYMETRICS' as MarketDataImportTypeEnum
+};
+
+export type SecurityLifecyclePhaseEnum = 'STARTUP' | 'HYPERGROWTH' | 'BREAKEVEN' | 'OPERATINGLEVERAGE' | 'CAPITALRETURN' | 'DECLINE';
+export const SecurityLifecyclePhaseEnum = {
+    STARTUP: 'STARTUP' as SecurityLifecyclePhaseEnum,
+    HYPERGROWTH: 'HYPERGROWTH' as SecurityLifecyclePhaseEnum,
+    BREAKEVEN: 'BREAKEVEN' as SecurityLifecyclePhaseEnum,
+    OPERATINGLEVERAGE: 'OPERATINGLEVERAGE' as SecurityLifecyclePhaseEnum,
+    CAPITALRETURN: 'CAPITALRETURN' as SecurityLifecyclePhaseEnum,
+    DECLINE: 'DECLINE' as SecurityLifecyclePhaseEnum
 };
