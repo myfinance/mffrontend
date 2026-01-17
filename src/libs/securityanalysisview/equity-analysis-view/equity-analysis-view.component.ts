@@ -3,19 +3,24 @@ import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { SecurityAnalysisViewService } from '../securityanalysisview.service';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
-import { SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
+import { SecurityLifecyclePhaseEnum, SecurityMetrics } from '../../shared/data-access-mfdata/model/securitymetrics';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-equity-analysis-view',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule, TabViewModule],
   templateUrl: './equity-analysis-view.component.html',
   styleUrl: './equity-analysis-view.component.scss'
 })
 export class EquityAnalysisViewComponent {
   securityMetrics: SecurityMetrics[] = [];
+  hypergrowthSecurityMetrics: SecurityMetrics[] = [];
+  operatingleverageSecurityMetrics: SecurityMetrics[] = [];
+  capitalreturnSecurityMetrics: SecurityMetrics[] = [];
+
   displayedColumns: string[] = ['businesskey', 'description', 'value', 'referenceValue','instrumentType'];
   selectedInstrument: SecurityMetrics | undefined;
   version = 'na';
@@ -50,6 +55,10 @@ export class EquityAnalysisViewComponent {
       }
       return sec;
     });
+
+    this.hypergrowthSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.HYPERGROWTH || sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.BREAKEVEN);
+    this.operatingleverageSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.OPERATINGLEVERAGE);
+    this.capitalreturnSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.CAPITALRETURN);
   }
 
 

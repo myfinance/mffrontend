@@ -1,102 +1,299 @@
 <div class="scrollable-container">
-
-    <p-table [value]="securityMetrics" selectionMode="single" [(selection)]="selectedInstrument" dataKey="businesskey"
-        (onRowSelect)="onRowSelect($event)" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="description">
-                    <div class="flex items-center">
-                        Description
-                        <p-sortIcon field="description" />
-                        <p-columnFilter type="text" field="description" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="value">
-                    <div class="flex items-center">
-                        Preis
-                        <p-sortIcon field="value" />
-                        <p-columnFilter type="text" field="value" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="priceLastUpdateTs">
-                    <div class="flex items-center">
-                        PreisTS
-                        <p-sortIcon field="priceLastUpdateTs" />
-                        <p-columnFilter type="text" field="priceLastUpdateTs" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="lastUpdateTs">
-                    <div class="flex items-center">
-                        MetricsTS
-                        <p-sortIcon field="lastUpdateTs" />
-                        <p-columnFilter type="text" field="lastUpdateTs" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="lastManualReviewTs">
-                    <div class="flex items-center">
-                        ReviewTs
-                        <p-sortIcon field="lastManualReviewTs" />
-                        <p-columnFilter type="text" field="lastManualReviewTs" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="currency">
-                    <div class="flex items-center">
-                        Währung
-                        <p-sortIcon field="currency" />
-                        <p-columnFilter type="text" field="currency" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="priceInCurrency">
-                    <div class="flex items-center">
-                        Preis-Währung
-                        <p-sortIcon field="priceInCurrency" />
-                        <p-columnFilter type="text" field="priceInCurrency" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="intrinsicValueMargin">
-                    <div class="flex items-center">
-                        IVMargin
-                        <p-sortIcon field="intrinsicValueMargin" />
-                        <p-columnFilter type="text" field="intrinsicValueMargin" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="intrinsicValueEVMargin">
-                    <div class="flex items-center">
-                        IVEVMargin
-                        <p-sortIcon field="intrinsicValueEVMargin" />
-                        <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="pricePerSales">
-                    <div class="flex items-center">
-                        pricePerSales
-                        <p-sortIcon field="pricePerSales" />
-                        <p-columnFilter type="text" field="pricePerSales" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="securityLifecyclePhase">
-                    <div class="flex items-center">
-                        securityLifecyclePhase
-                        <p-sortIcon field="securityLifecyclePhase" />
-                        <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
-                    </div>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-row>
-            <tr [pSelectableRow]="row">
-                <td>{{ row.description }}</td>
-                <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
-                <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
-                <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm'  }}</td>
-                <td>{{ row.lastManualReviewTs | date:'yyyy-MM-dd hh:mm'  }}</td>
-                <td>{{ row.currencyCode }}</td>
-                <td>{{ row.price | number:'1.2-2' }}</td>
-                <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>
-                <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
-                <td>{{ row.pricePerSales | number:'1.2-2' }}</td>
-                <td>{{ row.securityLifecyclePhase }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <p-tabView>
+        <p-tabPanel header="All">
+            <p-table [value]="securityMetrics" selectionMode="single" [(selection)]="selectedInstrument"
+                dataKey="businesskey" (onRowSelect)="onRowSelect($event)" [metaKeySelection]="false"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="description">
+                            <div class="flex items-center">
+                                Description
+                                <p-sortIcon field="description" />
+                                <p-columnFilter type="text" field="description" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="value">
+                            <div class="flex items-center">
+                                Preis
+                                <p-sortIcon field="value" />
+                                <p-columnFilter type="text" field="value" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="priceLastUpdateTs">
+                            <div class="flex items-center">
+                                PreisTS
+                                <p-sortIcon field="priceLastUpdateTs" />
+                                <p-columnFilter type="text" field="priceLastUpdateTs" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="lastUpdateTs">
+                            <div class="flex items-center">
+                                MetricsTS
+                                <p-sortIcon field="lastUpdateTs" />
+                                <p-columnFilter type="text" field="lastUpdateTs" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="lastManualReviewTs">
+                            <div class="flex items-center">
+                                ReviewTs
+                                <p-sortIcon field="lastManualReviewTs" />
+                                <p-columnFilter type="text" field="lastManualReviewTs" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="currency">
+                            <div class="flex items-center">
+                                Währung
+                                <p-sortIcon field="currency" />
+                                <p-columnFilter type="text" field="currency" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="priceInCurrency">
+                            <div class="flex items-center">
+                                Preis-Währung
+                                <p-sortIcon field="priceInCurrency" />
+                                <p-columnFilter type="text" field="priceInCurrency" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="intrinsicValueEVMargin">
+                            <div class="flex items-center">
+                                IVEVMargin
+                                <p-sortIcon field="intrinsicValueEVMargin" />
+                                <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="pricePerSales">
+                            <div class="flex items-center">
+                                pricePerSales
+                                <p-sortIcon field="pricePerSales" />
+                                <p-columnFilter type="text" field="pricePerSales" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="securityLifecyclePhase">
+                            <div class="flex items-center">
+                                securityLifecyclePhase
+                                <p-sortIcon field="securityLifecyclePhase" />
+                                <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [pSelectableRow]="row">
+                        <td>{{ row.description }}</td>
+                        <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.priceLastUpdateTs | date:'yyyy-MM-dd hh:mm' }}</td>
+                        <td>{{ row.lastUpdateTs | date:'yyyy-MM-dd hh:mm' }}</td>
+                        <td>{{ row.lastManualReviewTs | date:'yyyy-MM-dd hh:mm' }}</td>
+                        <td>{{ row.currencyCode }}</td>
+                        <td>{{ row.price | number:'1.2-2' }}</td>
+                        <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
+                        <td>{{ row.pricePerSales | number:'1.2-2' }}</td>
+                        <td>{{ row.securityLifecyclePhase }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel header="HYPERGROWTH & BREAKEVEN">
+            <p-table [value]="hypergrowthSecurityMetrics" selectionMode="single" [(selection)]="selectedInstrument"
+                dataKey="businesskey" (onRowSelect)="onRowSelect($event)" [metaKeySelection]="false"
+                [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="description">
+                            <div class="flex items-center">
+                                Description
+                                <p-sortIcon field="description" />
+                                <p-columnFilter type="text" field="description" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="value">
+                            <div class="flex items-center">
+                                Preis
+                                <p-sortIcon field="value" />
+                                <p-columnFilter type="text" field="value" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="forwardPriceToSales">
+                            <div class="flex items-center">
+                                forwardPriceToSales
+                                <p-sortIcon field="forwardPriceToSales" />
+                                <p-columnFilter type="text" field="forwardPriceToSales" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="pricePerSales">
+                            <div class="flex items-center">
+                                pricePerSales
+                                <p-sortIcon field="pricePerSales" />
+                                <p-columnFilter type="text" field="pricePerSales" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="pricePerGrossProfit">
+                            <div class="flex items-center">
+                                pricePerGrossProfit
+                                <p-sortIcon field="pricePerGrossProfit" />
+                                <p-columnFilter type="text" field="pricePerGrossProfit" display="menu" />
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [pSelectableRow]="row">
+                        <td>{{ row.description }}</td>
+                        <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.forwardPriceToSales | number:'1.2-2' }}</td>
+                        <td>{{ row.pricePerSales | number:'1.2-2' }}</td>
+                        <td>{{ row.pricePerGrossProfit | number:'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel header="OPERATINGLEVERAGE">
+            <p-table [value]="operatingleverageSecurityMetrics" selectionMode="single"
+                [(selection)]="selectedInstrument" dataKey="businesskey" (onRowSelect)="onRowSelect($event)"
+                [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="description">
+                            <div class="flex items-center">
+                                Description
+                                <p-sortIcon field="description" />
+                                <p-columnFilter type="text" field="description" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="value">
+                            <div class="flex items-center">
+                                Preis
+                                <p-sortIcon field="value" />
+                                <p-columnFilter type="text" field="value" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="forwardEvToFCF">
+                            <div class="flex items-center">
+                                forwardEvToFCF
+                                <p-sortIcon field="forwardEvToFCF" />
+                                <p-columnFilter type="text" field="forwardEvToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="forwardPriceToFCF">
+                            <div class="flex items-center">
+                                forwardPriceToFCF
+                                <p-sortIcon field="forwardPriceToFCF" />
+                                <p-columnFilter type="text" field="forwardPriceToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="evToFCF">
+                            <div class="flex items-center">
+                                evToFCF
+                                <p-sortIcon field="evToFCF" />
+                                <p-columnFilter type="text" field="evToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="forwardEvToFCF">
+                            <div class="flex items-center">
+                                forwardEvToFCF
+                                <p-sortIcon field="forwardEvToFCF" />
+                                <p-columnFilter type="text" field="forwardEvToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="intrinsicValueEVMargin">
+                            <div class="flex items-center">
+                                IVEVMargin
+                                <p-sortIcon field="intrinsicValueEVMargin" />
+                                <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="ruleOfFourty">
+                            <div class="flex items-center">
+                                ruleOfFourty
+                                <p-sortIcon field="ruleOfFourty" />
+                                <p-columnFilter type="text" field="ruleOfFourty" display="menu" />
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [pSelectableRow]="row">
+                        <td>{{ row.description }}</td>
+                        <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.forwardEvToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.forwardPriceToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.evToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
+                        <td>{{ row.ruleOfFourty | number:'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel header="CAPITALRETURN">
+            <p-table [value]="capitalreturnSecurityMetrics" selectionMode="single"
+                [(selection)]="selectedInstrument" dataKey="businesskey" (onRowSelect)="onRowSelect($event)"
+                [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="description">
+                            <div class="flex items-center">
+                                Description
+                                <p-sortIcon field="description" />
+                                <p-columnFilter type="text" field="description" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="value">
+                            <div class="flex items-center">
+                                Preis
+                                <p-sortIcon field="value" />
+                                <p-columnFilter type="text" field="value" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="intrinsicValueEVMargin">
+                            <div class="flex items-center">
+                                IVEVMargin
+                                <p-sortIcon field="intrinsicValueEVMargin" />
+                                <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="evToFCF">
+                            <div class="flex items-center">
+                                evToFCF
+                                <p-sortIcon field="evToFCF" />
+                                <p-columnFilter type="text" field="evToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="intrinsicValueMargin">
+                            <div class="flex items-center">
+                                IVMargin
+                                <p-sortIcon field="intrinsicValueMargin" />
+                                <p-columnFilter type="text" field="intrinsicValueMargin" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="pe">
+                            <div class="flex items-center">
+                                pe
+                                <p-sortIcon field="pe" />
+                                <p-columnFilter type="text" field="pe" display="menu" />
+                            </div>
+                        </th>
+                         <th pSortableColumn="ruleOfFourty">
+                            <div class="flex items-center">
+                                ruleOfFourty
+                                <p-sortIcon field="ruleOfFourty" />
+                                <p-columnFilter type="text" field="ruleOfFourty" display="menu" />
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [pSelectableRow]="row">
+                        <td>{{ row.description }}</td>
+                        <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
+                        <td>{{ row.evToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>
+                        <td>{{ row.pe | number:'1.2-2' }}</td>
+                        <td>{{ row.ruleOfFourty | number:'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+    </p-tabView>
 </div>
