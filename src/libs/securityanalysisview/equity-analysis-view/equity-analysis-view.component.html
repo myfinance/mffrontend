@@ -383,7 +383,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
-                    <tr [pSelectableRow]="row">
+                    <tr [ngClass]="{'row-red': row.opportunityScore === 'RED', 'row-yellow': row.opportunityScore === 'YELLOW', 'row-green': row.opportunityScore === 'GREEN'}" [pSelectableRow]="row">
                         <td>{{ row.description }}</td>
                         <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
                         <td>{{ row.opportunityScoreValue | number:'1.2-2' }}</td>
