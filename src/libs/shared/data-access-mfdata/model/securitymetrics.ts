@@ -17,7 +17,7 @@ export class SecurityMetrics {
     priceLastUpdateTs: Date;
     lastManualReviewTs: Date;
     instrumentType: InstrumentTypeEnum;
-    metricScrore: string;
+    metricScore: string;
     moatScore: string;
     riskScore: string;
     comment: string;  
@@ -112,7 +112,7 @@ export class SecurityMetrics {
         securityLifecyclePhase: SecurityLifecyclePhaseEnum,
         securityLifecyclePhaseOverride: SecurityLifecyclePhaseEnum,
         securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum,
-        metricScrore: string,
+        metricScore: string,
         moatScore: string,
         riskScore: string,
         comment: string,
@@ -200,7 +200,7 @@ export class SecurityMetrics {
         this.securityLifecyclePhase = securityLifecyclePhase;
         this.securityLifecyclePhaseOverride = securityLifecyclePhaseOverride;
         this.securityLifecyclePhaseAutoCalculated = securityLifecyclePhaseAutoCalculated;
-        this.metricScrore = metricScrore;
+        this.metricScore = metricScore;
         this.moatScore = moatScore;
         this.riskScore = riskScore;
         this.comment = comment;
@@ -303,7 +303,7 @@ export class SecurityMetrics {
             securityLifecyclePhase: this.securityLifecyclePhase,
             securityLifecyclePhaseOverride: this.securityLifecyclePhaseOverride,
             securityLifecyclePhaseAutoCalculated: this.securityLifecyclePhaseAutoCalculated,
-            metricScrore: this.metricScrore,
+            metricScore: this.metricScore,
             moatScore: this.moatScore,
             riskScore: this.riskScore,
             comment: this.comment,
@@ -395,7 +395,7 @@ export class SecurityMetrics {
             data.securityLifecyclePhase,
             data.securityLifecyclePhaseOverride,
             data.securityLifecyclePhaseAutoCalculated,
-            data.metricScrore,
+            data.metricScore,
             data.moatScore,
             data.riskScore,
             data.comment,

@@ -262,7 +262,7 @@ export class EquityMetricsEditorComponent {
       this.form.controls['securityLifecyclePhaseOverride'].setValue(instrumentMetrics.securityLifecyclePhaseOverride);
       this.form.controls['forwardSales'].setValue(instrumentMetrics.forwardSales);
       this.form.controls['forwardFCF'].setValue(instrumentMetrics.forwardFCF);
-      this.form.controls['metricScore'].setValue(instrumentMetrics.metricScrore);
+      this.form.controls['metricScore'].setValue(instrumentMetrics.metricScore);
       this.form.controls['moatScore'].setValue(instrumentMetrics.moatScore);
       this.form.controls['riskScore'].setValue(instrumentMetrics.riskScore);
       this.form.controls['comment'].setValue(instrumentMetrics.comment);
@@ -368,7 +368,7 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.securityLifecyclePhaseOverride != null) metrics.securityLifecyclePhaseOverride = this.form.value.securityLifecyclePhaseOverride;
       if (this.form.value.forwardSales != null) metrics.forwardSales = this.form.value.forwardSales;
       if (this.form.value.forwardFCF != null) metrics.forwardFCF = this.form.value.forwardFCF;  
-      if (this.form.value.metricScore != null) metrics.metricScrore = this.form.value.metricScore;
+      if (this.form.value.metricScore != null) metrics.metricScore = this.form.value.metricScore;
       if (this.form.value.moatScore != null) metrics.moatScore = this.form.value.moatScore;
       if (this.form.value.riskScore != null) metrics.riskScore = this.form.value.riskScore;
       if (this.form.value.comment != null) metrics.comment = this.form.value.comment;

@@ -7,21 +7,22 @@ import { SecurityLifecyclePhaseEnum, SecurityMetrics } from '../../shared/data-a
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TabViewModule } from 'primeng/tabview';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-equity-analysis-view',
   standalone: true,
-  imports: [CommonModule, TableModule, TabViewModule],
+  imports: [CommonModule, TableModule, TabViewModule, BadgeModule],
   templateUrl: './equity-analysis-view.component.html',
   styleUrl: './equity-analysis-view.component.scss'
 })
 export class EquityAnalysisViewComponent {
   securityMetrics: SecurityMetrics[] = [];
-  hypergrowthSecurityMetrics: SecurityMetrics[] = [];
+  hypergrowthAndBreakevenSecurityMetrics: SecurityMetrics[] = [];
   operatingleverageSecurityMetrics: SecurityMetrics[] = [];
   capitalreturnSecurityMetrics: SecurityMetrics[] = [];
 
-  displayedColumns: string[] = ['businesskey', 'description', 'value', 'referenceValue','instrumentType'];
+  displayedColumns: string[] = ['businesskey', 'description', 'value', 'referenceValue', 'instrumentType'];
   selectedInstrument: SecurityMetrics | undefined;
   version = 'na';
 
@@ -39,32 +40,38 @@ export class EquityAnalysisViewComponent {
     this.loadSecurityMetrics();
   }
 
-  loadSecurityMetrics(){
-    this.securityMetrics=this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.EQUITY).map(sec => {
+  loadSecurityMetrics() {
+    this.securityMetrics = this.service.getSecurities().filter(sec => sec.instrumentType === InstrumentTypeEnum.EQUITY).map(sec => {
       const pricedate = new Date(sec.priceLastUpdateTs);
-      if(isNaN(pricedate.getTime())) {
+      if (isNaN(pricedate.getTime())) {
         (sec as any).priceLastUpdateTs = null;
       }
       const lastUpdateTs = new Date(sec.lastUpdateTs);
-      if(isNaN(lastUpdateTs.getTime())) {
+      if (isNaN(lastUpdateTs.getTime())) {
         (sec as any).lastUpdateTs = null;
       }
       const lastManualReviewTs = new Date(sec.lastManualReviewTs);
-      if(isNaN(lastManualReviewTs.getTime())) {
+      if (isNaN(lastManualReviewTs.getTime())) {
         (sec as any).lastManualReviewTs = null;
       }
       return sec;
     });
 
-    this.hypergrowthSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.HYPERGROWTH || sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.BREAKEVEN);
+    this.hypergrowthAndBreakevenSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.HYPERGROWTH || sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.BREAKEVEN);
     this.operatingleverageSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.OPERATINGLEVERAGE);
     this.capitalreturnSecurityMetrics = this.securityMetrics.filter(sec => sec.securityLifecyclePhase === SecurityLifecyclePhaseEnum.CAPITALRETURN);
   }
 
 
   onRowSelect(event: any) {
-    if(this.selectedInstrument!=null){
+    if (this.selectedInstrument != null) {
       this.service.setSelectedInstrument(this.selectedInstrument.businesskey);
     }
-   }
+  }
+
+  severity(value: string) {
+    if (value === 'RED') return 'danger';
+    else if (value === 'YELLOW') return 'warning';
+    else return 'success';
+  }
 }
