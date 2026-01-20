@@ -27,7 +27,11 @@ export class EquityMetricsEditorComponent {
   histFCFs: tableRowTuple[] = [];
   selectedHistFCF?: tableRowTuple;
   securityLifecyclePhaseEnumValues = Object.values(SecurityLifecyclePhaseEnum);
-
+  scoreOptions = [
+    'RED',
+    'YELLOW',
+    'GREEN'
+  ];
 
   form = new FormGroup({
     fiscalEndDate: new FormControl<Date>(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()), {
@@ -184,8 +188,23 @@ export class EquityMetricsEditorComponent {
     }),
     FCFGrowthY10: new FormControl<number>(1.0, {
       nonNullable: false
+    }),
+    metricScore: new FormControl<string>('RED', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    moatScore: new FormControl<string>('RED', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    riskScore: new FormControl<string>('RED', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
+    comment: new FormControl<string>('', {
+    nonNullable: true,
+    validators: Validators.required
     })
-
   });
 
   constructor(private service: SecurityAnalysisViewService) {
@@ -243,6 +262,10 @@ export class EquityMetricsEditorComponent {
       this.form.controls['securityLifecyclePhaseOverride'].setValue(instrumentMetrics.securityLifecyclePhaseOverride);
       this.form.controls['forwardSales'].setValue(instrumentMetrics.forwardSales);
       this.form.controls['forwardFCF'].setValue(instrumentMetrics.forwardFCF);
+      this.form.controls['metricScore'].setValue(instrumentMetrics.metricScrore);
+      this.form.controls['moatScore'].setValue(instrumentMetrics.moatScore);
+      this.form.controls['riskScore'].setValue(instrumentMetrics.riskScore);
+      this.form.controls['comment'].setValue(instrumentMetrics.comment);
       this.initExpectedFCFPerYear();
       this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
       let expectedFreeCashflowGrowthPerYear: tableRowTuple[] = [];
@@ -345,6 +368,10 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.securityLifecyclePhaseOverride != null) metrics.securityLifecyclePhaseOverride = this.form.value.securityLifecyclePhaseOverride;
       if (this.form.value.forwardSales != null) metrics.forwardSales = this.form.value.forwardSales;
       if (this.form.value.forwardFCF != null) metrics.forwardFCF = this.form.value.forwardFCF;  
+      if (this.form.value.metricScore != null) metrics.metricScrore = this.form.value.metricScore;
+      if (this.form.value.moatScore != null) metrics.moatScore = this.form.value.moatScore;
+      if (this.form.value.riskScore != null) metrics.riskScore = this.form.value.riskScore;
+      if (this.form.value.comment != null) metrics.comment = this.form.value.comment;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       metrics.expectedFreeCashflowGrowthPerYear = new Map<number, number>();
       if (this.form.value.FCFGrowthY1 != null) metrics.expectedFreeCashflowGrowthPerYear.set(1, this.form.value.FCFGrowthY1);

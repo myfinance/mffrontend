@@ -49,6 +49,40 @@
       <label>Land</label>
       <input formControlName="country"/>
     </div>
+    <div class="form-group">
+      <label>Kommentar</label>
+      <input formControlName="comment"/>
+    </div>
+    <div class="form-group">
+      <label>Metric Score</label>
+      <select class="btn btn-primary dropdown-toggle"
+        formControlName="metricScore">
+        <option class="mydropdown-item" [ngValue]="score"
+          *ngFor="let score of scoreOptions">
+          {{ score }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Moat Score</label>
+      <select class="btn btn-primary dropdown-toggle"
+        formControlName="moatScore">
+        <option class="mydropdown-item" [ngValue]="score"
+          *ngFor="let score of scoreOptions">
+          {{ score }}
+        </option>
+      </select>
+    </div>
+        <div class="form-group">
+      <label>Risk Score</label>
+      <select class="btn btn-primary dropdown-toggle"
+        formControlName="riskScore">
+        <option class="mydropdown-item" [ngValue]="score"
+          *ngFor="let score of scoreOptions">
+          {{ score }}
+        </option>
+      </select>
+    </div>
     <p-divider />
     <b>Intrinsic Value</b>
     <div class="form-group">

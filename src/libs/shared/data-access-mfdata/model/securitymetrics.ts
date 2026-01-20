@@ -17,6 +17,10 @@ export class SecurityMetrics {
     priceLastUpdateTs: Date;
     lastManualReviewTs: Date;
     instrumentType: InstrumentTypeEnum;
+    metricScrore: string;
+    moatScore: string;
+    riskScore: string;
+    comment: string;  
 
     // all values are yearly TTM values
     //mandatory
@@ -108,6 +112,10 @@ export class SecurityMetrics {
         securityLifecyclePhase: SecurityLifecyclePhaseEnum,
         securityLifecyclePhaseOverride: SecurityLifecyclePhaseEnum,
         securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum,
+        metricScrore: string,
+        moatScore: string,
+        riskScore: string,
+        comment: string,
         riskProfile: string,
         sector: string,
         country: string,
@@ -192,6 +200,10 @@ export class SecurityMetrics {
         this.securityLifecyclePhase = securityLifecyclePhase;
         this.securityLifecyclePhaseOverride = securityLifecyclePhaseOverride;
         this.securityLifecyclePhaseAutoCalculated = securityLifecyclePhaseAutoCalculated;
+        this.metricScrore = metricScrore;
+        this.moatScore = moatScore;
+        this.riskScore = riskScore;
+        this.comment = comment;
         this.riskProfile = riskProfile;
         this.sector = sector;
         this.country = country;
@@ -291,6 +303,10 @@ export class SecurityMetrics {
             securityLifecyclePhase: this.securityLifecyclePhase,
             securityLifecyclePhaseOverride: this.securityLifecyclePhaseOverride,
             securityLifecyclePhaseAutoCalculated: this.securityLifecyclePhaseAutoCalculated,
+            metricScrore: this.metricScrore,
+            moatScore: this.moatScore,
+            riskScore: this.riskScore,
+            comment: this.comment,
             riskProfile: this.riskProfile,
             sector: this.sector,
             country: this.country,
@@ -379,6 +395,10 @@ export class SecurityMetrics {
             data.securityLifecyclePhase,
             data.securityLifecyclePhaseOverride,
             data.securityLifecyclePhaseAutoCalculated,
+            data.metricScrore,
+            data.moatScore,
+            data.riskScore,
+            data.comment,
             data.riskProfile,
             data.sector,
             data.country,
