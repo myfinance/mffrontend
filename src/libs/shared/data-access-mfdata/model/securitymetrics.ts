@@ -20,6 +20,9 @@ export class SecurityMetrics {
     metricScore: string;
     moatScore: string;
     riskScore: string;
+    growthScore: string;
+    opportunityScore: string;
+    opportunityScoreValue: number;
     comment: string;  
 
     // all values are yearly TTM values
@@ -115,6 +118,9 @@ export class SecurityMetrics {
         metricScore: string,
         moatScore: string,
         riskScore: string,
+        growthScore: string,
+        opportunityScore: string,
+        opportunityScoreValue: number,
         comment: string,
         riskProfile: string,
         sector: string,
@@ -203,6 +209,9 @@ export class SecurityMetrics {
         this.metricScore = metricScore;
         this.moatScore = moatScore;
         this.riskScore = riskScore;
+        this.growthScore = growthScore;
+        this.opportunityScore = opportunityScore;
+        this.opportunityScoreValue = opportunityScoreValue
         this.comment = comment;
         this.riskProfile = riskProfile;
         this.sector = sector;
@@ -306,6 +315,9 @@ export class SecurityMetrics {
             metricScore: this.metricScore,
             moatScore: this.moatScore,
             riskScore: this.riskScore,
+            growthScore: this.growthScore,
+            opportunityScore: this.opportunityScore,
+            opportunityScoreValue: this.opportunityScoreValue,
             comment: this.comment,
             riskProfile: this.riskProfile,
             sector: this.sector,
@@ -398,6 +410,9 @@ export class SecurityMetrics {
             data.metricScore,
             data.moatScore,
             data.riskScore,
+            data.growthScore,
+            data.opportunityScore,
+            data.opportunityScoreValue,
             data.comment,
             data.riskProfile,
             data.sector,

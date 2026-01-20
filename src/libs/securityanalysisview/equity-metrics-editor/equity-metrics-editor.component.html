@@ -73,10 +73,20 @@
         </option>
       </select>
     </div>
-        <div class="form-group">
+    <div class="form-group">
       <label>Risk Score</label>
       <select class="btn btn-primary dropdown-toggle"
         formControlName="riskScore">
+        <option class="mydropdown-item" [ngValue]="score"
+          *ngFor="let score of scoreOptions">
+          {{ score }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Growth Score</label>
+      <select class="btn btn-primary dropdown-toggle"
+        formControlName="growthScore">
         <option class="mydropdown-item" [ngValue]="score"
           *ngFor="let score of scoreOptions">
           {{ score }}

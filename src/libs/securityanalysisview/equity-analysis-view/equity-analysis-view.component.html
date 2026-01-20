@@ -156,6 +156,13 @@
                                 <p-columnFilter type="text" field="riskScore" display="menu" />
                             </div>
                         </th>
+                        <th pSortableColumn="growthScore">
+                            <div class="flex items-center">
+                                growthScore
+                                <p-sortIcon field="growthScore" />
+                                <p-columnFilter type="text" field="growthScore" display="menu" />
+                            </div>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
@@ -168,6 +175,7 @@
                         <td><p-badge [value]="row.metricScore" [severity]="severity(row.metricScore)" /></td>
                         <td><p-badge [value]="row.moatScore" [severity]="severity(row.moatScore)" /></td>
                         <td><p-badge [value]="row.riskScore" [severity]="severity(row.riskScore)" /></td>
+                        <td><p-badge [value]="row.growthScore" [severity]="severity(row.growthScore)" /></td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -255,6 +263,13 @@
                                 <p-columnFilter type="text" field="riskScore" display="menu" />
                             </div>
                         </th>
+                        <th pSortableColumn="growthScore">
+                            <div class="flex items-center">
+                                growthScore
+                                <p-sortIcon field="growthScore" />
+                                <p-columnFilter type="text" field="growthScore" display="menu" />
+                            </div>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
@@ -270,6 +285,7 @@
                         <td><p-badge [value]="row.metricScore" [severity]="severity(row.metricScore)" /></td>
                         <td><p-badge [value]="row.moatScore" [severity]="severity(row.moatScore)" /></td>
                         <td><p-badge [value]="row.riskScore" [severity]="severity(row.riskScore)" /></td>
+                        <td><p-badge [value]="row.growthScore" [severity]="severity(row.growthScore)" /></td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -292,6 +308,13 @@
                                 Preis
                                 <p-sortIcon field="value" />
                                 <p-columnFilter type="text" field="value" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="opportunityScoreValue">
+                            <div class="flex items-center">
+                                opportunityScore
+                                <p-sortIcon field="opportunityScoreValue" />
+                                <p-columnFilter type="text" field="opportunityScoreValue" display="menu" />
                             </div>
                         </th>
                         <th pSortableColumn="intrinsicValueEVMargin">
@@ -350,12 +373,20 @@
                                 <p-columnFilter type="text" field="riskScore" display="menu" />
                             </div>
                         </th>
+                        <th pSortableColumn="growthScore">
+                            <div class="flex items-center">
+                                growthScore
+                                <p-sortIcon field="growthScore" />
+                                <p-columnFilter type="text" field="growthScore" display="menu" />
+                            </div>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
                     <tr [pSelectableRow]="row">
                         <td>{{ row.description }}</td>
                         <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.opportunityScoreValue | number:'1.2-2' }}</td>
                         <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
                         <td>{{ row.evToFCF | number:'1.2-2' }}</td>
                         <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>
@@ -364,6 +395,7 @@
                         <td><p-badge [value]="row.metricScore" [severity]="severity(row.metricScore)" /></td>
                         <td><p-badge [value]="row.moatScore" [severity]="severity(row.moatScore)" /></td>
                         <td><p-badge [value]="row.riskScore" [severity]="severity(row.riskScore)" /></td>
+                        <td><p-badge [value]="row.growthScore" [severity]="severity(row.growthScore)" /></td>
                     </tr>
                 </ng-template>
             </p-table>
