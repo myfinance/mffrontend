@@ -317,6 +317,13 @@
                                 <p-columnFilter type="text" field="opportunityScoreValue" display="menu" />
                             </div>
                         </th>
+                         <th pSortableColumn="evPerEarnings">
+                            <div class="flex items-center">
+                                evPerEarnings
+                                <p-sortIcon field="evPerEarnings" />
+                                <p-columnFilter type="text" field="evPerEarnings" display="menu" />
+                            </div>
+                        </th>
                         <th pSortableColumn="intrinsicValueEVMargin">
                             <div class="flex items-center">
                                 IVEVMargin
@@ -387,6 +394,7 @@
                         <td>{{ row.description }}</td>
                         <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
                         <td>{{ row.opportunityScoreValue | number:'1.2-2' }}</td>
+                        <td>{{ row.evPerEarnings | number:'1.2-2' }}</td>
                         <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
                         <td>{{ row.evToFCF | number:'1.2-2' }}</td>
                         <td>{{ row.intrinsicValueMargin | number:'1.2-2' }}</td>

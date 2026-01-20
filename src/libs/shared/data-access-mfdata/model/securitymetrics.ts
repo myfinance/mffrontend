@@ -65,6 +65,7 @@ export class SecurityMetrics {
     avgFreeCashflow5Y: number;
     avgFreeCashflowGrowth5Y: number;
     pe: number;
+    evPerEarnings: number;
     roa: number;
     roe: number;
     roce: number;
@@ -162,6 +163,7 @@ export class SecurityMetrics {
         avgFreeCashflow5Y: number,
         avgFreeCashflowGrowth5Y: number,
         pe: number,
+        evPerEarnings: number,
         roa: number,
         roe: number,
         roce: number,
@@ -253,6 +255,7 @@ export class SecurityMetrics {
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
         this.avgFreeCashflowGrowth5Y = avgFreeCashflowGrowth5Y;
         this.pe = pe;
+        this.evPerEarnings = evPerEarnings;
         this.roa = roa;
         this.roe = roe;
         this.roce = roce;
@@ -359,6 +362,7 @@ export class SecurityMetrics {
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
             avgFreeCashflowGrowth5Y: this.avgFreeCashflowGrowth5Y,
             pe: this.pe,
+            evPerEarnings: this.evPerEarnings,
             roa: this.roa,
             roe: this.roe,
             roce: this.roce,
@@ -454,6 +458,7 @@ export class SecurityMetrics {
             data.avgFreeCashflow5Y,
             data.avgFreeCashflowGrowth5Y,
             data.pe,
+            data.evPerEarnings,
             data.roa,
             data.roe,
             data.roce,
