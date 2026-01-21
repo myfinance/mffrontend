@@ -209,37 +209,9 @@
                         </th>
                         <th pSortableColumn="forwardEvToFCF">
                             <div class="flex items-center">
-                                forwardEvToFCF
+                                fwEvToFCF
                                 <p-sortIcon field="forwardEvToFCF" />
                                 <p-columnFilter type="text" field="forwardEvToFCF" display="menu" />
-                            </div>
-                        </th>
-                        <th pSortableColumn="forwardPriceToFCF">
-                            <div class="flex items-center">
-                                forwardPriceToFCF
-                                <p-sortIcon field="forwardPriceToFCF" />
-                                <p-columnFilter type="text" field="forwardPriceToFCF" display="menu" />
-                            </div>
-                        </th>
-                        <th pSortableColumn="evToFCF">
-                            <div class="flex items-center">
-                                evToFCF
-                                <p-sortIcon field="evToFCF" />
-                                <p-columnFilter type="text" field="evToFCF" display="menu" />
-                            </div>
-                        </th>
-                        <th pSortableColumn="intrinsicValueEVMargin">
-                            <div class="flex items-center">
-                                IVEVMargin
-                                <p-sortIcon field="intrinsicValueEVMargin" />
-                                <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
-                            </div>
-                        </th>
-                        <th pSortableColumn="ruleOfFourty">
-                            <div class="flex items-center">
-                                ruleOfFourty
-                                <p-sortIcon field="ruleOfFourty" />
-                                <p-columnFilter type="text" field="ruleOfFourty" display="menu" />
                             </div>
                         </th>
                         <th pSortableColumn="metricScore">
@@ -270,6 +242,41 @@
                                 <p-columnFilter type="text" field="growthScore" display="menu" />
                             </div>
                         </th>
+                                              <th pSortableColumn="forwardPriceToFCF">
+                            <div class="flex items-center">
+                                fwPriceToFCF
+                                <p-sortIcon field="forwardPriceToFCF" />
+                                <p-columnFilter type="text" field="forwardPriceToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="evToFCF">
+                            <div class="flex items-center">
+                                evToFCF
+                                <p-sortIcon field="evToFCF" />
+                                <p-columnFilter type="text" field="evToFCF" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="intrinsicValueEVMargin">
+                            <div class="flex items-center">
+                                IVEVMargin
+                                <p-sortIcon field="intrinsicValueEVMargin" />
+                                <p-columnFilter type="text" field="intrinsicValueEVMargin" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="ruleOfFourty">
+                            <div class="flex items-center">
+                                r40
+                                <p-sortIcon field="ruleOfFourty" />
+                                <p-columnFilter type="text" field="ruleOfFourty" display="menu" />
+                            </div>
+                        </th>
+                        <th pSortableColumn="pe">
+                            <div class="flex items-center">
+                                pe
+                                <p-sortIcon field="pe" />
+                                <p-columnFilter type="text" field="pe" display="menu" />
+                            </div>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
@@ -278,14 +285,15 @@
                         <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
                         <td>{{ row.opportunityScoreValue | number:'1.2-2' }}</td>
                         <td>{{ row.forwardEvToFCF | number:'1.2-2' }}</td>
-                        <td>{{ row.forwardPriceToFCF | number:'1.2-2' }}</td>
-                        <td>{{ row.evToFCF | number:'1.2-2' }}</td>
-                        <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
-                        <td>{{ row.ruleOfFourty | number:'1.2-2' }}</td>
                         <td><p-badge [value]="row.metricScore" [severity]="severity(row.metricScore)" /></td>
                         <td><p-badge [value]="row.moatScore" [severity]="severity(row.moatScore)" /></td>
                         <td><p-badge [value]="row.riskScore" [severity]="severity(row.riskScore)" /></td>
                         <td><p-badge [value]="row.growthScore" [severity]="severity(row.growthScore)" /></td>
+                        <td>{{ row.forwardPriceToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.evToFCF | number:'1.2-2' }}</td>
+                        <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
+                        <td>{{ row.ruleOfFourty | number:'1.2-2' }}</td>
+                        <td>{{ row.pe | number:'1.2-2' }}</td>
                     </tr>
                 </ng-template>
             </p-table>
