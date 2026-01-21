@@ -200,6 +200,13 @@
                                 <p-columnFilter type="text" field="value" display="menu" />
                             </div>
                         </th>
+                        <th pSortableColumn="opportunityScoreValue">
+                            <div class="flex items-center">
+                                opportunityScore
+                                <p-sortIcon field="opportunityScoreValue" />
+                                <p-columnFilter type="text" field="opportunityScoreValue" display="menu" />
+                            </div>
+                        </th>
                         <th pSortableColumn="forwardEvToFCF">
                             <div class="flex items-center">
                                 forwardEvToFCF
@@ -219,13 +226,6 @@
                                 evToFCF
                                 <p-sortIcon field="evToFCF" />
                                 <p-columnFilter type="text" field="evToFCF" display="menu" />
-                            </div>
-                        </th>
-                        <th pSortableColumn="forwardEvToFCF">
-                            <div class="flex items-center">
-                                forwardEvToFCF
-                                <p-sortIcon field="forwardEvToFCF" />
-                                <p-columnFilter type="text" field="forwardEvToFCF" display="menu" />
                             </div>
                         </th>
                         <th pSortableColumn="intrinsicValueEVMargin">
@@ -273,13 +273,13 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
-                    <tr [pSelectableRow]="row">
+                    <tr [ngClass]="{'row-red': row.opportunityScore === 'RED', 'row-yellow': row.opportunityScore === 'YELLOW', 'row-green': row.opportunityScore === 'GREEN'}" [pSelectableRow]="row">
                         <td>{{ row.description }}</td>
                         <td>{{ row.priceInEuro | number:'1.2-2' }}</td>
+                        <td>{{ row.opportunityScoreValue | number:'1.2-2' }}</td>
                         <td>{{ row.forwardEvToFCF | number:'1.2-2' }}</td>
                         <td>{{ row.forwardPriceToFCF | number:'1.2-2' }}</td>
                         <td>{{ row.evToFCF | number:'1.2-2' }}</td>
-                        <td>{{ row.forwardEvToFCF | number:'1.2-2' }}</td>
                         <td>{{ row.intrinsicValueEVMargin | number:'1.2-2' }}</td>
                         <td>{{ row.ruleOfFourty | number:'1.2-2' }}</td>
                         <td><p-badge [value]="row.metricScore" [severity]="severity(row.metricScore)" /></td>
