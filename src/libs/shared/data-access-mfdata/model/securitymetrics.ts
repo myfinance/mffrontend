@@ -250,14 +250,12 @@ export class SecurityMetrics {
         this.currentLiabilities = currentLiabilities;
         this.forwardSales = forwardSales;
         this.forwardFCF = forwardFCF;
+        this.forwardEps = forwardEps;
         this.freeCashflow = freeCashflow;
         this.expectedFreeCashflow = expectedFreeCashflow;
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
         this.avgFreeCashflowGrowth5Y = avgFreeCashflowGrowth5Y;
         this.pe = pe;
-        this.forwardEps = forwardEps;
-        this.forwardPe = forwardPe;
-        this.forwardEvPerEarnings = forwardEvPerEarnings;
         this.evPerEarnings = evPerEarnings;
         this.roa = roa;
         this.roe = roe;
@@ -283,6 +281,8 @@ export class SecurityMetrics {
         this.evToFCF = evToFCF;
         this.forwardPriceToFCF = forwardPriceToFCF;
         this.forwardEvToFCF = forwardEvToFCF;
+        this.forwardPe = forwardPe;
+        this.forwardEvPerEarnings = forwardEvPerEarnings;
         this.historicalRevenue = historicalRevenue;
         this.historicalNetIncome = historicalNetIncome;
         this.historicalFreeCashflow = historicalFreeCashflow;
@@ -359,8 +359,6 @@ export class SecurityMetrics {
             forwardSales: this.forwardSales,
             forwardFCF: this.forwardFCF,
             forwardEps: this.forwardEps,
-            forwardPe: this.forwardPe,
-            forwardEvPerEarnings: this.forwardEvPerEarnings,
             freeCashflow: this.freeCashflow,
             expectedFreeCashflow: this.expectedFreeCashflow,
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
@@ -391,6 +389,8 @@ export class SecurityMetrics {
             evToFCF: this.evToFCF,
             forwardPriceToFCF: this.forwardPriceToFCF,
             forwardEvToFCF: this.forwardEvToFCF,
+            forwardPe: this.forwardPe,
+            forwardEvPerEarnings: this.forwardEvPerEarnings,
             historicalRevenue: this.historicalRevenue,
             historicalNetIncome: this.historicalNetIncome,
             historicalFreeCashflow: histFCFObj,
