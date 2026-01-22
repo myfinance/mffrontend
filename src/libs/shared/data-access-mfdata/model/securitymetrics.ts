@@ -10,7 +10,6 @@ export class SecurityMetrics {
     securityLifecyclePhase: SecurityLifecyclePhaseEnum;
     securityLifecyclePhaseOverride: SecurityLifecyclePhaseEnum;
     securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum;
-    riskProfile: string;
     sector: string;
     country: string;
     lastUpdateTs: Date;
@@ -123,7 +122,6 @@ export class SecurityMetrics {
         opportunityScore: string,
         opportunityScoreValue: number,
         comment: string,
-        riskProfile: string,
         sector: string,
         country: string,
         lastUpdateTs: Date,
@@ -216,7 +214,6 @@ export class SecurityMetrics {
         this.opportunityScore = opportunityScore;
         this.opportunityScoreValue = opportunityScoreValue
         this.comment = comment;
-        this.riskProfile = riskProfile;
         this.sector = sector;
         this.country = country;
         this.lastUpdateTs = lastUpdateTs;
@@ -324,7 +321,6 @@ export class SecurityMetrics {
             opportunityScore: this.opportunityScore,
             opportunityScoreValue: this.opportunityScoreValue,
             comment: this.comment,
-            riskProfile: this.riskProfile,
             sector: this.sector,
             country: this.country,
             lastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.lastUpdateTs),
@@ -421,7 +417,6 @@ export class SecurityMetrics {
             data.opportunityScore,
             data.opportunityScoreValue,
             data.comment,
-            data.riskProfile,
             data.sector,
             data.country,
             new Date(data.lastUpdateTs),
@@ -456,8 +451,6 @@ export class SecurityMetrics {
             data.forwardSales,
             data.forwardFCF,
             data.forwardEps,
-            data.forwardPe,
-            data.forwardEvPerEarnings,
             data.freeCashflow,
             data.expectedFreeCashflow,
             data.avgFreeCashflow5Y,
@@ -488,6 +481,8 @@ export class SecurityMetrics {
             data.evToFCF,
             data.forwardPriceToFCF,
             data.forwardEvToFCF,
+            data.forwardPe,
+            data.forwardEvPerEarnings,
             data.historicalRevenue ? new Map(Object.entries(data.historicalRevenue)) : new Map(),
             data.historicalNetIncome ? new Map(Object.entries(data.historicalNetIncome)) : new Map(),
             data.historicalFreeCashflow ? new Map(Object.entries(data.historicalFreeCashflow)) : new Map(),
