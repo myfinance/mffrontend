@@ -274,6 +274,7 @@ export class EquityMetricsEditorComponent {
       this.form.controls['forwardEps'].setValue(instrumentMetrics.forwardEps);
       this.form.controls['metricScore'].setValue(instrumentMetrics.metricScore);
       this.form.controls['moatScore'].setValue(instrumentMetrics.moatScore);
+      this.form.controls['riskScore'].setValue(instrumentMetrics.riskScore);
       this.form.controls['growthScore'].setValue(instrumentMetrics.growthScore);
       this.form.controls['comment'].setValue(instrumentMetrics.comment);
       this.initExpectedFCFPerYear();
@@ -381,6 +382,7 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.forwardEps != null) metrics.forwardEps = this.form.value.forwardEps;
       if (this.form.value.metricScore != null) metrics.metricScore = this.form.value.metricScore;
       if (this.form.value.moatScore != null) metrics.moatScore = this.form.value.moatScore;
+      if (this.form.value.riskScore != null) metrics.riskScore = this.form.value.riskScore;
       if (this.form.value.growthScore != null) metrics.growthScore = this.form.value.growthScore;
       if (this.form.value.comment != null) metrics.comment = this.form.value.comment;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
