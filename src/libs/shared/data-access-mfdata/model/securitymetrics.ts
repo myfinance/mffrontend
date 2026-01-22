@@ -18,6 +18,7 @@ export class SecurityMetrics {
     instrumentType: InstrumentTypeEnum;
     metricScore: string;
     moatScore: string;
+    riskScore: string;
     growthScore: string;
     opportunityScore: string;
     opportunityScoreValue: number;
@@ -118,6 +119,7 @@ export class SecurityMetrics {
         securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum,
         metricScore: string,
         moatScore: string,
+        riskScore: string,
         growthScore: string,
         opportunityScore: string,
         opportunityScoreValue: number,
@@ -210,6 +212,7 @@ export class SecurityMetrics {
         this.securityLifecyclePhaseAutoCalculated = securityLifecyclePhaseAutoCalculated;
         this.metricScore = metricScore;
         this.moatScore = moatScore;
+        this.riskScore = riskScore;
         this.growthScore = growthScore;
         this.opportunityScore = opportunityScore;
         this.opportunityScoreValue = opportunityScoreValue
@@ -317,6 +320,7 @@ export class SecurityMetrics {
             securityLifecyclePhaseAutoCalculated: this.securityLifecyclePhaseAutoCalculated,
             metricScore: this.metricScore,
             moatScore: this.moatScore,
+            riskScore: this.riskScore,
             growthScore: this.growthScore,
             opportunityScore: this.opportunityScore,
             opportunityScoreValue: this.opportunityScoreValue,
@@ -413,6 +417,7 @@ export class SecurityMetrics {
             data.securityLifecyclePhaseAutoCalculated,
             data.metricScore,
             data.moatScore,
+            data.riskScore,
             data.growthScore,
             data.opportunityScore,
             data.opportunityScoreValue,
