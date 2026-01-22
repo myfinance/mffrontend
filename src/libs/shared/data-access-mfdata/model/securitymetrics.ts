@@ -19,7 +19,6 @@ export class SecurityMetrics {
     instrumentType: InstrumentTypeEnum;
     metricScore: string;
     moatScore: string;
-    riskScore: string;
     growthScore: string;
     opportunityScore: string;
     opportunityScoreValue: number;
@@ -49,7 +48,6 @@ export class SecurityMetrics {
     forwardPriceToSales: number;
     beta: number;
     tam: number;
-    forwardPE: number;
     goodwill: number;
     ebitda: number;
     ebit: number;
@@ -58,6 +56,7 @@ export class SecurityMetrics {
     currentLiabilities: number;
     forwardSales: number;
     forwardFCF: number;
+    forwardEps: number;
 
     //calculated
     freeCashflow: number;
@@ -91,6 +90,8 @@ export class SecurityMetrics {
     evToFCF: number;
     forwardPriceToFCF: number;
     forwardEvToFCF: number;
+    forwardPe: number;
+    forwardEvPerEarnings: number;
 
 
     //historical map<fiscalaenddate, value>. fiscalaenddate is a Date, the values are TTM(trailing twelve month) values
@@ -118,7 +119,6 @@ export class SecurityMetrics {
         securityLifecyclePhaseAutoCalculated: SecurityLifecyclePhaseEnum,
         metricScore: string,
         moatScore: string,
-        riskScore: string,
         growthScore: string,
         opportunityScore: string,
         opportunityScoreValue: number,
@@ -149,7 +149,6 @@ export class SecurityMetrics {
         forwardPriceToSales: number,
         beta: number,
         tam: number,
-        forwardPE: number,
         goodwill: number,
         ebitda: number,
         ebit: number,
@@ -158,6 +157,7 @@ export class SecurityMetrics {
         currentLiabilities: number,
         forwardSales: number,
         forwardFCF: number,
+        forwardEps: number,
         freeCashflow: number,
         expectedFreeCashflow: number,
         avgFreeCashflow5Y: number,
@@ -188,6 +188,8 @@ export class SecurityMetrics {
         evToFCF: number,
         forwardPriceToFCF: number,
         forwardEvToFCF: number,
+        forwardPe: number,
+        forwardEvPerEarnings: number,
         historicalRevenue: Map<number, number>,
         historicalNetIncome: Map<number, number>,
         historicalFreeCashflow: Map<number, number>,
@@ -210,7 +212,6 @@ export class SecurityMetrics {
         this.securityLifecyclePhaseAutoCalculated = securityLifecyclePhaseAutoCalculated;
         this.metricScore = metricScore;
         this.moatScore = moatScore;
-        this.riskScore = riskScore;
         this.growthScore = growthScore;
         this.opportunityScore = opportunityScore;
         this.opportunityScoreValue = opportunityScoreValue
@@ -241,7 +242,6 @@ export class SecurityMetrics {
         this.forwardPriceToSales = forwardPriceToSales;
         this.beta = beta;
         this.tam = tam;
-        this.forwardPE = forwardPE;
         this.goodwill = goodwill;
         this.ebitda = ebitda;
         this.ebit = ebit;
@@ -255,6 +255,9 @@ export class SecurityMetrics {
         this.avgFreeCashflow5Y = avgFreeCashflow5Y;
         this.avgFreeCashflowGrowth5Y = avgFreeCashflowGrowth5Y;
         this.pe = pe;
+        this.forwardEps = forwardEps;
+        this.forwardPe = forwardPe;
+        this.forwardEvPerEarnings = forwardEvPerEarnings;
         this.evPerEarnings = evPerEarnings;
         this.roa = roa;
         this.roe = roe;
@@ -317,7 +320,6 @@ export class SecurityMetrics {
             securityLifecyclePhaseAutoCalculated: this.securityLifecyclePhaseAutoCalculated,
             metricScore: this.metricScore,
             moatScore: this.moatScore,
-            riskScore: this.riskScore,
             growthScore: this.growthScore,
             opportunityScore: this.opportunityScore,
             opportunityScoreValue: this.opportunityScoreValue,
@@ -348,7 +350,6 @@ export class SecurityMetrics {
             forwardPriceToSales: this.forwardPriceToSales,
             beta: this.beta,
             tam: this.tam,
-            forwardPE: this.forwardPE,
             goodwill: this.goodwill,
             ebitda: this.ebitda,
             ebit: this.ebit,
@@ -357,6 +358,9 @@ export class SecurityMetrics {
             currentLiabilities: this.currentLiabilities,
             forwardSales: this.forwardSales,
             forwardFCF: this.forwardFCF,
+            forwardEps: this.forwardEps,
+            forwardPe: this.forwardPe,
+            forwardEvPerEarnings: this.forwardEvPerEarnings,
             freeCashflow: this.freeCashflow,
             expectedFreeCashflow: this.expectedFreeCashflow,
             avgFreeCashflow5Y: this.avgFreeCashflow5Y,
@@ -413,7 +417,6 @@ export class SecurityMetrics {
             data.securityLifecyclePhaseAutoCalculated,
             data.metricScore,
             data.moatScore,
-            data.riskScore,
             data.growthScore,
             data.opportunityScore,
             data.opportunityScoreValue,
@@ -444,7 +447,6 @@ export class SecurityMetrics {
             data.forwardPriceToSales,
             data.beta,
             data.tam,
-            data.forwardPE,
             data.goodwill,
             data.ebitda,
             data.ebit,
@@ -453,6 +455,9 @@ export class SecurityMetrics {
             data.currentLiabilities,
             data.forwardSales,
             data.forwardFCF,
+            data.forwardEps,
+            data.forwardPe,
+            data.forwardEvPerEarnings,
             data.freeCashflow,
             data.expectedFreeCashflow,
             data.avgFreeCashflow5Y,

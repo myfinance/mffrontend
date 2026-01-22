@@ -153,6 +153,10 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),  
+    forwardEps: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: Validators.required
+    }), 
     FCFYear: new FormControl<number>(2020, {
       nonNullable: false
     }),
@@ -267,9 +271,9 @@ export class EquityMetricsEditorComponent {
       this.form.controls['securityLifecyclePhaseOverride'].setValue(instrumentMetrics.securityLifecyclePhaseOverride);
       this.form.controls['forwardSales'].setValue(instrumentMetrics.forwardSales);
       this.form.controls['forwardFCF'].setValue(instrumentMetrics.forwardFCF);
+      this.form.controls['forwardEps'].setValue(instrumentMetrics.forwardEps);
       this.form.controls['metricScore'].setValue(instrumentMetrics.metricScore);
       this.form.controls['moatScore'].setValue(instrumentMetrics.moatScore);
-      this.form.controls['riskScore'].setValue(instrumentMetrics.riskScore);
       this.form.controls['growthScore'].setValue(instrumentMetrics.growthScore);
       this.form.controls['comment'].setValue(instrumentMetrics.comment);
       this.initExpectedFCFPerYear();
@@ -373,10 +377,10 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.operatingIncomeLastYear != null) metrics.operatingIncomeLastYear = this.form.value.operatingIncomeLastYear;
       if (this.form.value.securityLifecyclePhaseOverride != null) metrics.securityLifecyclePhaseOverride = this.form.value.securityLifecyclePhaseOverride;
       if (this.form.value.forwardSales != null) metrics.forwardSales = this.form.value.forwardSales;
-      if (this.form.value.forwardFCF != null) metrics.forwardFCF = this.form.value.forwardFCF;  
+      if (this.form.value.forwardFCF != null) metrics.forwardFCF = this.form.value.forwardFCF; 
+      if (this.form.value.forwardEps != null) metrics.forwardEps = this.form.value.forwardEps;
       if (this.form.value.metricScore != null) metrics.metricScore = this.form.value.metricScore;
       if (this.form.value.moatScore != null) metrics.moatScore = this.form.value.moatScore;
-      if (this.form.value.riskScore != null) metrics.riskScore = this.form.value.riskScore;
       if (this.form.value.growthScore != null) metrics.growthScore = this.form.value.growthScore;
       if (this.form.value.comment != null) metrics.comment = this.form.value.comment;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
