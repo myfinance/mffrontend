@@ -51,105 +51,149 @@
       </div>
     </div>
     <p-table
-      [value]="positionMetrics4Stocks"
+      [value]="groupedPositionMetrics"
       [metaKeySelection]="false"
       [tableStyle]="{ 'min-width': '50rem' }"
+      [rowExpandMode]="'single'"
+      dataKey="portfolioName"
     >
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="description">
+          <th style="width: 5rem"></th>
+          <th pSortableColumn="portfolioName">
             <div class="flex items-center">
-              Security
-              <p-sortIcon field="description" />
-              <p-columnFilter type="text" field="description" display="menu" />
+              Portfolio
+              <p-sortIcon field="portfolioName" />
             </div>
           </th>
-        <th pSortableColumn="portfolio">
+          <th pSortableColumn="totalValue">
             <div class="flex items-center">
-              portfolio
-              <p-sortIcon field="portfolio" />
-              <p-columnFilter type="text" field="portfolio" display="menu" />
+              Total Value
+              <p-sortIcon field="totalValue" />
             </div>
           </th>
-          <th pSortableColumn="value">
-            <div class="flex items-center">
-              Value
-              <p-sortIcon field="value" />
-              <p-columnFilter type="text" field="value" display="menu" />
-            </div>
-          </th>
-          <th pSortableColumn="totalCagr">
-            <div class="flex items-center">
-              Total CAGR
-              <p-sortIcon field="totalCagr" />
-              <p-columnFilter type="text" field="totalCagr" display="menu" />
-            </div>
-          </th>
+          <th>Aktien</th>
+          <th>Total CAGR</th>
           <th>{{ currentYear }}</th>
           <th>{{ lastYear }}</th>
           <th>{{ yearBeforeLast }}</th>
-          <th pSortableColumn="securityLifecyclePhase">
-            <div class="flex items-center">
-              Phase
-              <p-sortIcon field="securityLifecyclePhase" />
-              <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
-            </div>
-          </th>
-          <th pSortableColumn="metricScore">
-            <div class="flex items-center">
-              metricScore
-              <p-sortIcon field="metricScore" />
-              <p-columnFilter type="text" field="metricScore" display="menu" />
-            </div>
-          </th>
-          <th pSortableColumn="moatScore">
-            <div class="flex items-center">
-              moatScore
-              <p-sortIcon field="moatScore" />
-              <p-columnFilter type="text" field="moatScore" display="menu" />
-            </div>
-          </th>
-         <th pSortableColumn="riskScore">
-            <div class="flex items-center">
-              riskScore
-              <p-sortIcon field="riskScore" />
-              <p-columnFilter type="text" field="riskScore" display="menu" />
-            </div>
-          </th>
-          <th pSortableColumn="growthScore">
-            <div class="flex items-center">
-              growthScore
-              <p-sortIcon field="growthScore" />
-              <p-columnFilter type="text" field="growthScore" display="menu" />
-            </div>
-          </th>
-          <th pSortableColumn="opportunityScore">
-            <div class="flex items-center">
-              opportunityScore
-              <p-sortIcon field="opportunityScore" />
-              <p-columnFilter type="text" field="opportunityScore" display="menu" />
-            </div>
-          </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-metric>
+      <ng-template pTemplate="body" let-group let-expanded="expanded">
         <tr>
-          <td>{{ metric.description }}</td>
-          <td>{{ metric.portfolio }}</td>
-          <td>{{ metric.value | currency : "EUR" : "symbol" : "1.2-2" }}</td>
-          <td>{{ metric.totalCagr | percent : "1.2-2" }}</td>
-          <td>{{ getMetricForYear(metric.cagrPerYear, currentYear) | percent : "1.2-2" }}</td>
-          <td>{{ getMetricForYear(metric.cagrPerYear, lastYear) | percent : "1.2-2" }}</td>
           <td>
-            {{ getMetricForYear(metric.cagrPerYear, yearBeforeLast) | percent : "1.2-2" }}
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="group"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
           </td>
-          <td>{{ metric.securityLifecyclePhase }}</td>
-          <td><p-badge [value]="metric.metricScore" [severity]="severity(metric.metricScore)" /></td>
-          <td><p-badge [value]="metric.moatScore" [severity]="severity(metric.moatScore)" /></td>
-          <td><p-badge [value]="metric.riskScore" [severity]="severity(metric.riskScore)" /></td>
-          <td><p-badge [value]="metric.growthScore" [severity]="severity(metric.growthScore)" /></td>
-          <td><p-badge [value]="metric.opportunityScore" [severity]="severity(metric.opportunityScore)" /></td>
-
+          <td>{{ group.portfolioName }}</td>
+          <td>{{ group.totalValue | currency : "EUR" : "symbol" : "1.2-2" }}</td>
+          <td>{{ group.numberOfStocks }}</td>
+          <td>{{ calculateTotalCagr(group.items) | percent : "1.2-2" }}</td>
+          <td>{{ calculateCagrForYear(group.items, currentYear) | percent : "1.2-2" }}</td>
+          <td>{{ calculateCagrForYear(group.items, lastYear) | percent : "1.2-2" }}</td>
+          <td>{{ calculateCagrForYear(group.items, yearBeforeLast) | percent : "1.2-2" }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-group>
+        <tr>
+          <td [attr.colspan]="14">
+            <div class="p-3">
+              <p-table [value]="group.items" [metaKeySelection]="false">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="description">
+                      <div class="flex items-center">
+                        Security
+                        <p-sortIcon field="description" />
+                        <p-columnFilter type="text" field="description" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="value">
+                      <div class="flex items-center">
+                        Value
+                        <p-sortIcon field="value" />
+                        <p-columnFilter type="text" field="value" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="totalCagr">
+                      <div class="flex items-center">
+                        Total CAGR
+                        <p-sortIcon field="totalCagr" />
+                        <p-columnFilter type="text" field="totalCagr" display="menu" />
+                      </div>
+                    </th>
+                    <th>{{ currentYear }}</th>
+                    <th>{{ lastYear }}</th>
+                    <th>{{ yearBeforeLast }}</th>
+                    <th pSortableColumn="securityLifecyclePhase">
+                      <div class="flex items-center">
+                        Phase
+                        <p-sortIcon field="securityLifecyclePhase" />
+                        <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="metricScore">
+                      <div class="flex items-center">
+                        metricScore
+                        <p-sortIcon field="metricScore" />
+                        <p-columnFilter type="text" field="metricScore" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="moatScore">
+                      <div class="flex items-center">
+                        moatScore
+                        <p-sortIcon field="moatScore" />
+                        <p-columnFilter type="text" field="moatScore" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="riskScore">
+                      <div class="flex items-center">
+                        riskScore
+                        <p-sortIcon field="riskScore" />
+                        <p-columnFilter type="text" field="riskScore" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="growthScore">
+                      <div class="flex items-center">
+                        growthScore
+                        <p-sortIcon field="growthScore" />
+                        <p-columnFilter type="text" field="growthScore" display="menu" />
+                      </div>
+                    </th>
+                    <th pSortableColumn="opportunityScore">
+                      <div class="flex items-center">
+                        opportunityScore
+                        <p-sortIcon field="opportunityScore" />
+                        <p-columnFilter type="text" field="opportunityScore" display="menu" />
+                      </div>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-metric>
+                  <tr>
+                    <td>{{ metric.description }}</td>
+                    <td>{{ metric.value | currency : "EUR" : "symbol" : "1.2-2" }}</td>
+                    <td>{{ metric.totalCagr | percent : "1.2-2" }}</td>
+                    <td>{{ getMetricForYear(metric.cagrPerYear, currentYear) | percent : "1.2-2" }}</td>
+                    <td>{{ getMetricForYear(metric.cagrPerYear, lastYear) | percent : "1.2-2" }}</td>
+                    <td>{{ getMetricForYear(metric.cagrPerYear, yearBeforeLast) | percent : "1.2-2" }}</td>
+                    <td>{{ metric.securityLifecyclePhase }}</td>
+                    <td><p-badge [value]="metric.metricScore" [severity]="severity(metric.metricScore)" /></td>
+                    <td><p-badge [value]="metric.moatScore" [severity]="severity(metric.moatScore)" /></td>
+                    <td><p-badge [value]="metric.riskScore" [severity]="severity(metric.riskScore)" /></td>
+                    <td><p-badge [value]="metric.growthScore" [severity]="severity(metric.growthScore)" /></td>
+                    <td><p-badge [value]="metric.opportunityScore" [severity]="severity(metric.opportunityScore)" /></td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
         </tr>
       </ng-template>
     </p-table>

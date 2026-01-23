@@ -11,12 +11,21 @@ import { BadgeModule } from 'primeng/badge';
 import { TabViewModule } from 'primeng/tabview';
 import { PositionMetrics } from '../../shared/data-access-mfdata/model/positionmetrics';
 import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
+import { ButtonModule } from 'primeng/button';
 
+
+interface GroupedPositionMetrics {
+  portfolioName: string;
+  totalValue: number;
+  numberOfStocks: number;
+  items: PositionMetrics[];
+  expanded?: boolean;
+}
 
 @Component({
   selector: 'app-depot-overview',
   standalone: true,
-  imports: [CommonModule, TableModule, ChartModule, TabViewModule, BadgeModule],
+  imports: [CommonModule, TableModule, ChartModule, TabViewModule, BadgeModule, ButtonModule],
   templateUrl: './depot-overview.component.html',
   styleUrl: './depot-overview.component.scss'
 })
@@ -33,6 +42,7 @@ export class DepotOverviewComponent {
   portfolioMetrics: PortfolioMetrics[] = [];
   positionMetrics4Stocks: PositionMetrics[] = [];
   positionMetricsOther: PositionMetrics[] = [];
+  groupedPositionMetrics: GroupedPositionMetrics[] = [];
   currentYear: number;
   lastYear: number;
   yearBeforeLast: number;
@@ -69,8 +79,34 @@ export class DepotOverviewComponent {
 
     this.positionMetrics4Stocks = this.service.getPositionMetrics().filter(pm => pm.instrumentType === InstrumentTypeEnum.EQUITY);
     this.positionMetricsOther = this.service.getPositionMetrics().filter(pm => pm.instrumentType !== InstrumentTypeEnum.EQUITY);
+
+    this.groupPositionMetrics();
   }
 
+  private groupPositionMetrics() {
+    const groupedMap = new Map<string, GroupedPositionMetrics>();
+
+    this.positionMetrics4Stocks.forEach(item => {
+      const portfolioName = (item.portfolio && String(item.portfolio).trim() !== '') ? String(item.portfolio) : 'NA';
+
+      if (!groupedMap.has(portfolioName)) {
+        groupedMap.set(portfolioName, {
+          portfolioName: portfolioName,
+          totalValue: 0,
+          numberOfStocks: 0,
+          items: [],
+          expanded: false
+        });
+      }
+
+      const group = groupedMap.get(portfolioName)!;
+      group.totalValue += item.value || 0;
+      group.numberOfStocks += 1;
+      group.items.push(item);
+    });
+
+    this.groupedPositionMetrics = Array.from(groupedMap.values());
+  }
   
 
   getSecurityDescription(businesskey: string): string {
@@ -276,5 +312,32 @@ export class DepotOverviewComponent {
     else return 'success';
   }
 
+  calculateTotalCagr(items: PositionMetrics[]): number {
+    let totalWeightedCagr = 0;
+    let totalValue = 0;
+
+    items.forEach(item => {
+      if (item.totalCagr !== undefined && item.value !== undefined) {
+        totalWeightedCagr += item.totalCagr * item.value;
+        totalValue += item.value;
+      }
+    });
+
+    return totalValue > 0 ? totalWeightedCagr / totalValue : 0;
+  }
+
+  calculateCagrForYear(items: PositionMetrics[], year: number): number {
+    let totalWeightedCagrForYear = 0;
+    let totalValue = 0;
+
+    items.forEach(item => {
+      if (item.cagrPerYear && item.cagrPerYear.get(year) !== undefined && item.value !== undefined) {
+        totalWeightedCagrForYear += item.cagrPerYear.get(year)! * item.value;
+        totalValue += item.value;
+      }
+    });
+
+    return totalValue > 0 ? totalWeightedCagrForYear / totalValue : 0;
+  }
 }
 
