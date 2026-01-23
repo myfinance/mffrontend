@@ -90,10 +90,6 @@
             </div>
           </th>
           <th>Aktien</th>
-          <th>Total CAGR</th>
-          <th>{{ currentYear }}</th>
-          <th>{{ lastYear }}</th>
-          <th>{{ yearBeforeLast }}</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-group let-expanded="expanded">
@@ -111,10 +107,6 @@
           <td>{{ group.portfolioName }}</td>
           <td>{{ group.totalValue | currency : "EUR" : "symbol" : "1.2-2" }}</td>
           <td>{{ group.numberOfStocks }}</td>
-          <td>{{ calculateTotalCagr(group.items) | percent : "1.2-2" }}</td>
-          <td>{{ calculateCagrForYear(group.items, currentYear) | percent : "1.2-2" }}</td>
-          <td>{{ calculateCagrForYear(group.items, lastYear) | percent : "1.2-2" }}</td>
-          <td>{{ calculateCagrForYear(group.items, yearBeforeLast) | percent : "1.2-2" }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-group>

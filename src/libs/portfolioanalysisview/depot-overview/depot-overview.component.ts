@@ -403,33 +403,5 @@ export class DepotOverviewComponent {
     else if (value === 'YELLOW') return 'warning';
     else return 'success';
   }
-
-  calculateTotalCagr(items: PositionMetrics[]): number {
-    let totalWeightedCagr = 0;
-    let totalValue = 0;
-
-    items.forEach(item => {
-      if (item.totalCagr !== undefined && item.value !== undefined) {
-        totalWeightedCagr += item.totalCagr * item.value;
-        totalValue += item.value;
-      }
-    });
-
-    return totalValue > 0 ? totalWeightedCagr / totalValue : 0;
-  }
-
-  calculateCagrForYear(items: PositionMetrics[], year: number): number {
-    let totalWeightedCagrForYear = 0;
-    let totalValue = 0;
-
-    items.forEach(item => {
-      if (item.cagrPerYear && item.cagrPerYear.get(year) !== undefined && item.value !== undefined) {
-        totalWeightedCagrForYear += item.cagrPerYear.get(year)! * item.value;
-        totalValue += item.value;
-      }
-    });
-
-    return totalValue > 0 ? totalWeightedCagrForYear / totalValue : 0;
-  }
 }
 
