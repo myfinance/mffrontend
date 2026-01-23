@@ -1,123 +1,281 @@
-<div class="scrollable-container">
+<p-tabView>
+  <p-tabPanel header="Overview">
     <div class="charts-container">
-        <div class="card flex justify-content-center">
-            <p-chart type="doughnut" [data]="data" [options]="options" [plugins]="getTotalValuesPlugins()"></p-chart>
-        </div>
-        <div class="card flex justify-content-center">
-            <p-chart type="doughnut" [data]="equityData" [options]="equityOptions" [plugins]="getEquityPlugins()"></p-chart>
-        </div>
+      <div class="card flex justify-content-center">
+        <p-chart
+          type="doughnut"
+          [data]="data"
+          [options]="options"
+          [plugins]="getTotalValuesPlugins()"
+        ></p-chart>
+      </div>
     </div>
-
-    <p-table [value]="portfolioMetrics" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Portfolio</th>
-                <th>Total CAGR</th>
-                <th>{{currentYear}}</th>
-                <th>{{lastYear}}</th>
-                <th>{{yearBeforeLast}}</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-metric>
-            <tr>
-                <td>{{ metric.portfolio }}</td>
-                <td>{{ metric.totalCagr | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, currentYear) | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, lastYear) | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, yearBeforeLast) | percent:'1.2-2' }}</td>
-            </tr>
-        </ng-template>
+    <p-table
+      [value]="portfolioMetrics"
+      [metaKeySelection]="false"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Portfolio</th>
+          <th>Total CAGR</th>
+          <th>{{ currentYear }}</th>
+          <th>{{ lastYear }}</th>
+          <th>{{ yearBeforeLast }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-metric>
+        <tr>
+          <td>{{ metric.portfolio }}</td>
+          <td>{{ metric.totalCagr | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, currentYear) | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, lastYear) | percent : "1.2-2" }}</td>
+          <td>
+            {{ getMetricForYear(metric.cagrPerYear, yearBeforeLast) | percent : "1.2-2" }}
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
+  </p-tabPanel>
+  <p-tabPanel header="Aktien">
+    <div class="scrollable-container">
+      <div class="charts-container">
+        <div class="card flex justify-content-center">
+          <p-chart
+            type="doughnut"
+            [data]="equityData"
+            [options]="equityOptions"
+            [plugins]="getEquityPlugins()"
+          ></p-chart>
+        </div>
+      </div>
+    </div>
+    <p-table
+      [value]="positionMetrics4Stocks"
+      [metaKeySelection]="false"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="description">
+            <div class="flex items-center">
+              Security
+              <p-sortIcon field="description" />
+              <p-columnFilter type="text" field="description" display="menu" />
+            </div>
+          </th>
+        <th pSortableColumn="portfolio">
+            <div class="flex items-center">
+              portfolio
+              <p-sortIcon field="portfolio" />
+              <p-columnFilter type="text" field="portfolio" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              Value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="totalCagr">
+            <div class="flex items-center">
+              Total CAGR
+              <p-sortIcon field="totalCagr" />
+              <p-columnFilter type="text" field="totalCagr" display="menu" />
+            </div>
+          </th>
+          <th>{{ currentYear }}</th>
+          <th>{{ lastYear }}</th>
+          <th>{{ yearBeforeLast }}</th>
+          <th pSortableColumn="securityLifecyclePhase">
+            <div class="flex items-center">
+              Phase
+              <p-sortIcon field="securityLifecyclePhase" />
+              <p-columnFilter type="text" field="securityLifecyclePhase" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="metricScore">
+            <div class="flex items-center">
+              metricScore
+              <p-sortIcon field="metricScore" />
+              <p-columnFilter type="text" field="metricScore" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="moatScore">
+            <div class="flex items-center">
+              moatScore
+              <p-sortIcon field="moatScore" />
+              <p-columnFilter type="text" field="moatScore" display="menu" />
+            </div>
+          </th>
+         <th pSortableColumn="riskScore">
+            <div class="flex items-center">
+              riskScore
+              <p-sortIcon field="riskScore" />
+              <p-columnFilter type="text" field="riskScore" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="growthScore">
+            <div class="flex items-center">
+              growthScore
+              <p-sortIcon field="growthScore" />
+              <p-columnFilter type="text" field="growthScore" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="opportunityScore">
+            <div class="flex items-center">
+              opportunityScore
+              <p-sortIcon field="opportunityScore" />
+              <p-columnFilter type="text" field="opportunityScore" display="menu" />
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-metric>
+        <tr>
+          <td>{{ metric.description }}</td>
+          <td>{{ metric.portfolio }}</td>
+          <td>{{ metric.value | currency : "EUR" : "symbol" : "1.2-2" }}</td>
+          <td>{{ metric.totalCagr | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, currentYear) | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, lastYear) | percent : "1.2-2" }}</td>
+          <td>
+            {{ getMetricForYear(metric.cagrPerYear, yearBeforeLast) | percent : "1.2-2" }}
+          </td>
+          <td>{{ metric.securityLifecyclePhase }}</td>
+          <td><p-badge [value]="metric.metricScore" [severity]="severity(metric.metricScore)" /></td>
+          <td><p-badge [value]="metric.moatScore" [severity]="severity(metric.moatScore)" /></td>
+          <td><p-badge [value]="metric.riskScore" [severity]="severity(metric.riskScore)" /></td>
+          <td><p-badge [value]="metric.growthScore" [severity]="severity(metric.growthScore)" /></td>
+          <td><p-badge [value]="metric.opportunityScore" [severity]="severity(metric.opportunityScore)" /></td>
 
-    <p-table [value]="securityMetricViews" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="description">
-                    <div class="flex items-center">
-                        Security
-                        <p-sortIcon field="description" />
-                        <p-columnFilter type="text" field="description" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="value">
-                    <div class="flex items-center">
-                        Value
-                        <p-sortIcon field="value" />
-                        <p-columnFilter type="text" field="value" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="totalCagr">
-                    <div class="flex items-center">
-                        Total CAGR
-                        <p-sortIcon field="totalCagr" />
-                        <p-columnFilter type="text" field="totalCagr" display="menu" />
-                    </div>
-                </th>
-                <th>{{currentYear}}</th>
-                <th>{{lastYear}}</th>
-                <th>{{yearBeforeLast}}</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-metric>
-            <tr>
-                <td>{{ metric.description }}</td>
-                <td>{{ metric.value | currency:'EUR':'symbol':'1.2-2' }}</td>
-                <td>{{ metric.totalCagr | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, currentYear) | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, lastYear) | percent:'1.2-2' }}</td>
-                <td>{{ getCagrForYear(metric, yearBeforeLast) | percent:'1.2-2' }}</td>
-            </tr>
-        </ng-template>
+        </tr>
+      </ng-template>
     </p-table>
+  </p-tabPanel>
 
-    <p-table [value]="positions" [metaKeySelection]="false" [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="depotDescription">
-                    <div class="flex items-center">
-                        Description
-                        <p-sortIcon field="depotDescription" />
-                        <p-columnFilter type="text" field="depotDescription" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="securityDescription">
-                    <div class="flex items-center">
-                        Description
-                        <p-sortIcon field="securityDescription" />
-                        <p-columnFilter type="text" field="securityDescription" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="securityType">
-                    <div class="flex items-center">
-                        securityType
-                        <p-sortIcon field="securityType" />
-                        <p-columnFilter type="text" field="securityType" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="amount">
-                    <div class="flex items-center">
-                        amount
-                        <p-sortIcon field="amount" />
-                        <p-columnFilter type="text" field="amount" display="menu" />
-                    </div>
-                </th>
-                <th pSortableColumn="value">
-                    <div class="flex items-center">
-                        value
-                        <p-sortIcon field="value" />
-                        <p-columnFilter type="text" field="value" display="menu" />
-                    </div>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-row>
-            <tr [pSelectableRow]="row">
-                <td>{{ row.depotDescription }}</td>
-                <td>{{ row.securityDescription }}</td>
-                <td>{{ row.securityType}}</td>
-                <td>{{ row.amount }}</td>
-                <td>{{ row.value }}</td>
-            </tr>
-        </ng-template>
+
+  <p-tabPanel header="Sonstige Assets">
+    <p-table
+      [value]="positionMetricsOther"
+      [metaKeySelection]="false"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="description">
+            <div class="flex items-center">
+              Security
+              <p-sortIcon field="description" />
+              <p-columnFilter type="text" field="description" display="menu" />
+            </div>
+          </th>
+        <th pSortableColumn="instrumentType">
+            <div class="flex items-center">
+              instrumentType
+              <p-sortIcon field="instrumentType" />
+              <p-columnFilter type="text" field="instrumentType" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              Value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="totalCagr">
+            <div class="flex items-center">
+              Total CAGR
+              <p-sortIcon field="totalCagr" />
+              <p-columnFilter type="text" field="totalCagr" display="menu" />
+            </div>
+          </th>
+          <th>{{ currentYear }}</th>
+          <th>{{ lastYear }}</th>
+          <th>{{ yearBeforeLast }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-metric>
+        <tr>
+          <td>{{ metric.description }}</td>
+          <td>{{ metric.instrumentType }}</td>
+          <td>{{ metric.value | currency : "EUR" : "symbol" : "1.2-2" }}</td>
+          <td>{{ metric.totalCagr | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, currentYear) | percent : "1.2-2" }}</td>
+          <td>{{ getMetricForYear(metric.cagrPerYear, lastYear) | percent : "1.2-2" }}</td>
+          <td>
+            {{ getMetricForYear(metric.cagrPerYear, yearBeforeLast) | percent : "1.2-2" }}
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
-</div>
+  </p-tabPanel>
+
+
+  <p-tabPanel header="Positionen">
+    <p-table
+      [value]="positions"
+      [metaKeySelection]="false"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="depotDescription">
+            <div class="flex items-center">
+              Description
+              <p-sortIcon field="depotDescription" />
+              <p-columnFilter
+                type="text"
+                field="depotDescription"
+                display="menu"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="securityDescription">
+            <div class="flex items-center">
+              Description
+              <p-sortIcon field="securityDescription" />
+              <p-columnFilter
+                type="text"
+                field="securityDescription"
+                display="menu"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="securityType">
+            <div class="flex items-center">
+              securityType
+              <p-sortIcon field="securityType" />
+              <p-columnFilter type="text" field="securityType" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="amount">
+            <div class="flex items-center">
+              amount
+              <p-sortIcon field="amount" />
+              <p-columnFilter type="text" field="amount" display="menu" />
+            </div>
+          </th>
+          <th pSortableColumn="value">
+            <div class="flex items-center">
+              value
+              <p-sortIcon field="value" />
+              <p-columnFilter type="text" field="value" display="menu" />
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr [pSelectableRow]="row">
+          <td>{{ row.depotDescription }}</td>
+          <td>{{ row.securityDescription }}</td>
+          <td>{{ row.securityType }}</td>
+          <td>{{ row.amount }}</td>
+          <td>{{ row.value }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-tabPanel>
+</p-tabView>

@@ -16,6 +16,7 @@ import { EndOfDayPrice } from './model/endofdayprice';
 import { Position } from './model/position';
 import { MarketDataImportTypeEnum, SecurityMetrics } from './model/securitymetrics';
 import { PortfolioMetrics } from './model/portfoliometrics';
+import { PositionMetrics } from './model/positionmetrics';
 
 @Injectable({
   providedIn: 'root'
@@ -430,6 +431,12 @@ export class MfdataService {
   getPortfolioMetrics(): Observable<PortfolioMetrics[]> {
     return this.mfClientservice.getResource("portfoliometrics").pipe(
       map((data: any[]) => data.map(item => PortfolioMetrics.fromJson(item))) 
+    );
+  }
+
+  getPositionMetrics() : Observable<PositionMetrics[]> {
+    return this.mfClientservice.getResource("positionmetrics?tenantbusinesskey="+this.currentTenant.businesskey).pipe(
+      map((data: any[]) => data.map(item => PositionMetrics.fromJson(item)))  // Convert each item to Instrument
     );
   }
 }

@@ -23,6 +23,7 @@ export class SecurityMetrics {
     opportunityScore: string;
     opportunityScoreValue: number;
     comment: string;  
+    defaultPortfolio: string;
 
     // all values are yearly TTM values
     //mandatory
@@ -124,6 +125,7 @@ export class SecurityMetrics {
         opportunityScore: string,
         opportunityScoreValue: number,
         comment: string,
+        defaultPortfolio: string,
         sector: string,
         country: string,
         lastUpdateTs: Date,
@@ -217,6 +219,7 @@ export class SecurityMetrics {
         this.opportunityScore = opportunityScore;
         this.opportunityScoreValue = opportunityScoreValue
         this.comment = comment;
+        this.defaultPortfolio = defaultPortfolio;
         this.sector = sector;
         this.country = country;
         this.lastUpdateTs = lastUpdateTs;
@@ -325,6 +328,7 @@ export class SecurityMetrics {
             opportunityScore: this.opportunityScore,
             opportunityScoreValue: this.opportunityScoreValue,
             comment: this.comment,
+            defaultPortfolio: this.defaultPortfolio,
             sector: this.sector,
             country: this.country,
             lastUpdateTs: JsonConvertHelper.dateTimeToIsoString(this.lastUpdateTs),
@@ -422,6 +426,7 @@ export class SecurityMetrics {
             data.opportunityScore,
             data.opportunityScoreValue,
             data.comment,
+            data.defaultPortfolio,
             data.sector,
             data.country,
             new Date(data.lastUpdateTs),

@@ -7,20 +7,16 @@ import { ChartModule } from 'primeng/chart';
 import { PortfolioMetrics } from '../../shared/data-access-mfdata/model/portfoliometrics';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { BadgeModule } from 'primeng/badge';
+import { TabViewModule } from 'primeng/tabview';
+import { PositionMetrics } from '../../shared/data-access-mfdata/model/positionmetrics';
+import { InstrumentTypeEnum } from '../../shared/data-access-mfdata/model/instrument';
 
-interface SecurityMetricView {
-  businesskey: string;
-  description: string;
-  totalCagr: number;
-  cagrPerYear: Map<number, number>;
-  amount: number;
-  value: number;
-}
 
 @Component({
   selector: 'app-depot-overview',
   standalone: true,
-  imports: [CommonModule, TableModule, ChartModule],
+  imports: [CommonModule, TableModule, ChartModule, TabViewModule, BadgeModule],
   templateUrl: './depot-overview.component.html',
   styleUrl: './depot-overview.component.scss'
 })
@@ -35,7 +31,8 @@ export class DepotOverviewComponent {
   numberOfEquities = 0;
 
   portfolioMetrics: PortfolioMetrics[] = [];
-  securityMetricViews: SecurityMetricView[] = [];
+  positionMetrics4Stocks: PositionMetrics[] = [];
+  positionMetricsOther: PositionMetrics[] = [];
   currentYear: number;
   lastYear: number;
   yearBeforeLast: number;
@@ -69,40 +66,12 @@ export class DepotOverviewComponent {
 
     const metricsResult = this.service.getPortfolioMetrics();
     this.portfolioMetrics = metricsResult.filter(pm => !pm.isSingleSecurity);
-    const securityMetrics = metricsResult.filter(pm => pm.isSingleSecurity);
 
-    this.buildSecurityMetricViews(securityMetrics);
+    this.positionMetrics4Stocks = this.service.getPositionMetrics().filter(pm => pm.instrumentType === InstrumentTypeEnum.EQUITY);
+    this.positionMetricsOther = this.service.getPositionMetrics().filter(pm => pm.instrumentType !== InstrumentTypeEnum.EQUITY);
   }
 
-  buildSecurityMetricViews(securityMetrics: PortfolioMetrics[]) {
-    const aggregatedPositions = new Map<string, { amount: number, value: number, description: string }>();
-
-    this.positions.forEach(pos => {
-      const existing = aggregatedPositions.get(pos.securityId);
-      if (existing) {
-        existing.amount += pos.amount;
-        existing.value += pos.value;
-      } else {
-        aggregatedPositions.set(pos.securityId, {
-          amount: pos.amount,
-          value: pos.value,
-          description: pos.securityDescription
-        });
-      }
-    });
-
-    this.securityMetricViews = securityMetrics.map(metric => {
-      const positionData = aggregatedPositions.get(metric.portfolio);
-      return {
-        businesskey: metric.portfolio,
-        description: positionData ? positionData.description : metric.portfolio,
-        totalCagr: metric.totalCagr,
-        cagrPerYear: metric.cagrPerYear,
-        amount: positionData ? positionData.amount : 0,
-        value: positionData ? positionData.value : 0
-      };
-    });
-  }
+  
 
   getSecurityDescription(businesskey: string): string {
     const position = this.positions.find(p => p.securityId === businesskey);
@@ -294,11 +263,18 @@ export class DepotOverviewComponent {
     };
   }
 
-  getCagrForYear(metric: PortfolioMetrics, year: number): number {
-    if (metric.cagrPerYear && metric.cagrPerYear.get(year)) {
-      return metric.cagrPerYear.get(year)!;
+  getMetricForYear(metric: Map<number, number>, year: number): number {
+    if (metric && metric.get(year)) {
+      return metric.get(year)!;
     }
     return 0;
   }
+
+  severity(value: string) {
+    if (value === 'RED') return 'danger';
+    else if (value === 'YELLOW') return 'warning';
+    else return 'success';
+  }
+
 }
 

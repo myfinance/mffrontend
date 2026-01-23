@@ -49,6 +49,10 @@ export class EquityMetricsEditorComponent {
       nonNullable: true,
       validators: Validators.required
     }),
+    defaultportfolio: new FormControl<string>('none', {
+      nonNullable: true,
+      validators: Validators.required
+    }),
     expectedCashflowGrowth: new FormControl<number>(0, {
       nonNullable: true,
       validators: Validators.required
@@ -277,6 +281,7 @@ export class EquityMetricsEditorComponent {
       this.form.controls['riskScore'].setValue(instrumentMetrics.riskScore);
       this.form.controls['growthScore'].setValue(instrumentMetrics.growthScore);
       this.form.controls['comment'].setValue(instrumentMetrics.comment);
+      this.form.controls['defaultportfolio'].setValue(instrumentMetrics.defaultPortfolio);
       this.initExpectedFCFPerYear();
       this.histFCFs = Array.from(instrumentMetrics.historicalFreeCashflow.entries()).map(([year, value]) => ({ year, value }));
       let expectedFreeCashflowGrowthPerYear: tableRowTuple[] = [];
@@ -385,6 +390,7 @@ export class EquityMetricsEditorComponent {
       if (this.form.value.riskScore != null) metrics.riskScore = this.form.value.riskScore;
       if (this.form.value.growthScore != null) metrics.growthScore = this.form.value.growthScore;
       if (this.form.value.comment != null) metrics.comment = this.form.value.comment;
+      if (this.form.value.defaultportfolio != null) metrics.defaultPortfolio = this.form.value.defaultportfolio;
       metrics.historicalFreeCashflow = new Map(this.histFCFs.map(tuple => [tuple.year, tuple.value]));
       metrics.expectedFreeCashflowGrowthPerYear = new Map<number, number>();
       if (this.form.value.FCFGrowthY1 != null) metrics.expectedFreeCashflowGrowthPerYear.set(1, this.form.value.FCFGrowthY1);

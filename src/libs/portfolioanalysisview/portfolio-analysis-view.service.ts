@@ -5,6 +5,7 @@ import { Position } from '../shared/data-access-mfdata/model/position';
 import { Instrument } from '../shared/data-access-mfdata/shared-data-access-mfdata.module';
 import { ValuationTypeEnum } from '../shared/data-access-mfdata/model/valuecurve';
 import { PortfolioMetrics } from '../shared/data-access-mfdata/model/portfoliometrics';
+import { PositionMetrics } from '../shared/data-access-mfdata/model/positionmetrics';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +21,14 @@ export class PortfolioAnalysisViewService {
   private giros: Instrument[] = [];
   private sumOfCash: number = 0;
   private portfolioMetrics: PortfolioMetrics[] = [];
+  private positionMetrics: PositionMetrics[] = [];
 
   portfolioEventSubject: Subject<unknown> = new Subject<unknown>();
   
   constructor(private service: MfdataService) {
     this.service.getConfigLoadedSubject().subscribe({
       next:
-        () => this.loadPositions(),
+        () => this.loadData(),
       error:
         (e) => {
           console.error(e);
@@ -36,7 +38,7 @@ export class PortfolioAnalysisViewService {
     this.service.getPriceEventSubject().subscribe(
       {
         next: () => {
-          this.loadPositions();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
@@ -44,7 +46,7 @@ export class PortfolioAnalysisViewService {
     this.service.tenantChangedSubject.subscribe(
       {
         next: () => {
-          this.loadPositions();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
@@ -52,7 +54,7 @@ export class PortfolioAnalysisViewService {
     this.service.getValueChangedEventSubject().subscribe(
       {
         next: () => {
-          this.loadPositions();
+          this.loadData();
         },
         error: (e) => console.error(e)
       }
@@ -65,9 +67,14 @@ export class PortfolioAnalysisViewService {
         error: (e) => console.error(e)
       }
     )
+    this.loadData();
+  }
+
+  private loadData() {
     this.loadPositions();
     this.loadInstruments();
     this.loadPortfolioMetrics();
+    this.loadPositionMetrics();
   }
 
   private loadInstruments() {
@@ -87,6 +94,18 @@ export class PortfolioAnalysisViewService {
       {
         next: (portfolioMetric) => {
           this.portfolioMetrics = portfolioMetric;
+          this.portfolioEventSubject.next(true);
+        },
+        error: (e) => console.error(e)
+      }
+    )
+  }
+
+  private loadPositionMetrics() {
+    this.service.getPositionMetrics().subscribe(
+      {
+        next: (positionMetric) => {
+          this.positionMetrics = positionMetric;
           this.portfolioEventSubject.next(true);
         },
         error: (e) => console.error(e)
@@ -160,6 +179,10 @@ export class PortfolioAnalysisViewService {
 
   getPortfolioMetrics(): PortfolioMetrics[] {
     return this.portfolioMetrics;
+  }
+
+  getPositionMetrics(): PositionMetrics[] {
+    return this.positionMetrics;
   }
 
 }
