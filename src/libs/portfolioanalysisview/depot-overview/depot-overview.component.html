@@ -39,13 +39,27 @@
   </p-tabPanel>
   <p-tabPanel header="Aktien">
     <div class="scrollable-container">
-      <div class="charts-container">
+      <div class="charts-container flex flex-wrap justify-content-center gap-3">
         <div class="card flex justify-content-center">
           <p-chart
             type="doughnut"
             [data]="equityData"
             [options]="equityOptions"
             [plugins]="getEquityPlugins()"
+          ></p-chart>
+        </div>
+        <div class="card flex justify-content-center">
+          <p-chart
+            type="pie"
+            [data]="countryPieData"
+            [options]="countryPieOptions"
+          ></p-chart>
+        </div>
+        <div class="card flex justify-content-center">
+          <p-chart
+            type="pie"
+            [data]="sectorPieData"
+            [options]="sectorPieOptions"
           ></p-chart>
         </div>
       </div>

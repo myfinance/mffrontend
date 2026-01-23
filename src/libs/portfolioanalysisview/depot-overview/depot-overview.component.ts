@@ -39,6 +39,12 @@ export class DepotOverviewComponent {
   equityOptions: any;
   numberOfEquities = 0;
 
+  countryPieData: any;
+  countryPieOptions: any;
+
+  sectorPieData: any;
+  sectorPieOptions: any;
+
   portfolioMetrics: PortfolioMetrics[] = [];
   positionMetrics4Stocks: PositionMetrics[] = [];
   positionMetricsOther: PositionMetrics[] = [];
@@ -71,7 +77,6 @@ export class DepotOverviewComponent {
     const positionResult = this.service.getPositions();
     if(positionResult!=null && positionResult.length>0){
       this.positions = positionResult.filter(p => p.amount !== 0);
-      this.prepareCharts();
     }
 
     const metricsResult = this.service.getPortfolioMetrics();
@@ -81,6 +86,10 @@ export class DepotOverviewComponent {
     this.positionMetricsOther = this.service.getPositionMetrics().filter(pm => pm.instrumentType !== InstrumentTypeEnum.EQUITY);
 
     this.groupPositionMetrics();
+
+    if(positionResult!=null && positionResult.length>0 && metricsResult!=null){
+      this.prepareCharts();
+    }
   }
 
   private groupPositionMetrics() {
@@ -289,6 +298,93 @@ export class DepotOverviewComponent {
               }
               if (context.parsed !== null) {
                 const percentage = (context.parsed / equityTotal * 100).toFixed(2);
+                label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed) + ` (${percentage}%)`;
+              }
+              return label;
+            }
+          }
+        }
+      }
+    };
+
+    const countryAggregation = new Map<string, number>();
+    this.positionMetrics4Stocks.forEach(pm => {
+      const countryName = (pm.country && String(pm.country).trim() !== '') ? String(pm.country) : 'NA';
+      const value = countryAggregation.get(countryName) || 0;
+      countryAggregation.set(countryName, value + (pm.value || 0));
+    });
+    this.countryPieData = {
+      labels: Array.from(countryAggregation.keys()),
+      datasets: [
+        {
+          data: Array.from(countryAggregation.values()),
+          backgroundColor: backgroundColors.slice(0, countryAggregation.size),
+          hoverBackgroundColor: hoverBackgroundColors.slice(0, countryAggregation.size)
+        }
+      ]
+    };
+    this.countryPieOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => {
+              let label = context.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed !== null) {
+                const total = Array.from(countryAggregation.values()).reduce((a, b) => a + b, 0);
+                const percentage = (context.parsed / total * 100).toFixed(2);
+                label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed) + ` (${percentage}%)`;
+              }
+              return label;
+            }
+          }
+        }
+      }
+    };
+
+    // New Chart: Aggregated by Sector (Pie Chart)
+    const sectorAggregation = new Map<string, number>();
+    this.positionMetrics4Stocks.forEach(pm => {
+      const sectorName = (pm.sector && String(pm.sector).trim() !== '') ? String(pm.sector) : 'NA';
+      const value = sectorAggregation.get(sectorName) || 0;
+      sectorAggregation.set(sectorName, value + (pm.value || 0));
+    });
+    this.sectorPieData = {
+      labels: Array.from(sectorAggregation.keys()),
+      datasets: [
+        {
+          data: Array.from(sectorAggregation.values()),
+          backgroundColor: backgroundColors.slice(0, sectorAggregation.size),
+          hoverBackgroundColor: hoverBackgroundColors.slice(0, sectorAggregation.size)
+        }
+      ]
+    };
+    this.sectorPieOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: textColor
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => {
+              let label = context.label || '';
+              if (label) {
+                label += ': ';
+              }
+              if (context.parsed !== null) {
+                const total = Array.from(sectorAggregation.values()).reduce((a, b) => a + b, 0);
+                const percentage = (context.parsed / total * 100).toFixed(2);
                 label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed) + ` (${percentage}%)`;
               }
               return label;
