@@ -284,10 +284,7 @@ export class DepotOverviewComponent {
     this.equityOptions = {
       plugins: {
         legend: {
-          labels: {
-            usePointStyle: true,
-            color: textColor
-          }
+          display: false
         },
         tooltip: {
           callbacks: {
@@ -329,10 +326,7 @@ export class DepotOverviewComponent {
     this.countryPieOptions = {
       plugins: {
         legend: {
-          labels: {
-            usePointStyle: true,
-            color: textColor
-          }
+          display: false
         },
         tooltip: {
           callbacks: {
@@ -375,10 +369,7 @@ export class DepotOverviewComponent {
     this.sectorPieOptions = {
       plugins: {
         legend: {
-          labels: {
-            usePointStyle: true,
-            color: textColor
-          }
+          display: false
         },
         tooltip: {
           callbacks: {

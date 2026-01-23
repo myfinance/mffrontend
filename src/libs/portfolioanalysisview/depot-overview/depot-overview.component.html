@@ -41,6 +41,7 @@
     <div class="scrollable-container">
       <div class="charts-container flex flex-wrap justify-content-center gap-3">
         <div class="card flex justify-content-center">
+          <h3>Aktien</h3>
           <p-chart
             type="doughnut"
             [data]="equityData"
@@ -49,6 +50,7 @@
           ></p-chart>
         </div>
         <div class="card flex justify-content-center">
+          <h3>Country</h3>
           <p-chart
             type="pie"
             [data]="countryPieData"
@@ -56,6 +58,7 @@
           ></p-chart>
         </div>
         <div class="card flex justify-content-center">
+          <h3>Sector</h3>
           <p-chart
             type="pie"
             [data]="sectorPieData"
