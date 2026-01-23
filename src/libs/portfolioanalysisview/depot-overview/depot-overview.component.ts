@@ -307,19 +307,22 @@ export class DepotOverviewComponent {
       }
     };
 
+    // New Chart: Aggregated by Country (Pie Chart)
     const countryAggregation = new Map<string, number>();
     this.positionMetrics4Stocks.forEach(pm => {
       const countryName = (pm.country && String(pm.country).trim() !== '') ? String(pm.country) : 'NA';
       const value = countryAggregation.get(countryName) || 0;
       countryAggregation.set(countryName, value + (pm.value || 0));
     });
+    // Sort countryAggregation by value
+    const sortedCountryAggregation = new Map([...countryAggregation.entries()].sort((a, b) => b[1] - a[1]));
     this.countryPieData = {
-      labels: Array.from(countryAggregation.keys()),
+      labels: Array.from(sortedCountryAggregation.keys()),
       datasets: [
         {
-          data: Array.from(countryAggregation.values()),
-          backgroundColor: backgroundColors.slice(0, countryAggregation.size),
-          hoverBackgroundColor: hoverBackgroundColors.slice(0, countryAggregation.size)
+          data: Array.from(sortedCountryAggregation.values()),
+          backgroundColor: backgroundColors.slice(0, sortedCountryAggregation.size),
+          hoverBackgroundColor: hoverBackgroundColors.slice(0, sortedCountryAggregation.size)
         }
       ]
     };
@@ -339,7 +342,7 @@ export class DepotOverviewComponent {
                 label += ': ';
               }
               if (context.parsed !== null) {
-                const total = Array.from(countryAggregation.values()).reduce((a, b) => a + b, 0);
+                const total = Array.from(sortedCountryAggregation.values()).reduce((a, b) => a + b, 0);
                 const percentage = (context.parsed / total * 100).toFixed(2);
                 label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed) + ` (${percentage}%)`;
               }
@@ -357,13 +360,15 @@ export class DepotOverviewComponent {
       const value = sectorAggregation.get(sectorName) || 0;
       sectorAggregation.set(sectorName, value + (pm.value || 0));
     });
+    // Sort sectorAggregation by value
+    const sortedSectorAggregation = new Map([...sectorAggregation.entries()].sort((a, b) => b[1] - a[1]));
     this.sectorPieData = {
-      labels: Array.from(sectorAggregation.keys()),
+      labels: Array.from(sortedSectorAggregation.keys()),
       datasets: [
         {
-          data: Array.from(sectorAggregation.values()),
-          backgroundColor: backgroundColors.slice(0, sectorAggregation.size),
-          hoverBackgroundColor: hoverBackgroundColors.slice(0, sectorAggregation.size)
+          data: Array.from(sortedSectorAggregation.values()),
+          backgroundColor: backgroundColors.slice(0, sortedSectorAggregation.size),
+          hoverBackgroundColor: hoverBackgroundColors.slice(0, sortedSectorAggregation.size)
         }
       ]
     };
@@ -383,7 +388,7 @@ export class DepotOverviewComponent {
                 label += ': ';
               }
               if (context.parsed !== null) {
-                const total = Array.from(sectorAggregation.values()).reduce((a, b) => a + b, 0);
+                const total = Array.from(sortedSectorAggregation.values()).reduce((a, b) => a + b, 0);
                 const percentage = (context.parsed / total * 100).toFixed(2);
                 label += new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(context.parsed) + ` (${percentage}%)`;
               }
