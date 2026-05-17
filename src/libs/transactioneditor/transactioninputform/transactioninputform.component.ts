@@ -18,14 +18,14 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrls: ['./transactioninputform.component.scss'],
 })
 export class TransactioninputformComponent {
-  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE, 
-    TransactionTypeEnum.INCOME, 
-    TransactionTypeEnum.BUDGETTRANSFER, 
+  transactionTypes: TransactionTypeEnum[] = [TransactionTypeEnum.EXPENSE,
+    TransactionTypeEnum.INCOME,
+    TransactionTypeEnum.BUDGETTRANSFER,
     TransactionTypeEnum.TRANSFER,
-    TransactionTypeEnum.BUY, 
-    TransactionTypeEnum.SELL, 
-    TransactionTypeEnum.DEPOTCASHFLOW, 
-    TransactionTypeEnum.INTERESTS, 
+    TransactionTypeEnum.BUY,
+    TransactionTypeEnum.SELL,
+    TransactionTypeEnum.DEPOTCASHFLOW,
+    TransactionTypeEnum.INTERESTS,
     TransactionTypeEnum.LIFEINSURANCEEXPENSE];
   giros: Instrument[] = [];
   budgets: Instrument[] = [];
@@ -108,12 +108,12 @@ export class TransactioninputformComponent {
     this.transactionService.getInstruments().subscribe(
       (instruments) => {
         instruments = instruments.filter(i=>i.active);
-        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO || instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT).sort((a, b) => a.description.localeCompare(b.description));
+        this.giros = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.GIRO || instrument.instrumentType === InstrumentTypeEnum.BUILDINGSAVINGACCOUNT || instrument.instrumentType === InstrumentTypeEnum.MONEYATCALL || instrument.instrumentType === InstrumentTypeEnum.TIMEDEPOSIT|| instrument.instrumentType === InstrumentTypeEnum.LOAN).sort((a, b) => a.description.localeCompare(b.description));
         this.budgets = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.BUDGET).sort((a, b) => a.description.localeCompare(b.description));
         this.depots = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.DEPOT).sort((a, b) => a.description.localeCompare(b.description));
         this.lifeinsurances = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.LIFEINSURANCE).sort((a, b) => a.description.localeCompare(b.description));
-        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY 
-            || instrument.instrumentType === InstrumentTypeEnum.BOND 
+        this.securities = instruments.filter(instrument => instrument.instrumentType === InstrumentTypeEnum.EQUITY
+            || instrument.instrumentType === InstrumentTypeEnum.BOND
             || instrument.instrumentType === InstrumentTypeEnum.ETF
             || instrument.instrumentType === InstrumentTypeEnum.KRYPTO
             || instrument.instrumentType === InstrumentTypeEnum.FONDS)
@@ -209,7 +209,7 @@ export class TransactioninputformComponent {
           break;
         }
         default: {
-          //statements; 
+          //statements;
           break;
         }
       }
